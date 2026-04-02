@@ -921,12 +921,12 @@ const USER_NAME = 'Peter';
 const agents = {
   personal: {
     label: 'ALMA',
-    subtitle: 'Your personal enterprise AI — ask anything across all connected systems.',
+    subtitle: 'Your personal AI assistant — connected to your calendar, email, HR systems and documents.',
     useCases: [
-      { icon: '📊', title: 'What\'s our cash flow looking like?', desc: 'Pull a live Q2 forecast from ERP data', prompt: 'Show me the cash flow forecast for Q2' },
-      { icon: '⚠️', title: 'Any supply chain disruptions?', desc: 'Check active alerts across all suppliers', prompt: 'Are there any supply chain disruptions I should know about?' },
-      { icon: '📉', title: 'Which deals are at risk?', desc: 'Analyze pipeline health and stall signals', prompt: 'Which deals in the pipeline are at risk of stalling?' },
-      { icon: '🌿', title: 'How are we doing on sustainability?', desc: 'CO2, energy and water KPIs by site', prompt: 'Show me our CO2 emissions and energy usage for Q1' },
+      { icon: '🏖️', title: 'How much vacation do I have left?', desc: 'Check your remaining balance from HR systems', prompt: 'How much vacation time do I have left?' },
+      { icon: '📋', title: 'Todos for the leadership meeting', desc: 'Pull your open action items for tomorrow', prompt: 'Which todos do I have for the leadership meeting tomorrow?' },
+      { icon: '📊', title: 'Generate a branded PowerPoint', desc: 'Turn submitted data into a presentation', prompt: 'Generate a PowerPoint on the submitted data according to the branding guidelines' },
+      { icon: '📧', title: 'Suggest email replies', desc: 'Draft responses for unanswered emails to you', prompt: 'Suggest replies for all of my unanswered emails directed to me' },
     ]
   },
   finance: {
@@ -1004,6 +1004,74 @@ const agents = {
 };
 
 const demoAnswers = {
+  'How much vacation time do I have left?': {
+    badge: '✦ Personal Agent',
+    html: `<p>Here's your current <strong>vacation balance</strong> pulled from HR systems:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Remaining Days</div><div class="value pos">12</div><div class="delta pos">of 25 total days</div></div>
+  <div class="kpi"><div class="label">Used This Year</div><div class="value">13</div><div class="delta">last taken Apr 15–18</div></div>
+  <div class="kpi"><div class="label">Carry-Over Expires</div><div class="value warn">5 days</div><div class="delta neg">expires Jun 30</div></div>
+</div>
+<table><thead><tr><th>Period</th><th>Days taken</th><th>Status</th></tr></thead><tbody>
+<tr><td>Jan – Mar 2026</td><td>5</td><td class="pos">Approved</td></tr>
+<tr><td>Apr 15–18</td><td>4</td><td class="pos">Approved</td></tr>
+<tr><td>May 26–30 (booked)</td><td>4</td><td class="warn">Pending approval</td></tr>
+</tbody></table>
+<p>⚠️ You have <strong>5 carry-over days</strong> that expire on June 30 — book them before they lapse.</p>
+<span class="source-pill">🔗 Workday HR · Absence management system</span>`
+  },
+
+  'Which todos do I have for the leadership meeting tomorrow?': {
+    badge: '✦ Personal Agent',
+    html: `<p>Here are your <strong>open action items</strong> for the leadership meeting tomorrow (Thu Apr 3):</p>
+<table><thead><tr><th>#</th><th>Action item</th><th>Source</th><th>Priority</th></tr></thead><tbody>
+<tr><td>1</td><td>Present Q1 budget variance summary</td><td>Jira AAP-112</td><td class="neg"><strong>High</strong></td></tr>
+<tr><td>2</td><td>Update roadmap slide with Phase 2 dates</td><td>Confluence</td><td class="neg"><strong>High</strong></td></tr>
+<tr><td>3</td><td>Share ALMA pilot status — Alfa Laval</td><td>Slack #alma-delivery</td><td class="warn">Medium</td></tr>
+<tr><td>4</td><td>Confirm headcount plan for H2</td><td>Email from Henrik S.</td><td class="warn">Medium</td></tr>
+<tr><td>5</td><td>Review and approve NDA — Sandvik deal</td><td>DocuSign</td><td class="pos">Low</td></tr>
+</tbody></table>
+<p>Items 1 and 2 are not yet started. Want me to draft the budget variance summary or pull the latest roadmap dates now?</p>
+<span class="source-pill">🔗 Jira · Confluence · Slack · Gmail · DocuSign</span>`
+  },
+
+  'Generate a PowerPoint on the submitted data according to the branding guidelines': {
+    badge: '✦ Personal Agent',
+    html: `<p>I've generated a <strong>branded PowerPoint</strong> based on the Q1 submitted data and Reeinvent brand guidelines:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Slides generated</div><div class="value pos">8</div><div class="delta">ready to download</div></div>
+  <div class="kpi"><div class="label">Brand compliance</div><div class="value pos">100%</div><div class="delta pos">colors, fonts, logo</div></div>
+  <div class="kpi"><div class="label">Data sources used</div><div class="value">4</div><div class="delta">ERP, CRM, HR, ESG</div></div>
+</div>
+<table><thead><tr><th>Slide</th><th>Content</th></tr></thead><tbody>
+<tr><td>1</td><td>Cover — Q1 2026 Business Review</td></tr>
+<tr><td>2</td><td>Executive summary — 3 key highlights</td></tr>
+<tr><td>3</td><td>Financial performance — revenue, margin, cashflow</td></tr>
+<tr><td>4</td><td>Pipeline & commercial overview</td></tr>
+<tr><td>5</td><td>Operations KPIs — delivery, quality, efficiency</td></tr>
+<tr><td>6</td><td>Sustainability — CO₂, energy, water vs targets</td></tr>
+<tr><td>7</td><td>Team & headcount update</td></tr>
+<tr><td>8</td><td>Next quarter priorities & risks</td></tr>
+</tbody></table>
+<p>The file uses Reeinvent Blue (#2665E2), ALMA Purple (#C26DE6) and Inter font throughout. Ready to download — want me to make any changes before you export?</p>
+<span class="source-pill">🔗 SAP ERP · Salesforce · HR data · ESG reports · Brand guidelines</span>`
+  },
+
+  'Suggest replies for all of my unanswered emails directed to me': {
+    badge: '✦ Personal Agent',
+    html: `<p>Found <strong>4 unanswered emails</strong> addressed directly to you. Here are suggested replies:</p>
+<table><thead><tr><th>From</th><th>Subject</th><th>Received</th><th>Suggested action</th></tr></thead><tbody>
+<tr><td>Almir Krso</td><td>Sandvik intro meeting — can you join?</td><td>Yesterday 14:32</td><td class="pos">Accept & confirm</td></tr>
+<tr><td>Henrik Sällman</td><td>ALMA pricing update — your input needed</td><td>Yesterday 09:11</td><td class="warn">Reply with comment</td></tr>
+<tr><td>Sara Lindgren (Alfa Laval)</td><td>Pilot review feedback</td><td>Tue 16:44</td><td class="warn">Acknowledge & follow up</td></tr>
+<tr><td>IT Helpdesk</td><td>Your laptop certificate expires in 7 days</td><td>Mon 08:00</td><td>Renew via self-service</td></tr>
+</tbody></table>
+<p><strong>Draft for Almir:</strong> <em>"Hi Almir — yes, I can join. Please send the invite to my calendar. Looking forward to it."</em></p>
+<p><strong>Draft for Henrik:</strong> <em>"Hi Henrik — I've reviewed the pricing doc. My main comment: the enterprise tier should include the onboarding fee. Happy to discuss in our next sync."</em></p>
+<p>Want me to send any of these, or adjust the tone?</p>
+<span class="source-pill">🔗 Gmail · Calendar</span>`
+  },
+
   'Show me the cash flow forecast for Q2': {
     badge: '📊 Finance Intelligence',
     html: `<p>Here's the <strong>Q2 2026 cash flow forecast</strong> based on ERP data, outstanding invoices, and historical payment patterns:</p>
