@@ -715,6 +715,18 @@
     <div class="agent-icon">🎯</div>
     Matching
   </div>
+  <div class="agent-item" id="agent-hr" onclick="switchAgent('hr')">
+    <div class="agent-icon">👥</div>
+    HR
+  </div>
+  <div class="agent-item" id="agent-leadership" onclick="switchAgent('leadership')">
+    <div class="agent-icon">🧭</div>
+    Leadership
+  </div>
+  <div class="agent-item" id="agent-board" onclick="switchAgent('board')">
+    <div class="agent-icon">📐</div>
+    Board
+  </div>
 
   <div class="custom-section-header">
     <div class="section-label">Custom Agents (GPTs)</div>
@@ -1016,10 +1028,163 @@ const agents = {
       { icon: '🔍', title: 'Deal Sourcing', desc: 'Identify partnership and deal opportunities', prompt: 'Identify new partnership opportunities in the Nordics matching our ICP' },
       { icon: '📝', title: 'Proposal Auto-Draft', desc: 'Generate a first-draft response to a tender', prompt: 'Draft a proposal response for the Spotify Data Engineer tender' },
     ]
+  },
+  hr: {
+    label: 'HR',
+    subtitle: 'Headcount, recruitment, absence, performance and employee insights — connected to your HR systems.',
+    useCases: [
+      { icon: '👥', title: 'Headcount Overview', desc: 'Current org size, growth and distribution', prompt: 'Give me a headcount overview by department and location' },
+      { icon: '📋', title: 'Open Positions', desc: 'Active roles, time-to-fill and pipeline status', prompt: 'What open positions do we have and how is recruitment progressing?' },
+      { icon: '🏖️', title: 'Absence & Leave Trends', desc: 'Absence rates across teams and periods', prompt: 'Show me absence and leave trends across departments' },
+      { icon: '⭐', title: 'Top Performer Insights', desc: 'Who are the standout performers this quarter?', prompt: 'Who are our top performers this quarter based on review data?' },
+      { icon: '📅', title: 'Upcoming Performance Reviews', desc: 'Who is due for a review in the next 30 days?', prompt: 'Which employees have performance reviews due in the next 30 days?' },
+      { icon: '📉', title: 'Attrition Risk', desc: 'Employees showing early signs of disengagement', prompt: 'Which employees are at risk of leaving based on engagement signals?' },
+    ]
+  },
+  leadership: {
+    label: 'Leadership',
+    subtitle: 'Meeting preparation, OKR tracking, cross-functional status and executive briefings — for the leadership team.',
+    useCases: [
+      { icon: '🧭', title: 'Leadership Meeting Prep', desc: 'Agenda, open actions and key decisions needed', prompt: 'Prepare a briefing for this week\'s leadership meeting' },
+      { icon: '🎯', title: 'OKR Progress Tracker', desc: 'Status of all objectives across the organisation', prompt: 'Show me the current OKR progress across all departments' },
+      { icon: '⚡', title: 'Priorities This Week', desc: 'Top cross-functional items requiring attention', prompt: 'What are the top priorities and blockers across the business this week?' },
+      { icon: '📊', title: 'Executive Dashboard', desc: 'One-page view of the business — finance, sales, ops', prompt: 'Give me an executive summary of the business this week' },
+      { icon: '🔴', title: 'Escalations & Blockers', desc: 'What is stuck and needs leadership decision?', prompt: 'What escalations and blockers need a leadership decision right now?' },
+      { icon: '📝', title: 'Decision Log', desc: 'Summary of recent decisions and their owners', prompt: 'Show me a log of decisions made in the last 30 days and their status' },
+    ]
+  },
+  board: {
+    label: 'Board',
+    subtitle: 'Board pack preparation, governance reporting, investor updates and strategic KPI tracking.',
+    useCases: [
+      { icon: '📐', title: 'Board Pack Generator', desc: 'Auto-compile the quarterly board report', prompt: 'Generate the board pack for Q1 2026' },
+      { icon: '📈', title: 'Strategic KPI Dashboard', desc: 'Top-level metrics the board tracks each quarter', prompt: 'Show me the strategic KPIs for the board this quarter' },
+      { icon: '⚖️', title: 'Governance Compliance Status', desc: 'Audit readiness and compliance obligations', prompt: 'What is our current governance and compliance status for the board?' },
+      { icon: '💼', title: 'Investor Update Draft', desc: 'Draft the quarterly investor communication', prompt: 'Draft the Q1 investor update' },
+      { icon: '🔭', title: 'Strategic Initiative Tracker', desc: 'Progress on board-approved strategic initiatives', prompt: 'What is the status of our board-approved strategic initiatives?' },
+      { icon: '⚠️', title: 'Board Risk Register', desc: 'Top risks and mitigations for board review', prompt: 'Give me an updated risk register summary for the board' },
+    ]
   }
 };
 
 const demoAnswers = {
+  'Give me a headcount overview by department and location': {
+    badge: '👥 HR',
+    html: `<p>Here's your current <strong>headcount overview</strong> as of today:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Total Headcount</div><div class="value">184</div><div class="delta pos">+12 vs Jan 1</div></div>
+  <div class="kpi"><div class="label">Open Positions</div><div class="value warn">14</div><div class="delta neg">avg 38 days to fill</div></div>
+  <div class="kpi"><div class="label">Attrition YTD</div><div class="value">4.3%</div><div class="delta pos">below 6% target</div></div>
+</div>
+<table><thead><tr><th>Department</th><th>Headcount</th><th>vs Plan</th><th>Open roles</th></tr></thead><tbody>
+<tr><td>Engineering</td><td>68</td><td class="pos">+3</td><td>5</td></tr>
+<tr><td>Sales & Commercial</td><td>24</td><td class="warn">−1</td><td>3</td></tr>
+<tr><td>Operations</td><td>41</td><td class="pos">On plan</td><td>2</td></tr>
+<tr><td>Finance</td><td>12</td><td class="pos">On plan</td><td>1</td></tr>
+<tr><td>HR & People</td><td>8</td><td class="pos">On plan</td><td>0</td></tr>
+<tr><td>Marketing</td><td>11</td><td class="neg">−2</td><td>2</td></tr>
+<tr><td>Leadership & Admin</td><td>20</td><td class="pos">On plan</td><td>1</td></tr>
+</tbody></table>
+<p>Marketing is 2 headcount below plan — both roles are in active recruitment. Should I pull the pipeline status for those positions?</p>
+<span class="source-pill">🔗 Workday · ATS (Teamtailor) · Org chart</span>`
+  },
+
+  'Which employees have performance reviews due in the next 30 days?': {
+    badge: '👥 HR',
+    html: `<p><strong>11 performance reviews</strong> are due in the next 30 days:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Due This Month</div><div class="value warn">11</div><div class="delta neg">3 not yet scheduled</div></div>
+  <div class="kpi"><div class="label">Completed YTD</div><div class="value pos">34</div><div class="delta pos">85% completion rate</div></div>
+  <div class="kpi"><div class="label">Overdue</div><div class="value neg">2</div><div class="delta neg">action required</div></div>
+</div>
+<table><thead><tr><th>Employee</th><th>Manager</th><th>Due Date</th><th>Status</th></tr></thead><tbody>
+<tr><td>Erik Lindström</td><td>Maria S.</td><td>Apr 8</td><td class="neg">Not scheduled</td></tr>
+<tr><td>Johan Karlsson</td><td>Maria S.</td><td>Apr 10</td><td class="warn">Scheduled</td></tr>
+<tr><td>Lena Bergström</td><td>Anders K.</td><td>Apr 12</td><td class="warn">Scheduled</td></tr>
+<tr><td>Ahmed Hassan</td><td>Peter A.</td><td>Apr 15</td><td class="neg">Not scheduled</td></tr>
+<tr><td>Sofia Nilsson</td><td>Anders K.</td><td>Apr 22</td><td class="pos">Complete</td></tr>
+<tr><td>Marcus Holm</td><td>Petra L.</td><td>Apr 28</td><td class="warn">Scheduled</td></tr>
+</tbody></table>
+<p>Erik and Ahmed have no meeting scheduled — reminders have not been sent. Want me to draft calendar invites and prep briefings for their managers?</p>
+<span class="source-pill">🔗 Workday · Google Calendar · Review templates</span>`
+  },
+
+  'Prepare a briefing for this week\'s leadership meeting': {
+    badge: '🧭 Leadership',
+    html: `<p>Here's your <strong>leadership meeting briefing</strong> for Thursday Apr 3:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Open Actions</div><div class="value warn">7</div><div class="delta neg">3 overdue from last week</div></div>
+  <div class="kpi"><div class="label">Decisions Needed</div><div class="value neg">3</div><div class="delta">flagged by team leads</div></div>
+  <div class="kpi"><div class="label">Escalations</div><div class="value neg">2</div><div class="delta neg">require leadership call</div></div>
+</div>
+<table><thead><tr><th>#</th><th>Agenda item</th><th>Owner</th><th>Type</th></tr></thead><tbody>
+<tr><td>1</td><td>Q1 financial close — variance review</td><td>CFO</td><td class="neg">Decision</td></tr>
+<tr><td>2</td><td>ALMA pilot update — Alfa Laval go/no-go</td><td>Delivery</td><td class="neg">Decision</td></tr>
+<tr><td>3</td><td>H2 headcount plan approval</td><td>HR</td><td class="neg">Decision</td></tr>
+<tr><td>4</td><td>Sales pipeline review — Q2 outlook</td><td>CRO</td><td class="warn">Update</td></tr>
+<tr><td>5</td><td>Engineering capacity — Q2 risk</td><td>CTO</td><td class="warn">Escalation</td></tr>
+<tr><td>6</td><td>Marketing campaign launch status</td><td>CMO</td><td>Update</td></tr>
+</tbody></table>
+<p><strong>Key context:</strong> Q1 revenue came in 4% below plan. The Alfa Laval pilot is on track but needs a go/no-go on extending the scope. Engineering has flagged a capacity risk for Q2 delivery.</p>
+<span class="source-pill">🔗 Jira · Confluence · Salesforce · HR system · Finance reports</span>`
+  },
+
+  'Show me the current OKR progress across all departments': {
+    badge: '🧭 Leadership',
+    html: `<p>Here's the <strong>Q2 2026 OKR status</strong> across all departments — 4 weeks in:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">OKRs On Track</div><div class="value pos">9</div><div class="delta">of 17 total</div></div>
+  <div class="kpi"><div class="label">At Risk</div><div class="value warn">6</div><div class="delta neg">need attention</div></div>
+  <div class="kpi"><div class="label">Off Track</div><div class="value neg">2</div><div class="delta neg">escalation needed</div></div>
+</div>
+<table><thead><tr><th>Objective</th><th>Department</th><th>Progress</th><th>Status</th></tr></thead><tbody>
+<tr><td>Close 4 ALMA pilots by June</td><td>Sales</td><td>2 / 4</td><td class="warn">At risk</td></tr>
+<tr><td>Achieve €2M ARR by Q2 end</td><td>Sales</td><td>41%</td><td class="warn">At risk</td></tr>
+<tr><td>Launch Phase 2 platform features</td><td>Engineering</td><td>68%</td><td class="pos">On track</td></tr>
+<tr><td>Reduce delivery time by 20%</td><td>Operations</td><td>12%</td><td class="neg">Off track</td></tr>
+<tr><td>Hire 8 engineers in H1</td><td>HR</td><td>5 / 8</td><td class="pos">On track</td></tr>
+<tr><td>Launch ALMA brand campaign</td><td>Marketing</td><td>80%</td><td class="pos">On track</td></tr>
+<tr><td>ESG reporting baseline complete</td><td>Operations</td><td>20%</td><td class="neg">Off track</td></tr>
+</tbody></table>
+<p>The two off-track OKRs — delivery time and ESG baseline — both have the same root cause: resource contention in Q1. Should I draft a re-plan proposal for leadership review?</p>
+<span class="source-pill">🔗 Jira · Confluence OKR tracker · HR system</span>`
+  },
+
+  'Generate the board pack for Q1 2026': {
+    badge: '📐 Board',
+    html: `<p>Your <strong>Q1 2026 Board Pack</strong> has been compiled from all business data sources:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Revenue</div><div class="value">€1.84M</div><div class="delta neg">−4% vs plan</div></div>
+  <div class="kpi"><div class="label">Gross Margin</div><div class="value pos">68%</div><div class="delta pos">+2pp vs Q4</div></div>
+  <div class="kpi"><div class="label">Cash Runway</div><div class="value pos">18 mo</div><div class="delta pos">above 12mo threshold</div></div>
+</div>
+<table><thead><tr><th>Section</th><th>Key message</th><th>Status</th></tr></thead><tbody>
+<tr><td>Financial performance</td><td>Revenue 4% below plan, margin improving</td><td class="warn">⚠ Needs context</td></tr>
+<tr><td>Commercial pipeline</td><td>€34.5M pipeline, 3 pilots signed in Q1</td><td class="pos">✓ Strong</td></tr>
+<tr><td>Product & delivery</td><td>Phase 1 complete, Phase 2 on track</td><td class="pos">✓ On track</td></tr>
+<tr><td>People & org</td><td>184 headcount, attrition 4.3% (below target)</td><td class="pos">✓ Healthy</td></tr>
+<tr><td>Risk register</td><td>3 active risks — delivery capacity, EU AI Act, FX</td><td class="warn">⚠ Review needed</td></tr>
+<tr><td>Strategic initiatives</td><td>ALMA pilots progressing, 2 of 4 target closed</td><td class="warn">⚠ Behind plan</td></tr>
+</tbody></table>
+<p>The pack is ready as a 12-slide deck following the board template. The revenue variance section includes a 3-bullet explanation and recovery plan. Ready to export — shall I also prepare the CFO's verbal notes?</p>
+<span class="source-pill">🔗 Finance ERP · Salesforce · Jira · HR system · Risk register</span>`
+  },
+
+  'Draft the Q1 investor update': {
+    badge: '📐 Board',
+    html: `<p>Here's a <strong>draft Q1 investor update</strong> based on actuals and current trajectory:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">ARR Growth</div><div class="value pos">+38%</div><div class="delta pos">YoY</div></div>
+  <div class="kpi"><div class="label">Net Revenue Retention</div><div class="value pos">112%</div><div class="delta pos">above 110% target</div></div>
+  <div class="kpi"><div class="label">Pilots Active</div><div class="value">3</div><div class="delta pos">target 4–6 by June</div></div>
+</div>
+<p><strong>Draft subject:</strong> <em>Q1 2026 Update — ALMA: Pilots Live, Platform Phase 2 On Track</em></p>
+<p><strong>Opening paragraph:</strong><br><em>"Q1 marked our first full quarter with paying pilots in production. We closed Q1 with €1.84M revenue (−4% vs plan), driven by a delayed enterprise deal that has since signed. Gross margin improved to 68%, NRR held at 112%, and we ended the quarter with 18 months of runway. Three pilots are live and delivering measurable ROI for clients."</em></p>
+<p><strong>Key highlights drafted:</strong> Product milestones · Pipeline momentum · Team growth · Q2 outlook · Key risks</p>
+<p>Full draft is 4 paragraphs, investor-ready. Adjust tone — more conservative or more bullish?</p>
+<span class="source-pill">🔗 Finance ERP · Salesforce · Investor template · Board minutes</span>`
+  },
+
   'How much vacation time do I have left?': {
     badge: '✦ Personal Agent',
     html: `<p>Here's your current <strong>vacation balance</strong> pulled from HR systems:</p>
