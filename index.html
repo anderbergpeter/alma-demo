@@ -697,7 +697,11 @@
   </div>
   <div class="agent-item" id="agent-commercial" onclick="switchAgent('commercial')">
     <div class="agent-icon">🚀</div>
-    Commercial
+    Sales
+  </div>
+  <div class="agent-item" id="agent-marketing" onclick="switchAgent('marketing')">
+    <div class="agent-icon">📣</div>
+    Marketing
   </div>
   <div class="agent-item" id="agent-sustainability" onclick="switchAgent('sustainability')">
     <div class="agent-icon">🌿</div>
@@ -954,15 +958,27 @@ const agents = {
     ]
   },
   commercial: {
-    label: 'Commercial Growth',
-    subtitle: 'Deal risk, pricing intelligence, key account expansion and churn prediction — connected to your CRM.',
+    label: 'Sales',
+    subtitle: 'Prospecting, pricing intelligence, key account expansion and churn prediction — connected to your CRM.',
     useCases: [
-      { icon: '🚨', title: 'Deal Risk Prediction', desc: 'Which pipeline deals are likely to stall?', prompt: 'Which deals in the pipeline are at risk of stalling?' },
+      { icon: '🔍', title: 'Prospecting', desc: 'Find new prospects that look like your best existing customers', prompt: 'Find new prospects that match our best existing customers' },
       { icon: '💲', title: 'Pricing Intelligence', desc: 'Recommend pricing based on demand and margin', prompt: 'Give me pricing recommendations based on current demand signals and margin data' },
       { icon: '📈', title: 'Key Account Expansion', desc: 'Upsell and cross-sell opportunities', prompt: 'Which key accounts have the highest upsell potential right now?' },
       { icon: '👋', title: 'Customer Churn Signals', desc: 'Detect early signs of customer disengagement', prompt: 'Which customers are showing signs of churn?' },
-      { icon: '🌍', title: 'Commercial Performance', desc: 'Sales summary by market, product and region', prompt: 'Give me a commercial performance overview by region for Q1' },
+      { icon: '🌍', title: 'Sales Performance', desc: 'Sales summary by market, product and region', prompt: 'Give me a sales performance overview by region for Q1' },
       { icon: '🤝', title: 'Meeting Brief Generator', desc: 'Auto-prepare for your next client meeting', prompt: 'Prepare a meeting brief for my upcoming call with Ericsson' },
+    ]
+  },
+  marketing: {
+    label: 'Marketing',
+    subtitle: 'Content creation, campaign performance, social media and brand — connected to your marketing stack.',
+    useCases: [
+      { icon: '📱', title: 'Social Media Follow-Up', desc: 'Summarise engagement and suggest next posts', prompt: 'Give me a social media engagement summary and suggest follow-up posts' },
+      { icon: '🎨', title: 'Create Marketing Material', desc: 'Generate on-brand copy for campaigns and assets', prompt: 'Create marketing material for our upcoming ALMA launch campaign' },
+      { icon: '📊', title: 'Campaign Performance', desc: 'How are our active campaigns performing?', prompt: 'Show me performance metrics for our active marketing campaigns' },
+      { icon: '✍️', title: 'Blog Post Draft', desc: 'Write a thought leadership post on a given topic', prompt: 'Draft a thought leadership blog post about enterprise AI adoption' },
+      { icon: '📧', title: 'Email Campaign Copy', desc: 'Generate subject lines and body copy for outreach', prompt: 'Write an email campaign for our ALMA pilot program outreach' },
+      { icon: '🗓️', title: 'Content Calendar', desc: 'Plan next month\'s content across channels', prompt: 'Create a content calendar for next month across LinkedIn, email and blog' },
     ]
   },
   sustainability: {
@@ -1072,6 +1088,60 @@ const demoAnswers = {
 <span class="source-pill">🔗 Gmail · Calendar</span>`
   },
 
+  'Find new prospects that match our best existing customers': {
+    badge: '🚀 Sales',
+    html: `<p>I've analysed your <strong>top 20 existing customers</strong> by ARR and retention, and found 14 new prospects with a matching profile:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Prospects Found</div><div class="value pos">14</div><div class="delta pos">high fit score</div></div>
+  <div class="kpi"><div class="label">Combined Est. ARR</div><div class="value">18.4M</div><div class="delta pos">if converted at avg rate</div></div>
+  <div class="kpi"><div class="label">Already in CRM</div><div class="value warn">3</div><div class="delta neg">no active owner assigned</div></div>
+</div>
+<table><thead><tr><th>Company</th><th>Industry</th><th>Fit Score</th><th>Signal</th></tr></thead><tbody>
+<tr><td>Alfa Laval</td><td>Industrial</td><td class="pos"><strong>96%</strong></td><td>Hiring 3 data engineers</td></tr>
+<tr><td>Hexpol AB</td><td>Manufacturing</td><td class="pos"><strong>91%</strong></td><td>New CFO, ERP migration planned</td></tr>
+<tr><td>Nibe Industrier</td><td>Energy/Industrial</td><td class="pos"><strong>88%</strong></td><td>ESG reporting mandate Q3</td></tr>
+<tr><td>Troax Group</td><td>Manufacturing</td><td class="warn"><strong>84%</strong></td><td>Expanding to 3 new markets</td></tr>
+<tr><td>Bufab Group</td><td>Distribution</td><td class="warn"><strong>81%</strong></td><td>Supply chain complexity growing</td></tr>
+</tbody></table>
+<p>Alfa Laval is the strongest match — similar size, industry and tech stack to Sandvik (your top account). 3 prospects already exist in Salesforce without an owner. Want me to assign them and draft outreach?</p>
+<span class="source-pill">🔗 Salesforce · LinkedIn Sales Navigator · Company House · News signals</span>`
+  },
+
+  'Give me a social media engagement summary and suggest follow-up posts': {
+    badge: '📣 Marketing',
+    html: `<p>Here's your <strong>social media performance</strong> for the past 7 days:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Total Impressions</div><div class="value">24.8K</div><div class="delta pos">+18% vs last week</div></div>
+  <div class="kpi"><div class="label">Engagement Rate</div><div class="value pos">4.2%</div><div class="delta pos">above 3% benchmark</div></div>
+  <div class="kpi"><div class="label">New Followers</div><div class="value">+64</div><div class="delta pos">LinkedIn +41, X +23</div></div>
+</div>
+<table><thead><tr><th>Post</th><th>Platform</th><th>Impressions</th><th>Engagement</th></tr></thead><tbody>
+<tr><td>ALMA platform launch teaser</td><td>LinkedIn</td><td>8,400</td><td class="pos">6.1%</td></tr>
+<tr><td>Alfa Laval pilot case study</td><td>LinkedIn</td><td>5,200</td><td class="pos">5.4%</td></tr>
+<tr><td>Enterprise AI vs shadow IT thread</td><td>X</td><td>4,100</td><td class="warn">3.8%</td></tr>
+<tr><td>EU AI Act compliance checklist</td><td>LinkedIn</td><td>3,900</td><td class="warn">3.2%</td></tr>
+</tbody></table>
+<p><strong>Suggested follow-up posts:</strong></p>
+<p>1. 💡 <em>"What the Alfa Laval pilot taught us about enterprise AI readiness"</em> — long-form LinkedIn post, rides momentum from the case study</p>
+<p>2. 📋 <em>"5 things CFOs ask before signing off on AI"</em> — carousel, targets Finance buyer persona</p>
+<p>3. 🎥 <em>Short demo clip of ALMA Finance agent</em> — reels/video format, link to demo</p>
+<span class="source-pill">🔗 LinkedIn Analytics · X Analytics · HubSpot</span>`
+  },
+
+  'Create marketing material for our upcoming ALMA launch campaign': {
+    badge: '📣 Marketing',
+    html: `<p>Here's a set of <strong>on-brand marketing assets</strong> for the ALMA launch campaign:</p>
+<table><thead><tr><th>Asset</th><th>Format</th><th>Status</th></tr></thead><tbody>
+<tr><td>LinkedIn launch post</td><td>Text + image</td><td class="pos">✓ Draft ready</td></tr>
+<tr><td>Email campaign — CxO outreach</td><td>Subject + body</td><td class="pos">✓ Draft ready</td></tr>
+<tr><td>One-pager — ALMA overview</td><td>PDF / slide</td><td class="pos">✓ Draft ready</td></tr>
+<tr><td>Social media banner</td><td>1200×628px spec</td><td class="warn">Awaiting design</td></tr>
+</tbody></table>
+<p><strong>LinkedIn post draft:</strong><br><em>"Enterprise AI that stays in your cloud. ALMA deploys domain-specific agents into your own environment — Finance, Operations, Commercial — with full EU data sovereignty. No vendor lock-in. No data leaving your walls. Operational impact in 60 days. 👉 [link]"</em></p>
+<p><strong>Email subject lines (A/B):</strong><br>A: <em>"Your AI shouldn't live in someone else's cloud"</em><br>B: <em>"60 days to operational AI — without the risk"</em></p>
+<span class="source-pill">🔗 Brand guidelines · HubSpot · Canva templates</span>`
+  },
+
   'Show me the cash flow forecast for Q2': {
     badge: '📊 Finance Intelligence',
     html: `<p>Here's the <strong>Q2 2026 cash flow forecast</strong> based on ERP data, outstanding invoices, and historical payment patterns:</p>
@@ -1089,7 +1159,7 @@ const demoAnswers = {
 <span class="source-pill">🔗 SAP ERP · Payment history · Riksbanken FX rates</span>`
   },
   'Which deals in the pipeline are at risk of stalling?': {
-    badge: '🚀 Commercial Growth',
+    badge: '🚀 Sales',
     html: `<p>I've analyzed the <strong>Q2 pipeline</strong> using deal velocity, CRM activity, and historical close patterns:</p>
 <div class="kpi-row">
   <div class="kpi"><div class="label">Pipeline Value</div><div class="value">34.5M</div><div class="delta pos">+8% vs Q1</div></div>
@@ -1139,7 +1209,7 @@ const demoAnswers = {
 <span class="source-pill">🔗 TMS · Supplier portal · Reuters shipping data</span>`
   },
   'Which customers are showing signs of churn?': {
-    badge: '🚀 Commercial Growth',
+    badge: '🚀 Sales',
     html: `<p>The churn prediction model has flagged <strong>3 accounts</strong> with early warning signals:</p>
 <div class="kpi-row">
   <div class="kpi"><div class="label">Flagged Accounts</div><div class="value warn">3</div><div class="delta neg">Combined ARR: 2.4M</div></div>
