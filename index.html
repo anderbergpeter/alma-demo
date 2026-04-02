@@ -192,6 +192,50 @@
     .model-selector:hover { background: rgba(255,255,255,0.1); }
     .model-selector .chevron { font-size: 10px; color: var(--text-muted); }
 
+    /* Model dropdown */
+    .model-dropdown {
+      display: none; position: absolute;
+      top: 46px; left: 20px;
+      background: #131830;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 8px;
+      width: 280px;
+      z-index: 200;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .model-dropdown.show { display: block; }
+
+    .model-group-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 8px 12px 4px;
+    }
+
+    .model-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .model-option:hover { background: rgba(255,255,255,0.06); }
+    .model-option.active { background: rgba(255,255,255,0.08); }
+
+    .model-logo {
+      width: 22px; height: 22px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0;
+    }
+    .model-info { flex: 1; }
+    .model-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+    .model-provider { font-size: 10px; color: var(--text-muted); }
+    .model-badge {
+      font-size: 9px; font-weight: 600; padding: 2px 6px;
+      border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .badge-new { background: rgba(52,199,138,0.15); color: #34c78a; }
+    .badge-fast { background: rgba(38,101,226,0.15); color: #7ba8ff; }
+    .badge-preview { background: rgba(194,109,230,0.15); color: #C26DE6; }
+
     .brand-tag {
       font-size: 14px; font-weight: 700;
       background: linear-gradient(135deg, #fff 30%, var(--alma-purple));
@@ -757,8 +801,63 @@
 <!-- ─── MAIN ─── -->
 <main class="main">
   <div class="main-header">
-    <div class="model-selector">
-      gpt-5.4 <span class="chevron">▾</span>
+    <div class="model-selector" onclick="toggleModelDropdown()" id="modelSelectorBtn">
+      <span id="selectedModelLabel">gpt-5.4</span> <span class="chevron">▾</span>
+    </div>
+
+    <!-- Model dropdown -->
+    <div class="model-dropdown" id="modelDropdown">
+
+      <div class="model-group-label">OpenAI</div>
+      <div class="model-option active" onclick="selectModel(this, 'gpt-5.4', 'OpenAI')">
+        <div class="model-logo" style="background:#10a37f22">🟢</div>
+        <div class="model-info"><div class="model-name">GPT-5.4</div><div class="model-provider">OpenAI</div></div>
+        <span class="model-badge badge-new">New</span>
+      </div>
+      <div class="model-option" onclick="selectModel(this, 'gpt-4.1', 'OpenAI')">
+        <div class="model-logo" style="background:#10a37f22">🟢</div>
+        <div class="model-info"><div class="model-name">GPT-4.1</div><div class="model-provider">OpenAI</div></div>
+        <span class="model-badge badge-fast">Fast</span>
+      </div>
+      <div class="model-option" onclick="selectModel(this, 'o3', 'OpenAI')">
+        <div class="model-logo" style="background:#10a37f22">🟢</div>
+        <div class="model-info"><div class="model-name">o3</div><div class="model-provider">OpenAI · Reasoning</div></div>
+      </div>
+
+      <div class="model-group-label">Anthropic</div>
+      <div class="model-option" onclick="selectModel(this, 'claude-opus-4.6', 'Anthropic')">
+        <div class="model-logo" style="background:#d4a57422">🟠</div>
+        <div class="model-info"><div class="model-name">Claude Opus 4.6</div><div class="model-provider">Anthropic</div></div>
+        <span class="model-badge badge-new">New</span>
+      </div>
+      <div class="model-option" onclick="selectModel(this, 'claude-sonnet-4.6', 'Anthropic')">
+        <div class="model-logo" style="background:#d4a57422">🟠</div>
+        <div class="model-info"><div class="model-name">Claude Sonnet 4.6</div><div class="model-provider">Anthropic</div></div>
+        <span class="model-badge badge-fast">Fast</span>
+      </div>
+
+      <div class="model-group-label">Google</div>
+      <div class="model-option" onclick="selectModel(this, 'gemini-2.5-pro', 'Google')">
+        <div class="model-logo" style="background:#4285f422">🔵</div>
+        <div class="model-info"><div class="model-name">Gemini 2.5 Pro</div><div class="model-provider">Google DeepMind</div></div>
+        <span class="model-badge badge-preview">Preview</span>
+      </div>
+      <div class="model-option" onclick="selectModel(this, 'gemini-2.5-flash', 'Google')">
+        <div class="model-logo" style="background:#4285f422">🔵</div>
+        <div class="model-info"><div class="model-name">Gemini 2.5 Flash</div><div class="model-provider">Google DeepMind</div></div>
+        <span class="model-badge badge-fast">Fast</span>
+      </div>
+
+      <div class="model-group-label">Mistral</div>
+      <div class="model-option" onclick="selectModel(this, 'mistral-large-3', 'Mistral')">
+        <div class="model-logo" style="background:#ff7a0022">🟡</div>
+        <div class="model-info"><div class="model-name">Mistral Large 3</div><div class="model-provider">Mistral AI</div></div>
+      </div>
+      <div class="model-option" onclick="selectModel(this, 'codestral-2.5', 'Mistral')">
+        <div class="model-logo" style="background:#ff7a0022">🟡</div>
+        <div class="model-info"><div class="model-name">Codestral 2.5</div><div class="model-provider">Mistral AI · Code</div></div>
+      </div>
+
     </div>
     <div class="brand-tag">ALMA<sup>+</sup></div>
   </div>
@@ -1541,6 +1640,24 @@ function sendMessage() {
 
 // Init with personal agent use cases
 switchAgent('personal');
+
+/* ─── MODEL SELECTOR ─── */
+function toggleModelDropdown() {
+  document.getElementById('modelDropdown').classList.toggle('show');
+}
+
+function selectModel(el, modelId, provider) {
+  document.querySelectorAll('.model-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('selectedModelLabel').textContent = el.querySelector('.model-name').textContent;
+  document.getElementById('modelDropdown').classList.remove('show');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#modelSelectorBtn') && !e.target.closest('#modelDropdown')) {
+    document.getElementById('modelDropdown').classList.remove('show');
+  }
+});
 
 /* ─── AGENT BUILDER ─── */
 const customAgents = [];
