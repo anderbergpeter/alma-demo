@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALMA — Adaptive Layer for Modern AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sidebar-bg: #0d0f1a;
+      --sidebar-width: 220px;
+      --agent-active: #2665E2;
+      --text-primary: #e8eaf6;
+      --text-secondary: #8890b0;
+      --text-muted: #4a5070;
+      --border: #1e2240;
+      --alma-purple: #C26DE6;
+      --blue: #2665E2;
+      --input-bg: rgba(255,255,255,0.07);
+      --input-border: rgba(255,255,255,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d0f1a;
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 12px 0;
+    }
+
+    .sidebar-top {
+      padding: 4px 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 4px;
+    }
+
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--blue), var(--alma-purple));
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: white;
+    }
+
+    .logo-name {
+      font-size: 15px; font-weight: 700;
+      background: linear-gradient(135deg, #fff, var(--alma-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-icon-btn {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 6px; border-radius: 6px;
+      font-size: 16px; transition: color 0.15s, background 0.15s;
+    }
+    .sidebar-icon-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+    .sidebar-action {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; margin: 0 8px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: var(--text-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-action:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+    .sidebar-action svg { flex-shrink: 0; opacity: 0.7; }
+
+    .section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--text-muted); text-transform: uppercase;
+      padding: 16px 18px 6px;
+    }
+
+    .agent-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; margin: 1px 8px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+    .agent-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+    .agent-item.active {
+      background: var(--agent-active);
+      color: white;
+    }
+    .agent-item.active .agent-icon { opacity: 1; }
+
+    .agent-icon {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0; opacity: 0.75;
+    }
+
+    .sidebar-section {
+      margin-top: 8px;
+    }
+
+    .sidebar-collapsible {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 18px; cursor: pointer;
+      font-size: 12px; color: var(--text-muted);
+      transition: color 0.15s;
+    }
+    .sidebar-collapsible:hover { color: var(--text-secondary); }
+    .sidebar-collapsible .chevron { font-size: 10px; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 12px 10px 4px;
+      border-top: 1px solid var(--border);
+    }
+
+    .user-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 8px; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .user-row:hover { background: rgba(255,255,255,0.05); }
+
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--alma-purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+    }
+
+    .user-info { flex: 1; overflow: hidden; }
+    .user-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .user-org { font-size: 10px; color: var(--text-muted); }
+
+    /* ─── MAIN ─── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(160deg, #0f1535 0%, #0a1628 40%, #0d0720 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle background glow */
+    .main::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(38,101,226,0.12) 0%, transparent 70%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .main-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px;
+      position: relative; z-index: 10;
+    }
+
+    .model-selector {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .model-selector:hover { background: rgba(255,255,255,0.1); }
+    .model-selector .chevron { font-size: 10px; color: var(--text-muted); }
+
+    .brand-tag {
+      font-size: 14px; font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, var(--alma-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .brand-tag sup { font-size: 9px; }
+
+    /* ─── WELCOME / AGENT SCREEN ─── */
+    .center-area {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px 40px;
+      position: relative; z-index: 5;
+    }
+
+    .welcome-heading {
+      font-size: 30px; font-weight: 600;
+      text-align: center;
+      margin-bottom: 40px;
+      color: white;
+    }
+
+    .welcome-heading span {
+      background: linear-gradient(135deg, #fff, var(--alma-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* Use case grid */
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 680px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .use-case-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .use-case-card:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(194,109,230,0.4);
+      transform: translateY(-1px);
+    }
+
+    .use-case-card .uc-icon {
+      font-size: 20px; margin-bottom: 8px;
+    }
+
+    .use-case-card .uc-title {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .use-case-card .uc-desc {
+      font-size: 11px; color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ─── CHAT MESSAGES ─── */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 40px;
+      display: none;
+      flex-direction: column;
+      gap: 28px;
+      position: relative; z-index: 5;
+    }
+    .chat-messages.active { display: flex; }
+
+    .msg {
+      display: flex; gap: 14px;
+      max-width: 720px; width: 100%; margin: 0 auto;
+    }
+
+    .msg-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    }
+    .msg-avatar.user { background: linear-gradient(135deg, var(--blue), var(--alma-purple)); color: white; }
+    .msg-avatar.alma { background: linear-gradient(135deg, var(--alma-purple), #7c3aed); color: white; }
+
+    .msg-body { flex: 1; font-size: 14px; line-height: 1.65; }
+
+    .agent-badge {
+      font-size: 11px; font-weight: 600;
+      color: var(--alma-purple);
+      display: block; margin-bottom: 6px;
+    }
+
+    .msg-body p { margin-bottom: 10px; }
+    .msg-body p:last-child { margin-bottom: 0; }
+
+    .msg-body table {
+      width: 100%; border-collapse: collapse;
+      margin: 12px 0; font-size: 13px;
+    }
+    .msg-body th, .msg-body td {
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+    }
+    .msg-body th {
+      background: rgba(255,255,255,0.05);
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin: 12px 0;
+    }
+    .kpi {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 14px;
+    }
+    .kpi .label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
+    .kpi .value { font-size: 20px; font-weight: 700; }
+    .kpi .delta { font-size: 10px; margin-top: 3px; }
+    .pos { color: #34c78a; }
+    .neg { color: #e85d5d; }
+    .warn { color: #f59e0b; }
+
+    .source-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 3px 8px; border-radius: 4px; margin-top: 10px;
+    }
+
+    /* Typing dots */
+    .typing { display: flex; gap: 4px; padding: 6px 0; }
+    .typing span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--alma-purple);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.15s; }
+    .typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounce {
+      0%,60%,100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-5px); }
+    }
+
+    /* ─── INPUT ─── */
+    .input-area {
+      padding: 0 40px 20px;
+      position: relative; z-index: 10;
+    }
+
+    .input-box {
+      max-width: 720px; margin: 0 auto;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 18px;
+      padding: 14px 16px 12px;
+      transition: border-color 0.2s;
+    }
+    .input-box:focus-within { border-color: rgba(194,109,230,0.5); }
+
+    .input-field {
+      width: 100%;
+      background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-size: 14px; font-family: inherit;
+      placeholder-color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .input-field::placeholder { color: var(--text-muted); }
+
+    .input-controls {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .input-caps {
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    .cap-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: none; border: none;
+      color: var(--text-muted); font-size: 12px;
+      cursor: pointer; padding: 5px 9px; border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .cap-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-secondary); }
+    .cap-btn.active { background: rgba(38,101,226,0.2); color: #7ba8ff; }
+    .cap-btn .cap-icon { font-size: 13px; }
+
+    .input-actions {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .action-btn {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 15px; padding: 5px;
+      border-radius: 6px; transition: color 0.15s;
+    }
+    .action-btn:hover { color: var(--text-secondary); }
+
+    .send-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: white; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #0d0f1a;
+      transition: opacity 0.15s;
+    }
+    .send-btn:hover { opacity: 0.85; }
+
+    .disclaimer {
+      text-align: center; font-size: 10px;
+      color: var(--text-muted); margin-top: 8px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      <span class="logo-name">ALMA</span>
+    </div>
+    <button class="sidebar-icon-btn" title="Toggle sidebar">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar-action" onclick="newChat()">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    New chat
+  </div>
+  <div class="sidebar-action">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Search
+  </div>
+
+  <div class="section-label">Enterprise agents</div>
+
+  <div class="agent-item active" id="agent-personal" onclick="switchAgent('personal')">
+    <div class="agent-icon">✦</div>
+    Personal
+  </div>
+  <div class="agent-item" id="agent-finance" onclick="switchAgent('finance')">
+    <div class="agent-icon">📊</div>
+    Finance
+  </div>
+  <div class="agent-item" id="agent-operations" onclick="switchAgent('operations')">
+    <div class="agent-icon">⚙️</div>
+    Operations
+  </div>
+  <div class="agent-item" id="agent-commercial" onclick="switchAgent('commercial')">
+    <div class="agent-icon">🚀</div>
+    Commercial
+  </div>
+  <div class="agent-item" id="agent-sustainability" onclick="switchAgent('sustainability')">
+    <div class="agent-icon">🌿</div>
+    Sustainability
+  </div>
+  <div class="agent-item" id="agent-legal" onclick="switchAgent('legal')">
+    <div class="agent-icon">📋</div>
+    Legal
+  </div>
+  <div class="agent-item" id="agent-matching" onclick="switchAgent('matching')">
+    <div class="agent-icon">🎯</div>
+    Matching
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-collapsible">
+      Projects <span class="chevron">›</span>
+    </div>
+    <div class="sidebar-collapsible">
+      Chats <span class="chevron">›</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar">PA</div>
+      <div class="user-info">
+        <div class="user-name">Peter Anderberg</div>
+        <div class="user-org">Reeinvent</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN ─── -->
+<main class="main">
+  <div class="main-header">
+    <div class="model-selector">
+      gpt-4.1 <span class="chevron">▾</span>
+    </div>
+    <div class="brand-tag">ALMA<sup>+</sup></div>
+  </div>
+
+  <!-- Center welcome / use-cases area -->
+  <div class="center-area" id="centerArea">
+    <div class="welcome-heading" id="welcomeHeading">
+      Welcome to <span id="agentTitle">ALMA</span>, Peter
+    </div>
+    <div class="use-case-grid" id="useCaseGrid"></div>
+  </div>
+
+  <!-- Chat messages -->
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-box">
+      <input class="input-field" id="chatInput" placeholder="How can I help you today?"
+        onkeydown="if(event.key==='Enter') sendMessage()">
+      <div class="input-controls">
+        <div class="input-caps">
+          <button class="cap-btn" onclick="this.classList.toggle('active')">
+            <span class="cap-icon">🌐</span> Web search
+          </button>
+          <button class="cap-btn" onclick="this.classList.toggle('active')">
+            <span class="cap-icon">◎</span> Think deeper
+          </button>
+          <button class="cap-btn" onclick="this.classList.toggle('active')">
+            <span class="cap-icon">👤</span> Deep research
+          </button>
+        </div>
+        <div class="input-actions">
+          <button class="action-btn" title="Attach">📎</button>
+          <button class="action-btn" title="Sparkle">✨</button>
+          <button class="action-btn" title="Share">↗</button>
+          <button class="send-btn" onclick="sendMessage()">↑</button>
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
+  </div>
+</main>
+
+<script>
+const USER_NAME = 'Peter';
+
+const agents = {
+  personal: {
+    label: 'ALMA',
+    subtitle: 'Your personal enterprise AI — ask anything across all connected systems.',
+    useCases: [
+      { icon: '📊', title: 'What\'s our cash flow looking like?', desc: 'Pull a live Q2 forecast from ERP data', prompt: 'Show me the cash flow forecast for Q2' },
+      { icon: '⚠️', title: 'Any supply chain disruptions?', desc: 'Check active alerts across all suppliers', prompt: 'Are there any supply chain disruptions I should know about?' },
+      { icon: '📉', title: 'Which deals are at risk?', desc: 'Analyze pipeline health and stall signals', prompt: 'Which deals in the pipeline are at risk of stalling?' },
+      { icon: '🌿', title: 'How are we doing on sustainability?', desc: 'CO2, energy and water KPIs by site', prompt: 'Show me our CO2 emissions and energy usage for Q1' },
+    ]
+  },
+  finance: {
+    label: 'Finance Intelligence',
+    subtitle: 'Cash flow, AR tracking, anomaly detection, group reporting and cost leakage — connected to your ERP.',
+    useCases: [
+      { icon: '💰', title: 'Q2 Cash Flow Forecast', desc: 'Predict liquidity using ERP data and payment patterns', prompt: 'Show me the cash flow forecast for Q2' },
+      { icon: '📬', title: 'Overdue Invoice Follow-Up', desc: 'Which invoices are overdue and need action?', prompt: 'Which invoices are overdue and what is the total exposure?' },
+      { icon: '🔍', title: 'Detect Financial Anomalies', desc: 'Flag unusual transactions or reporting gaps', prompt: 'Run a financial anomaly detection check on last month\'s transactions' },
+      { icon: '🏢', title: 'Group Consolidation Report', desc: 'Aggregate financials across all subsidiaries', prompt: 'Generate a consolidated group financial report for Q1' },
+      { icon: '📉', title: 'Cost Leakage Analysis', desc: 'Spot abnormal spend and contract deviations', prompt: 'Identify cost leakage and unusual spending patterns from last quarter' },
+      { icon: '📊', title: 'Variance Analysis', desc: 'Compare actuals vs budget with explanations', prompt: 'Show me a variance analysis comparing actuals to budget for this quarter' },
+    ]
+  },
+  operations: {
+    label: 'Operations Efficiency',
+    subtitle: 'Maintenance prediction, production monitoring, inventory and supply chain risk — connected to your MES and TMS.',
+    useCases: [
+      { icon: '🔧', title: 'Predictive Maintenance Alerts', desc: 'Which equipment is at risk of failure?', prompt: 'Show me predictive maintenance alerts for all production sites' },
+      { icon: '📡', title: 'Production Deviation Monitor', desc: 'Anomalies in quality and output flagged early', prompt: 'What production deviations have been detected this week?' },
+      { icon: '📦', title: 'Inventory Optimization', desc: 'Optimal stock levels based on demand patterns', prompt: 'What is the current inventory status and where are we at risk of stockouts?' },
+      { icon: '⚠️', title: 'Supply Chain Risk Alerts', desc: 'Supplier disruptions and logistics delays', prompt: 'Are there any supply chain disruptions I should know about?' },
+      { icon: '⚡', title: 'Energy Optimization', desc: 'Identify efficiency improvements by site', prompt: 'Show energy consumption by production site and identify saving opportunities' },
+      { icon: '🚚', title: 'Logistics Delay Tracker', desc: 'Live status on critical shipments', prompt: 'Which shipments are delayed and how does that affect production?' },
+    ]
+  },
+  commercial: {
+    label: 'Commercial Growth',
+    subtitle: 'Deal risk, pricing intelligence, key account expansion and churn prediction — connected to your CRM.',
+    useCases: [
+      { icon: '🚨', title: 'Deal Risk Prediction', desc: 'Which pipeline deals are likely to stall?', prompt: 'Which deals in the pipeline are at risk of stalling?' },
+      { icon: '💲', title: 'Pricing Intelligence', desc: 'Recommend pricing based on demand and margin', prompt: 'Give me pricing recommendations based on current demand signals and margin data' },
+      { icon: '📈', title: 'Key Account Expansion', desc: 'Upsell and cross-sell opportunities', prompt: 'Which key accounts have the highest upsell potential right now?' },
+      { icon: '👋', title: 'Customer Churn Signals', desc: 'Detect early signs of customer disengagement', prompt: 'Which customers are showing signs of churn?' },
+      { icon: '🌍', title: 'Commercial Performance', desc: 'Sales summary by market, product and region', prompt: 'Give me a commercial performance overview by region for Q1' },
+      { icon: '🤝', title: 'Meeting Brief Generator', desc: 'Auto-prepare for your next client meeting', prompt: 'Prepare a meeting brief for my upcoming call with Ericsson' },
+    ]
+  },
+  sustainability: {
+    label: 'Sustainability & ESG',
+    subtitle: 'CO₂ tracking, energy and water usage, emission factor mapping and reduction simulations.',
+    useCases: [
+      { icon: '🌍', title: 'CO₂ Baseline by Site', desc: 'Scope 1+2 emissions across all locations', prompt: 'Show me our CO2 emissions by site for Q1' },
+      { icon: '⚡', title: 'Energy Consumption Report', desc: 'GWh breakdown and trends by facility', prompt: 'Show energy consumption and trends for all sites' },
+      { icon: '💧', title: 'Water Usage Tracking', desc: 'Monitor water usage against targets', prompt: 'What is our current water usage vs sustainability targets?' },
+      { icon: '📉', title: 'Reduction Scenario Simulation', desc: 'Model impact of switching fuels or processes', prompt: 'Simulate the CO2 reduction if Gothenburg plant switches to biogas' },
+      { icon: '📋', title: 'ESG Report Draft', desc: 'Generate a structured ESG summary for reporting', prompt: 'Draft an ESG summary for Q1 using our sustainability data' },
+      { icon: '🎯', title: 'Target Gap Analysis', desc: 'How far are we from our 2026 sustainability targets?', prompt: 'How are we tracking against our 2026 sustainability targets?' },
+    ]
+  },
+  legal: {
+    label: 'Legal & Compliance',
+    subtitle: 'Regulatory monitoring, risk classification, compliance validation and audit preparation.',
+    useCases: [
+      { icon: '⚖️', title: 'EU AI Act Compliance Check', desc: 'Assess our current posture against requirements', prompt: 'Are we compliant with the latest EU AI Act requirements?' },
+      { icon: '🔒', title: 'Data Privacy Risk Assessment', desc: 'GDPR gaps and PII handling review', prompt: 'Run a GDPR compliance and data privacy risk assessment' },
+      { icon: '📜', title: 'Contract Risk Scan', desc: 'Flag risky clauses in supplier contracts', prompt: 'Scan our recent supplier contracts for high-risk clauses' },
+      { icon: '🗓️', title: 'Upcoming Compliance Deadlines', desc: 'What filings and audits are due this quarter?', prompt: 'What compliance deadlines and regulatory filings are due this quarter?' },
+      { icon: '🧾', title: 'Audit Preparation', desc: 'Generate evidence packs for upcoming audits', prompt: 'Help me prepare documentation for the April compliance audit' },
+      { icon: '🌐', title: 'Regulation Change Tracker', desc: 'New regulations affecting our industry', prompt: 'What regulatory changes in the last 60 days affect our business?' },
+    ]
+  },
+  matching: {
+    label: 'Matching & Procurement',
+    subtitle: 'Tender matching, CV screening, deal sourcing and procurement analysis — connected to your talent and supplier databases.',
+    useCases: [
+      { icon: '🎯', title: 'Match CVs to Open Tender', desc: 'Find the best-fitting consultants for a role', prompt: 'Find matching CVs for the open Cloud Architect tender at Volvo Cars' },
+      { icon: '📄', title: 'Tender Opportunity Scanner', desc: 'New tenders matching our competencies', prompt: 'Which new tenders match our core competencies?' },
+      { icon: '🤝', title: 'Supplier Qualification', desc: 'Evaluate and rank suppliers for a procurement', prompt: 'Qualify and rank suppliers for the upcoming infrastructure procurement' },
+      { icon: '📊', title: 'Procurement Spend Analysis', desc: 'Category spend and savings opportunities', prompt: 'Give me a procurement spend analysis by category for last quarter' },
+      { icon: '🔍', title: 'Deal Sourcing', desc: 'Identify partnership and deal opportunities', prompt: 'Identify new partnership opportunities in the Nordics matching our ICP' },
+      { icon: '📝', title: 'Proposal Auto-Draft', desc: 'Generate a first-draft response to a tender', prompt: 'Draft a proposal response for the Spotify Data Engineer tender' },
+    ]
+  }
+};
+
+const demoAnswers = {
+  'Show me the cash flow forecast for Q2': {
+    badge: '📊 Finance Intelligence',
+    html: `<p>Here's the <strong>Q2 2026 cash flow forecast</strong> based on ERP data, outstanding invoices, and historical payment patterns:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Net Cash Flow (Q2)</div><div class="value pos">+4.2M</div><div class="delta pos">+12% vs Q1</div></div>
+  <div class="kpi"><div class="label">Accounts Receivable</div><div class="value">8.7M</div><div class="delta neg">3 invoices overdue &gt;60 days</div></div>
+  <div class="kpi"><div class="label">Liquidity Buffer</div><div class="value">22.1M</div><div class="delta pos">Above 15M threshold</div></div>
+</div>
+<table><thead><tr><th>Risk</th><th>Impact</th><th>Probability</th></tr></thead><tbody>
+<tr><td>Late payment — Volvo Group</td><td class="neg">−1.2M SEK</td><td class="warn">Medium</td></tr>
+<tr><td>Currency exposure EUR/SEK</td><td class="neg">−0.4M SEK</td><td class="neg">High</td></tr>
+<tr><td>Seasonal dip in June</td><td class="neg">−0.8M SEK</td><td class="neg">High</td></tr>
+</tbody></table>
+<p>I recommend initiating AR follow-up for the 3 overdue invoices. Should I draft the outreach?</p>
+<span class="source-pill">🔗 SAP ERP · Payment history · Riksbanken FX rates</span>`
+  },
+  'Which deals in the pipeline are at risk of stalling?': {
+    badge: '🚀 Commercial Growth',
+    html: `<p>I've analyzed the <strong>Q2 pipeline</strong> using deal velocity, CRM activity, and historical close patterns:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Pipeline Value</div><div class="value">34.5M</div><div class="delta pos">+8% vs Q1</div></div>
+  <div class="kpi"><div class="label">At-Risk Deals</div><div class="value neg">4</div><div class="delta neg">12.6M at risk</div></div>
+  <div class="kpi"><div class="label">Win Probability</div><div class="value">62%</div><div class="delta neg">−5pp vs forecast</div></div>
+</div>
+<table><thead><tr><th>Deal</th><th>Value</th><th>Risk</th><th>Signal</th></tr></thead><tbody>
+<tr><td>Ericsson Cloud Migration</td><td>4.2M</td><td class="neg"><strong>High</strong></td><td>No activity 18 days</td></tr>
+<tr><td>Sandvik Data Platform</td><td>3.8M</td><td class="neg"><strong>High</strong></td><td>Champion changed roles</td></tr>
+<tr><td>SEB Analytics Suite</td><td>2.9M</td><td class="warn"><strong>Medium</strong></td><td>Budget review pending</td></tr>
+<tr><td>Atlas Copco IoT</td><td>1.7M</td><td class="warn"><strong>Medium</strong></td><td>Competitor shortlisted</td></tr>
+</tbody></table>
+<p><strong>Top action:</strong> Schedule an exec call for Ericsson — 18 days inactive is above the stall threshold. Want me to prepare a meeting brief?</p>
+<span class="source-pill">🔗 Salesforce CRM · Email activity · Calendar signals</span>`
+  },
+  'Show me our CO2 emissions by site for Q1': {
+    badge: '🌿 Sustainability & ESG',
+    html: `<p>Here's the <strong>Q1 2026 CO₂ and energy summary</strong> across all production sites:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Total CO₂ (Scope 1+2)</div><div class="value">2,450t</div><div class="delta neg">+3% vs target</div></div>
+  <div class="kpi"><div class="label">Energy Consumption</div><div class="value">14.2 GWh</div><div class="delta pos">−5% vs Q4</div></div>
+  <div class="kpi"><div class="label">Water Usage</div><div class="value">82K m³</div><div class="delta pos">On target</div></div>
+</div>
+<table><thead><tr><th>Site</th><th>CO₂ (t)</th><th>Energy (GWh)</th><th>Status</th></tr></thead><tbody>
+<tr><td>Lund HQ</td><td>320</td><td>2.1</td><td class="pos">✓ On track</td></tr>
+<tr><td>Gothenburg Plant</td><td>890</td><td>5.8</td><td class="neg">⚠ Above target</td></tr>
+<tr><td>Stockholm Office</td><td>140</td><td>0.9</td><td class="pos">✓ On track</td></tr>
+<tr><td>Malmö Warehouse</td><td>680</td><td>3.2</td><td class="warn">⚠ Near limit</td></tr>
+<tr><td>Norrköping Factory</td><td>420</td><td>2.2</td><td class="pos">✓ On track</td></tr>
+</tbody></table>
+<p><strong>Gothenburg Plant</strong> is 12% above its CO₂ target due to furnace recalibration. Switching to biogas would reduce emissions by ~340 t/quarter. Should I model that scenario in full?</p>
+<span class="source-pill">🔗 Energy monitoring system · GHG Protocol · Site reports</span>`
+  },
+  'Are there any supply chain disruptions I should know about?': {
+    badge: '⚙️ Operations Efficiency',
+    html: `<p>I've detected <strong>2 active supply chain alerts</strong> requiring attention:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Active Alerts</div><div class="value neg">2</div><div class="delta neg">Action required</div></div>
+  <div class="kpi"><div class="label">Suppliers Monitored</div><div class="value">148</div><div class="delta pos">All tracked</div></div>
+  <div class="kpi"><div class="label">On-Time Delivery</div><div class="value">94.2%</div><div class="delta neg">−1.8pp vs target</div></div>
+</div>
+<table><thead><tr><th>Alert</th><th>Supplier</th><th>Impact</th><th>ETA Fix</th></tr></thead><tbody>
+<tr><td class="neg">⚠ Port congestion — Shanghai</td><td>Jiangsu Components</td><td>7-day PCB delay</td><td>Apr 12</td></tr>
+<tr><td class="warn">⚠ Raw material shortage</td><td>Nordic Steel AB</td><td>+15% price on alloy steel</td><td>Negotiating</td></tr>
+</tbody></table>
+<p>The Shanghai delay affects Gothenburg line 3. Current buffer covers 5 days — backup supplier activation recommended. Should I initiate contact with Shenzhen Electronics Co?</p>
+<span class="source-pill">🔗 TMS · Supplier portal · Reuters shipping data</span>`
+  },
+  'Which customers are showing signs of churn?': {
+    badge: '🚀 Commercial Growth',
+    html: `<p>The churn prediction model has flagged <strong>3 accounts</strong> with early warning signals:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Flagged Accounts</div><div class="value warn">3</div><div class="delta neg">Combined ARR: 2.4M</div></div>
+  <div class="kpi"><div class="label">Retention Rate (TTM)</div><div class="value">96.1%</div><div class="delta neg">−0.9pp vs target</div></div>
+  <div class="kpi"><div class="label">Avg NPS</div><div class="value">42</div><div class="delta pos">Stable</div></div>
+</div>
+<table><thead><tr><th>Customer</th><th>ARR</th><th>Churn Risk</th><th>Key Signal</th></tr></thead><tbody>
+<tr><td>Telia Company</td><td>1.1M</td><td class="neg"><strong>72%</strong></td><td>Support tickets ↑3×, exec silent</td></tr>
+<tr><td>H&amp;M Group</td><td>0.8M</td><td class="warn"><strong>54%</strong></td><td>Usage dropped 40% in March</td></tr>
+<tr><td>Securitas</td><td>0.5M</td><td class="warn"><strong>48%</strong></td><td>Renewal pushed back twice</td></tr>
+</tbody></table>
+<p>Telia is highest priority — schedule a QBR with their CTO within 2 weeks. Should I draft a retention playbook and talking points?</p>
+<span class="source-pill">🔗 Salesforce · Jira support · Usage analytics · NPS survey</span>`
+  },
+  'Are we compliant with the latest EU AI Act requirements?': {
+    badge: '📋 Legal & Compliance',
+    html: `<p>I've reviewed our posture against <strong>EU AI Act</strong> requirements effective February 2026:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Overall Compliance</div><div class="value warn">82%</div><div class="delta neg">3 gaps identified</div></div>
+  <div class="kpi"><div class="label">Risk Classification</div><div class="value" style="font-size:14px">Limited Risk</div><div class="delta pos">Correctly classified</div></div>
+  <div class="kpi"><div class="label">Next Audit</div><div class="value" style="font-size:14px">Apr 15</div><div class="delta neg">14 days away</div></div>
+</div>
+<table><thead><tr><th>Requirement</th><th>Status</th><th>Gap</th></tr></thead><tbody>
+<tr><td>Transparency obligations</td><td class="pos">✓ Compliant</td><td>—</td></tr>
+<tr><td>Human oversight mechanisms</td><td class="pos">✓ Compliant</td><td>—</td></tr>
+<tr><td>Data governance documentation</td><td class="warn">⚠ Partial</td><td>Missing data lineage for 2 pipelines</td></tr>
+<tr><td>Technical documentation</td><td class="warn">⚠ Partial</td><td>Model cards need updating</td></tr>
+<tr><td>Conformity self-assessment</td><td class="neg">✗ Missing</td><td>Not yet completed</td></tr>
+<tr><td>EU database registration</td><td class="pos">✓ Compliant</td><td>—</td></tr>
+</tbody></table>
+<p>The <strong>conformity self-assessment</strong> is most urgent before April 15. Should I generate a compliance action plan with owners and deadlines?</p>
+<span class="source-pill">🔗 EU AI Act · Internal policy docs · DPO records</span>`
+  },
+  'Find matching CVs for the open Cloud Architect tender at Volvo Cars': {
+    badge: '🎯 Matching & Procurement',
+    html: `<p>I've scanned the CV database and matched against the Volvo Cars <strong>Cloud Architect</strong> tender requirements:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">CVs Scanned</div><div class="value">312</div><div class="delta pos">Full database</div></div>
+  <div class="kpi"><div class="label">Strong Matches</div><div class="value pos">12</div><div class="delta pos">&gt;80% match score</div></div>
+  <div class="kpi"><div class="label">Top Match</div><div class="value" style="font-size:14px">94%</div><div class="delta pos">Erik Lindström</div></div>
+</div>
+<table><thead><tr><th>Consultant</th><th>Match</th><th>AWS Exp.</th><th>Certifications</th></tr></thead><tbody>
+<tr><td>Erik Lindström</td><td class="pos"><strong>94%</strong></td><td>8 years</td><td>AWS SA Pro, CKA, Azure</td></tr>
+<tr><td>Maria Svensson</td><td class="pos"><strong>91%</strong></td><td>6 years</td><td>AWS DevOps, Terraform</td></tr>
+<tr><td>Johan Karlsson</td><td class="warn"><strong>87%</strong></td><td>5 years</td><td>GCP Pro, AWS SA Assoc.</td></tr>
+<tr><td>Anna Björk</td><td class="warn"><strong>83%</strong></td><td>7 years</td><td>Azure Expert, AWS SA Pro</td></tr>
+</tbody></table>
+<p>Erik meets all mandatory requirements and exceeds experience thresholds. Should I generate a full comparison report or prepare a submission package?</p>
+<span class="source-pill">🔗 CV database · Tender requirements · Skills matrix</span>`
+  }
+};
+
+let currentAgent = 'personal';
+
+function switchAgent(id) {
+  // Update active state
+  document.querySelectorAll('.agent-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('agent-' + id).classList.add('active');
+  currentAgent = id;
+
+  const agent = agents[id];
+
+  // Reset to welcome/use-case view
+  document.getElementById('chatMessages').classList.remove('active');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('centerArea').style.display = 'flex';
+
+  // Update heading
+  document.getElementById('welcomeHeading').innerHTML =
+    `Welcome to <span>${agent.label}</span>, ${USER_NAME}`;
+
+  // Render use cases
+  const grid = document.getElementById('useCaseGrid');
+  grid.innerHTML = '';
+
+  // Optional subtitle
+  let subtitle = document.getElementById('agentSubtitle');
+  if (!subtitle) {
+    subtitle = document.createElement('p');
+    subtitle.id = 'agentSubtitle';
+    subtitle.style.cssText = 'font-size:13px;color:var(--text-muted);text-align:center;margin-top:-30px;margin-bottom:28px;max-width:520px;line-height:1.5;';
+    document.getElementById('centerArea').insertBefore(subtitle, grid);
+  }
+  subtitle.textContent = agent.subtitle;
+
+  agent.useCases.forEach(uc => {
+    const card = document.createElement('div');
+    card.className = 'use-case-card';
+    card.innerHTML = `<div class="uc-icon">${uc.icon}</div><div class="uc-title">${uc.title}</div><div class="uc-desc">${uc.desc}</div>`;
+    card.onclick = () => { sendPrompt(uc.prompt); };
+    grid.appendChild(card);
+  });
+}
+
+function newChat() {
+  document.getElementById('chatMessages').classList.remove('active');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('centerArea').style.display = 'flex';
+}
+
+function addMsg(role, html, badge) {
+  const el = document.createElement('div');
+  el.className = 'msg';
+  el.innerHTML = `
+    <div class="msg-avatar ${role}">${role === 'user' ? USER_NAME[0] : 'A'}</div>
+    <div class="msg-body">
+      ${badge ? `<span class="agent-badge">${badge}</span>` : ''}
+      ${html}
+    </div>`;
+  document.getElementById('chatMessages').appendChild(el);
+  document.getElementById('chatMessages').scrollTop = 9999;
+}
+
+function showTyping() {
+  const el = document.createElement('div');
+  el.className = 'msg'; el.id = 'typing';
+  el.innerHTML = `<div class="msg-avatar alma">A</div><div class="msg-body"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chatMessages').appendChild(el);
+  document.getElementById('chatMessages').scrollTop = 9999;
+}
+
+function sendPrompt(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function sendMessage() {
+  const inp = document.getElementById('chatInput');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+
+  // Switch to chat view
+  document.getElementById('centerArea').style.display = 'none';
+  const chatEl = document.getElementById('chatMessages');
+  chatEl.classList.add('active');
+
+  addMsg('user', `<p>${text}</p>`);
+  showTyping();
+
+  setTimeout(() => {
+    document.getElementById('typing')?.remove();
+
+    // Find matching answer
+    let answer = demoAnswers[text];
+    if (!answer) {
+      // Try partial match
+      for (const key of Object.keys(demoAnswers)) {
+        if (text.toLowerCase().includes(key.toLowerCase().slice(0, 20))) {
+          answer = demoAnswers[key]; break;
+        }
+      }
+    }
+
+    if (answer) {
+      addMsg('alma', answer.html, answer.badge);
+    } else {
+      const agent = agents[currentAgent];
+      addMsg('alma', `<p>I'm analyzing that now using data from your connected systems. Here's what I found based on available data — would you like me to go deeper on any specific aspect?</p>
+<p style="color:var(--text-muted);font-size:13px">💡 Try one of the suggested use cases for <strong>${agent.label}</strong> to see a full demo response.</p>`, `✦ ${agent.label}`);
+    }
+  }, 1400);
+}
+
+// Init with personal agent use cases
+switchAgent('personal');
+</script>
+</body>
+</html>
