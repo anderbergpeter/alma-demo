@@ -263,6 +263,66 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
+    /* Onboarding video */
+    .onboarding-section {
+      max-width: 680px; width: 100%;
+      margin-bottom: 28px;
+    }
+    .onboarding-video {
+      position: relative; padding-bottom: 56.25%;
+      border-radius: 16px; overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .onboarding-video iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none;
+    }
+    .onboarding-video-label {
+      font-size: 11px; color: var(--text-muted);
+      text-align: center; margin-top: 8px; letter-spacing: 0.04em;
+    }
+
+    /* Release notes */
+    .release-notes {
+      max-width: 680px; width: 100%;
+      margin-bottom: 24px;
+    }
+    .release-notes-toggle {
+      display: flex; align-items: center; gap: 8px;
+      background: none; border: none;
+      color: var(--text-muted); font-size: 12px;
+      cursor: pointer; padding: 0; letter-spacing: 0.03em;
+      transition: color 0.15s;
+    }
+    .release-notes-toggle:hover { color: rgba(255,255,255,0.6); }
+    .release-notes-toggle .rn-badge {
+      background: var(--alma-blue); color: #fff;
+      font-size: 10px; font-weight: 600;
+      padding: 1px 7px; border-radius: 20px; letter-spacing: 0;
+    }
+    .release-notes-toggle .rn-chevron { transition: transform 0.2s; font-size: 10px; }
+    .release-notes-toggle.open .rn-chevron { transform: rotate(180deg); }
+    .release-notes-body {
+      display: none; margin-top: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 16px 20px;
+    }
+    .release-notes-body.show { display: block; }
+    .rn-version {
+      font-size: 11px; font-weight: 600; color: var(--alma-purple);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .rn-version + .rn-version { margin-top: 16px; }
+    .rn-items { list-style: none; padding: 0; margin: 0; }
+    .rn-items li {
+      font-size: 12px; color: rgba(255,255,255,0.55);
+      padding: 3px 0; display: flex; gap: 8px; align-items: baseline;
+    }
+    .rn-items li::before { content: "—"; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
     /* Use case grid */
     .use-case-grid {
       display: grid;
@@ -868,6 +928,47 @@
       Welcome to <span id="agentTitle">ALMA</span>, Peter
     </div>
     <div class="use-case-grid" id="useCaseGrid"></div>
+
+    <!-- Onboarding video (home screen only) -->
+    <div class="onboarding-section" id="onboardingVideo">
+      <div class="onboarding-video">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcW?rel=0&modestbranding=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+      <div class="onboarding-video-label">2 min · Introduction to ALMA — what it is, how it works, and how to get started</div>
+    </div>
+
+    <!-- Release notes -->
+    <div class="release-notes" id="releaseNotes">
+      <button class="release-notes-toggle" id="rnToggle" onclick="toggleReleaseNotes()">
+        <span class="rn-badge">New</span>
+        What's new in ALMA
+        <span class="rn-chevron">▾</span>
+      </button>
+      <div class="release-notes-body" id="rnBody">
+        <div class="rn-version">v1.4 · April 2026</div>
+        <ul class="rn-items">
+          <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
+          <li>Board agent with investor metrics, equity overview and board pack generation</li>
+          <li>Leadership agent with OKR tracking, team pulse and strategic roadmap views</li>
+          <li>HR agent with headcount planning, onboarding status and culture survey insights</li>
+        </ul>
+        <div class="rn-version">v1.3 · March 2026</div>
+        <ul class="rn-items">
+          <li>Marketing agent added with campaign performance and SEO analysis</li>
+          <li>Sales agent — new Prospecting use case for finding lookalike customers</li>
+          <li>Custom Agent Builder — create and configure your own agents with MCP tools</li>
+        </ul>
+        <div class="rn-version">v1.2 · February 2026</div>
+        <ul class="rn-items">
+          <li>Personal agent with calendar, email, vacation balance and document generation</li>
+          <li>Sustainability agent with carbon tracking and ESG reporting</li>
+          <li>Source pills — trace every answer back to its connected system</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 
   <!-- Chat messages -->
@@ -1540,6 +1641,9 @@ function switchAgent(id) {
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('centerArea').style.display = 'flex';
+  const isHome = id === 'personal';
+  document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
+  document.getElementById('releaseNotes').style.display = isHome ? '' : 'none';
 
   // Update heading
   document.getElementById('welcomeHeading').innerHTML =
@@ -1608,6 +1712,8 @@ function sendMessage() {
 
   // Switch to chat view
   document.getElementById('centerArea').style.display = 'none';
+  document.getElementById('onboardingVideo').style.display = 'none';
+  document.getElementById('releaseNotes').style.display = 'none';
   const chatEl = document.getElementById('chatMessages');
   chatEl.classList.add('active');
 
@@ -1640,6 +1746,14 @@ function sendMessage() {
 
 // Init with personal agent use cases
 switchAgent('personal');
+
+/* ─── RELEASE NOTES ─── */
+function toggleReleaseNotes() {
+  const btn = document.getElementById('rnToggle');
+  const body = document.getElementById('rnBody');
+  btn.classList.toggle('open');
+  body.classList.toggle('show');
+}
 
 /* ─── MODEL SELECTOR ─── */
 function toggleModelDropdown() {
