@@ -555,6 +555,103 @@
       font-size: 10px; font-weight: 700; color: white; flex-shrink: 0;
     }
 
+    /* ─── TRAINING PANEL ─── */
+    .training-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: flex-start; justify-content: center;
+      padding: 40px 20px; overflow-y: auto;
+    }
+    .training-overlay.show { display: flex; }
+    .training-panel {
+      background: #13152b; border: 1px solid var(--border);
+      border-radius: 20px; width: 100%; max-width: 800px;
+      padding: 36px 40px; position: relative;
+    }
+    .training-panel h2 {
+      font-size: 22px; font-weight: 600; color: #fff;
+      margin: 0 0 4px;
+    }
+    .training-panel .training-sub {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 28px;
+    }
+    .training-close {
+      position: absolute; top: 20px; right: 20px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 20px; cursor: pointer; line-height: 1;
+      transition: color 0.15s;
+    }
+    .training-close:hover { color: #fff; }
+    .training-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--alma-purple);
+      margin-bottom: 12px;
+    }
+    .training-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 14px; margin-bottom: 32px;
+    }
+    .training-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; overflow: hidden;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .training-card:hover {
+      border-color: rgba(194,109,230,0.4);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-2px);
+    }
+    .training-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; position: relative;
+    }
+    .training-thumb video {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .training-thumb-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.3);
+    }
+    .training-play-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #000;
+    }
+    .training-card-body { padding: 14px 16px; }
+    .training-card-title {
+      font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;
+    }
+    .training-card-meta {
+      font-size: 11px; color: var(--text-muted); display: flex; gap: 10px;
+    }
+    .training-doc-list { display: flex; flex-direction: column; gap: 8px; }
+    .training-doc-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 16px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .training-doc-item:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(194,109,230,0.3);
+    }
+    .training-doc-icon { font-size: 20px; flex-shrink: 0; }
+    .training-doc-info { flex: 1; }
+    .training-doc-name { font-size: 13px; color: #fff; font-weight: 500; }
+    .training-doc-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .training-doc-tag {
+      font-size: 10px; font-weight: 600; padding: 2px 8px;
+      border-radius: 20px; background: rgba(38,101,226,0.2);
+      color: #7aadff; flex-shrink: 0;
+    }
+
     /* ─── AGENT BUILDER MODAL ─── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
@@ -784,6 +881,10 @@
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     Search
   </div>
+  <div class="sidebar-action" onclick="openTraining()">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Training
+  </div>
 
   <div class="section-label">Enterprise agents</div>
 
@@ -1004,6 +1105,86 @@
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
 </main>
+
+<!-- ─── TRAINING PANEL ─── -->
+<div class="training-overlay" id="trainingOverlay">
+  <div class="training-panel">
+    <button class="training-close" onclick="closeTraining()">✕</button>
+    <h2>📚 Training &amp; Learning</h2>
+    <p class="training-sub">Videos, guides and onboarding material for all employees</p>
+
+    <div class="training-section-label">Featured videos</div>
+    <div class="training-grid">
+      <div class="training-card">
+        <div class="training-thumb">
+          <video preload="metadata" src="https://www.reeinvent.com/hubfs/Rebrained/Reeinvented/Success%20Stories/Alva/Alva%20Success%20Story%20(Draft%20%235).mp4"></video>
+          <div class="training-thumb-overlay"><div class="training-play-btn">▶</div></div>
+        </div>
+        <div class="training-card-body">
+          <div class="training-card-title">Introduction to ALMA</div>
+          <div class="training-card-meta"><span>2 min</span><span>All employees</span></div>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-thumb" style="font-size:40px">🤖</div>
+        <div class="training-card-body">
+          <div class="training-card-title">How to use AI agents effectively</div>
+          <div class="training-card-meta"><span>8 min</span><span>All employees</span></div>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-thumb" style="font-size:40px">🔒</div>
+        <div class="training-card-body">
+          <div class="training-card-title">Data security &amp; AI governance</div>
+          <div class="training-card-meta"><span>12 min</span><span>Required</span></div>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-thumb" style="font-size:40px">⚙️</div>
+        <div class="training-card-body">
+          <div class="training-card-title">Building your own Custom Agent</div>
+          <div class="training-card-meta"><span>15 min</span><span>Power users</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="training-section-label">Documents &amp; guides</div>
+    <div class="training-doc-list">
+      <div class="training-doc-item">
+        <div class="training-doc-icon">📄</div>
+        <div class="training-doc-info">
+          <div class="training-doc-name">ALMA User Guide — Getting Started</div>
+          <div class="training-doc-desc">Step-by-step guide for new users · PDF · 14 pages</div>
+        </div>
+        <span class="training-doc-tag">Guide</span>
+      </div>
+      <div class="training-doc-item">
+        <div class="training-doc-icon">📋</div>
+        <div class="training-doc-info">
+          <div class="training-doc-name">Prompt Engineering Best Practices</div>
+          <div class="training-doc-desc">How to write effective prompts for enterprise agents · PDF · 8 pages</div>
+        </div>
+        <span class="training-doc-tag">Best practice</span>
+      </div>
+      <div class="training-doc-item">
+        <div class="training-doc-icon">🔐</div>
+        <div class="training-doc-info">
+          <div class="training-doc-name">AI Policy &amp; Acceptable Use</div>
+          <div class="training-doc-desc">Company guidelines for responsible AI use · PDF · 6 pages</div>
+        </div>
+        <span class="training-doc-tag">Policy</span>
+      </div>
+      <div class="training-doc-item">
+        <div class="training-doc-icon">🗺️</div>
+        <div class="training-doc-info">
+          <div class="training-doc-name">ALMA Roadmap 2026</div>
+          <div class="training-doc-desc">Upcoming features and integrations · Confluence</div>
+        </div>
+        <span class="training-doc-tag">Roadmap</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ─── AGENT BUILDER MODAL ─── -->
 <div class="modal-overlay" id="agentBuilderOverlay">
@@ -1748,6 +1929,18 @@ function sendMessage() {
 
 // Init with personal agent use cases
 switchAgent('personal');
+
+/* ─── TRAINING ─── */
+function openTraining() {
+  document.getElementById('trainingOverlay').classList.add('show');
+}
+function closeTraining() {
+  document.getElementById('trainingOverlay').classList.remove('show');
+}
+document.addEventListener('click', function(e) {
+  const overlay = document.getElementById('trainingOverlay');
+  if (e.target === overlay) closeTraining();
+});
 
 /* ─── RELEASE NOTES ─── */
 function toggleReleaseNotes() {
