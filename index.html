@@ -555,102 +555,106 @@
       font-size: 10px; font-weight: 700; color: white; flex-shrink: 0;
     }
 
-    /* ─── TRAINING PANEL ─── */
-    .training-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-      z-index: 1000; align-items: flex-start; justify-content: center;
-      padding: 40px 20px; overflow-y: auto;
+    /* ─── LEARNING PAGE ─── */
+    .learning-page {
+      display: none; flex-direction: column;
+      width: 100%; height: 100%; overflow-y: auto;
+      padding: 48px 60px;
     }
-    .training-overlay.show { display: flex; }
-    .training-panel {
-      background: #13152b; border: 1px solid var(--border);
-      border-radius: 20px; width: 100%; max-width: 800px;
-      padding: 36px 40px; position: relative;
+    .learning-page.show { display: flex; }
+    .learning-page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 40px;
     }
-    .training-panel h2 {
-      font-size: 22px; font-weight: 600; color: #fff;
-      margin: 0 0 4px;
+    .learning-page-header h1 {
+      font-size: 26px; font-weight: 700; color: #fff; margin: 0;
     }
-    .training-panel .training-sub {
-      font-size: 13px; color: var(--text-muted); margin-bottom: 28px;
+    .learning-page-header p {
+      font-size: 13px; color: var(--text-muted); margin: 4px 0 0;
     }
-    .training-close {
-      position: absolute; top: 20px; right: 20px;
-      background: none; border: none; color: var(--text-muted);
-      font-size: 20px; cursor: pointer; line-height: 1;
-      transition: color 0.15s;
-    }
-    .training-close:hover { color: #fff; }
-    .training-section-label {
+    .learning-section-label {
       font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
       text-transform: uppercase; color: var(--alma-purple);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
-    .training-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 14px; margin-bottom: 32px;
+    .learning-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-bottom: 40px;
     }
-    .training-card {
+    .learning-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 14px; overflow: hidden;
       cursor: pointer; transition: all 0.2s;
     }
-    .training-card:hover {
+    .learning-card:hover {
       border-color: rgba(194,109,230,0.4);
       background: rgba(255,255,255,0.07);
       transform: translateY(-2px);
     }
-    .training-thumb {
+    .learning-thumb {
       width: 100%; aspect-ratio: 16/9;
       background: rgba(255,255,255,0.06);
       display: flex; align-items: center; justify-content: center;
-      font-size: 32px; position: relative;
+      font-size: 36px; position: relative; overflow: hidden;
     }
-    .training-thumb video {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block;
-    }
-    .training-thumb-overlay {
+    .learning-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .learning-thumb-overlay {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       background: rgba(0,0,0,0.3);
     }
-    .training-play-btn {
+    .learning-play-btn {
       width: 44px; height: 44px; border-radius: 50%;
       background: rgba(255,255,255,0.9);
       display: flex; align-items: center; justify-content: center;
       font-size: 16px; color: #000;
     }
-    .training-card-body { padding: 14px 16px; }
-    .training-card-title {
-      font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;
-    }
-    .training-card-meta {
-      font-size: 11px; color: var(--text-muted); display: flex; gap: 10px;
-    }
-    .training-doc-list { display: flex; flex-direction: column; gap: 8px; }
-    .training-doc-item {
+    .learning-card-body { padding: 14px 16px; }
+    .learning-card-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .learning-card-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 10px; }
+    .learning-doc-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+    .learning-doc-item {
       display: flex; align-items: center; gap: 12px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; padding: 12px 16px;
       cursor: pointer; transition: all 0.15s;
     }
-    .training-doc-item:hover {
+    .learning-doc-item:hover {
       background: rgba(255,255,255,0.07);
       border-color: rgba(194,109,230,0.3);
     }
-    .training-doc-icon { font-size: 20px; flex-shrink: 0; }
-    .training-doc-info { flex: 1; }
-    .training-doc-name { font-size: 13px; color: #fff; font-weight: 500; }
-    .training-doc-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .training-doc-tag {
+    .learning-doc-icon { font-size: 20px; flex-shrink: 0; }
+    .learning-doc-info { flex: 1; }
+    .learning-doc-name { font-size: 13px; color: #fff; font-weight: 500; }
+    .learning-doc-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .learning-doc-tag {
       font-size: 10px; font-weight: 600; padding: 2px 8px;
       border-radius: 20px; background: rgba(38,101,226,0.2);
       color: #7aadff; flex-shrink: 0;
     }
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 8px; }
+    .faq-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden;
+    }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; cursor: pointer;
+      font-size: 13px; font-weight: 500; color: #fff;
+      transition: background 0.15s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.04); }
+    .faq-chevron { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: none; padding: 0 18px 16px;
+      font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6;
+    }
+    .faq-item.open .faq-answer { display: block; }
 
     /* ─── AGENT BUILDER MODAL ─── */
     .modal-overlay {
@@ -881,9 +885,9 @@
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     Search
   </div>
-  <div class="sidebar-action" onclick="openTraining()">
+  <div class="sidebar-action" id="learningSidebarBtn" onclick="openLearning()">
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    Training
+    Learning ALMA
   </div>
 
   <div class="section-label">Enterprise agents</div>
@@ -1074,6 +1078,130 @@
 
   </div>
 
+  <!-- Learning page -->
+  <div class="learning-page" id="learningPage">
+    <div class="learning-page-header">
+      <div>
+        <h1>Learning ALMA</h1>
+        <p>Videos, guides and onboarding material for all employees</p>
+      </div>
+    </div>
+
+    <div class="learning-section-label">Featured videos</div>
+    <div class="learning-grid">
+      <div class="learning-card">
+        <div class="learning-thumb">
+          <video preload="metadata" src="https://www.reeinvent.com/hubfs/Rebrained/Reeinvented/Success%20Stories/Alva/Alva%20Success%20Story%20(Draft%20%235).mp4"></video>
+          <div class="learning-thumb-overlay"><div class="learning-play-btn">▶</div></div>
+        </div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">Introduction to ALMA</div>
+          <div class="learning-card-meta"><span>2 min</span><span>All employees</span></div>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-thumb">🤖</div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">How to use AI agents effectively</div>
+          <div class="learning-card-meta"><span>8 min</span><span>All employees</span></div>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-thumb">🔒</div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">Data security &amp; AI governance</div>
+          <div class="learning-card-meta"><span>12 min</span><span>Required</span></div>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-thumb">⚙️</div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">Building your own Custom Agent</div>
+          <div class="learning-card-meta"><span>15 min</span><span>Power users</span></div>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-thumb">📊</div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">Finance Agent deep-dive</div>
+          <div class="learning-card-meta"><span>10 min</span><span>Finance team</span></div>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-thumb">🌱</div>
+        <div class="learning-card-body">
+          <div class="learning-card-title">Sustainability reporting with ALMA</div>
+          <div class="learning-card-meta"><span>7 min</span><span>Sustainability</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-section-label">Documents &amp; guides</div>
+    <div class="learning-doc-list">
+      <div class="learning-doc-item">
+        <div class="learning-doc-icon">📄</div>
+        <div class="learning-doc-info">
+          <div class="learning-doc-name">ALMA User Guide — Getting Started</div>
+          <div class="learning-doc-desc">Step-by-step guide for new users · PDF · 14 pages</div>
+        </div>
+        <span class="learning-doc-tag">Guide</span>
+      </div>
+      <div class="learning-doc-item">
+        <div class="learning-doc-icon">📋</div>
+        <div class="learning-doc-info">
+          <div class="learning-doc-name">Prompt Engineering Best Practices</div>
+          <div class="learning-doc-desc">How to write effective prompts for enterprise agents · PDF · 8 pages</div>
+        </div>
+        <span class="learning-doc-tag">Best practice</span>
+      </div>
+      <div class="learning-doc-item">
+        <div class="learning-doc-icon">🔐</div>
+        <div class="learning-doc-info">
+          <div class="learning-doc-name">AI Policy &amp; Acceptable Use</div>
+          <div class="learning-doc-desc">Company guidelines for responsible AI use · PDF · 6 pages</div>
+        </div>
+        <span class="learning-doc-tag">Policy</span>
+      </div>
+      <div class="learning-doc-item">
+        <div class="learning-doc-icon">🗺️</div>
+        <div class="learning-doc-info">
+          <div class="learning-doc-name">ALMA Roadmap 2026</div>
+          <div class="learning-doc-desc">Upcoming features and integrations · Confluence</div>
+        </div>
+        <span class="learning-doc-tag">Roadmap</span>
+      </div>
+    </div>
+
+    <div class="learning-section-label">FAQ</div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is ALMA and how does it differ from ChatGPT? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">ALMA is an enterprise AI assistant built on top of leading language models (GPT, Claude, Gemini and more), but connected directly to your company's internal systems — Jira, Confluence, Slack, Gmail, ERP and more. Unlike ChatGPT, every answer is grounded in your actual company data with a full audit trail.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data safe? Does ALMA store my conversations? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">All data stays within your company's cloud environment. ALMA does not send data to third-party AI providers without encryption and anonymisation. Conversations are stored in your own tenant for audit purposes only, and admins can configure retention policies.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What are agents and how do I choose the right one? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Agents are pre-configured AI assistants tuned for specific departments or tasks — Finance, Sales, HR, Legal and more. Each agent has access to the relevant internal systems for that domain. Choose the agent that matches your current task, or use the Personal agent for general queries.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I create my own custom agent? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Yes — click "Custom Agents (GPTs)" in the sidebar and then "+ New agent". You can give it a name, description, instructions, and connect it to any available MCP tools. Watch the "Building your own Custom Agent" video above for a step-by-step walkthrough.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Which AI models does ALMA support? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">ALMA supports models from OpenAI (GPT-5.4, GPT-4.1, o3), Anthropic (Claude Opus 4.6, Claude Sonnet 4.6), Google (Gemini 2.5 Pro, Gemini 2.5 Flash) and Mistral (Mistral Large 3, Codestral 2.5). You can switch model at any time using the selector at the top of the screen.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How do I report a problem or suggest a new feature? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Use the feedback button (✨) in the chat input bar, or contact your ALMA administrator. Feature requests are tracked in Jira under the ALMA project board. You can also reach the team in the #alma-feedback Slack channel.</div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- Chat messages -->
   <div class="chat-messages" id="chatMessages"></div>
 
@@ -1105,86 +1233,6 @@
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
 </main>
-
-<!-- ─── TRAINING PANEL ─── -->
-<div class="training-overlay" id="trainingOverlay">
-  <div class="training-panel">
-    <button class="training-close" onclick="closeTraining()">✕</button>
-    <h2>📚 Training &amp; Learning</h2>
-    <p class="training-sub">Videos, guides and onboarding material for all employees</p>
-
-    <div class="training-section-label">Featured videos</div>
-    <div class="training-grid">
-      <div class="training-card">
-        <div class="training-thumb">
-          <video preload="metadata" src="https://www.reeinvent.com/hubfs/Rebrained/Reeinvented/Success%20Stories/Alva/Alva%20Success%20Story%20(Draft%20%235).mp4"></video>
-          <div class="training-thumb-overlay"><div class="training-play-btn">▶</div></div>
-        </div>
-        <div class="training-card-body">
-          <div class="training-card-title">Introduction to ALMA</div>
-          <div class="training-card-meta"><span>2 min</span><span>All employees</span></div>
-        </div>
-      </div>
-      <div class="training-card">
-        <div class="training-thumb" style="font-size:40px">🤖</div>
-        <div class="training-card-body">
-          <div class="training-card-title">How to use AI agents effectively</div>
-          <div class="training-card-meta"><span>8 min</span><span>All employees</span></div>
-        </div>
-      </div>
-      <div class="training-card">
-        <div class="training-thumb" style="font-size:40px">🔒</div>
-        <div class="training-card-body">
-          <div class="training-card-title">Data security &amp; AI governance</div>
-          <div class="training-card-meta"><span>12 min</span><span>Required</span></div>
-        </div>
-      </div>
-      <div class="training-card">
-        <div class="training-thumb" style="font-size:40px">⚙️</div>
-        <div class="training-card-body">
-          <div class="training-card-title">Building your own Custom Agent</div>
-          <div class="training-card-meta"><span>15 min</span><span>Power users</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="training-section-label">Documents &amp; guides</div>
-    <div class="training-doc-list">
-      <div class="training-doc-item">
-        <div class="training-doc-icon">📄</div>
-        <div class="training-doc-info">
-          <div class="training-doc-name">ALMA User Guide — Getting Started</div>
-          <div class="training-doc-desc">Step-by-step guide for new users · PDF · 14 pages</div>
-        </div>
-        <span class="training-doc-tag">Guide</span>
-      </div>
-      <div class="training-doc-item">
-        <div class="training-doc-icon">📋</div>
-        <div class="training-doc-info">
-          <div class="training-doc-name">Prompt Engineering Best Practices</div>
-          <div class="training-doc-desc">How to write effective prompts for enterprise agents · PDF · 8 pages</div>
-        </div>
-        <span class="training-doc-tag">Best practice</span>
-      </div>
-      <div class="training-doc-item">
-        <div class="training-doc-icon">🔐</div>
-        <div class="training-doc-info">
-          <div class="training-doc-name">AI Policy &amp; Acceptable Use</div>
-          <div class="training-doc-desc">Company guidelines for responsible AI use · PDF · 6 pages</div>
-        </div>
-        <span class="training-doc-tag">Policy</span>
-      </div>
-      <div class="training-doc-item">
-        <div class="training-doc-icon">🗺️</div>
-        <div class="training-doc-info">
-          <div class="training-doc-name">ALMA Roadmap 2026</div>
-          <div class="training-doc-desc">Upcoming features and integrations · Confluence</div>
-        </div>
-        <span class="training-doc-tag">Roadmap</span>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ─── AGENT BUILDER MODAL ─── -->
 <div class="modal-overlay" id="agentBuilderOverlay">
@@ -1824,6 +1872,9 @@ function switchAgent(id) {
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('centerArea').style.display = 'flex';
+  document.getElementById('learningPage').classList.remove('show');
+  document.querySelector('.input-area').style.display = '';
+  document.getElementById('learningSidebarBtn').classList.remove('active');
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
   document.getElementById('releaseNotes').style.display = isHome ? '' : 'none';
@@ -1930,17 +1981,25 @@ function sendMessage() {
 // Init with personal agent use cases
 switchAgent('personal');
 
-/* ─── TRAINING ─── */
-function openTraining() {
-  document.getElementById('trainingOverlay').classList.add('show');
+/* ─── LEARNING PAGE ─── */
+function openLearning() {
+  document.getElementById('centerArea').style.display = 'none';
+  document.getElementById('chatMessages').classList.remove('active');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.querySelector('.input-area').style.display = 'none';
+  document.getElementById('learningPage').classList.add('show');
+  document.getElementById('learningSidebarBtn').classList.add('active');
+  document.querySelectorAll('.agent-item, .custom-agent-item').forEach(el => el.classList.remove('active'));
 }
-function closeTraining() {
-  document.getElementById('trainingOverlay').classList.remove('show');
+function closeLearning() {
+  document.getElementById('learningPage').classList.remove('show');
+  document.querySelector('.input-area').style.display = '';
+  document.getElementById('learningSidebarBtn').classList.remove('active');
+  switchAgent(currentAgent || 'personal');
 }
-document.addEventListener('click', function(e) {
-  const overlay = document.getElementById('trainingOverlay');
-  if (e.target === overlay) closeTraining();
-});
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
 
 /* ─── RELEASE NOTES ─── */
 function toggleReleaseNotes() {
