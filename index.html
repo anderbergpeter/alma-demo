@@ -2223,8 +2223,14 @@ const DEFAULT_ICONS = {
   hr:'👥', leadership:'🧭', board:'📐'
 };
 
+const SIDEBAR_NAMES = {
+  personal:'Personal', finance:'Finance', operations:'Operations',
+  commercial:'Sales', marketing:'Marketing', sustainability:'Sustainability',
+  legal:'Legal', matching:'Matching', hr:'HR', leadership:'Leadership', board:'Board'
+};
+
 function agentDisplayName(id) {
-  return (agentOverrides[id] && agentOverrides[id].name) || agents[id].label;
+  return (agentOverrides[id] && agentOverrides[id].name) || SIDEBAR_NAMES[id] || agents[id].label;
 }
 function agentDisplayIcon(id) {
   return (agentOverrides[id] && agentOverrides[id].icon) || DEFAULT_ICONS[id] || '✦';
