@@ -100,6 +100,7 @@
       font-size: 13px; font-weight: 500;
       color: var(--text-secondary);
       transition: background 0.15s, color 0.15s;
+      position: relative;
     }
     .agent-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
     .agent-item.active {
@@ -107,12 +108,97 @@
       color: white;
     }
     .agent-item.active .agent-icon { opacity: 1; }
+    .agent-item:hover .agent-edit-btn { opacity: 1; }
 
     .agent-icon {
       width: 20px; height: 20px;
       display: flex; align-items: center; justify-content: center;
       font-size: 15px; flex-shrink: 0; opacity: 0.75;
     }
+
+    .agent-edit-btn {
+      margin-left: auto; opacity: 0;
+      background: none; border: none;
+      color: rgba(255,255,255,0.45); font-size: 13px;
+      cursor: pointer; padding: 2px 4px; border-radius: 4px;
+      transition: opacity 0.15s, background 0.15s, color 0.15s;
+      flex-shrink: 0; line-height: 1;
+    }
+    .agent-edit-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* Agent edit modal */
+    .agent-edit-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      z-index: 2000; align-items: center; justify-content: center;
+    }
+    .agent-edit-overlay.show { display: flex; }
+    .agent-edit-modal {
+      background: #13152b; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 28px; width: 360px;
+      position: relative;
+    }
+    .agent-edit-modal h3 {
+      font-size: 16px; font-weight: 600; color: #fff;
+      margin: 0 0 20px;
+    }
+    .agent-edit-label {
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .agent-edit-input {
+      width: 100%; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+      padding: 9px 12px; font-size: 13px; color: #fff;
+      margin-bottom: 18px; box-sizing: border-box;
+      outline: none; transition: border-color 0.15s;
+    }
+    .agent-edit-input:focus { border-color: var(--alma-blue); }
+    .icon-picker {
+      display: grid; grid-template-columns: repeat(8, 1fr);
+      gap: 6px; margin-bottom: 20px;
+    }
+    .icon-option {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .icon-option:hover { background: rgba(255,255,255,0.1); }
+    .icon-option.selected { border-color: var(--alma-purple); background: rgba(194,109,230,0.15); }
+    .agent-edit-order {
+      display: flex; gap: 8px; margin-bottom: 20px;
+    }
+    .order-btn {
+      flex: 1; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      color: var(--text-secondary); font-size: 13px;
+      padding: 8px; cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .order-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .order-btn:disabled { opacity: 0.3; cursor: default; }
+    .agent-edit-actions {
+      display: flex; gap: 8px; justify-content: flex-end;
+    }
+    .btn-cancel-edit {
+      background: none; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; color: var(--text-secondary);
+      font-size: 13px; padding: 8px 16px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-cancel-edit:hover { background: rgba(255,255,255,0.05); }
+    .btn-save-edit {
+      background: var(--alma-blue); border: none;
+      border-radius: 8px; color: #fff;
+      font-size: 13px; font-weight: 600;
+      padding: 8px 20px; cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-save-edit:hover { opacity: 0.85; }
 
     .sidebar-section {
       margin-top: 8px;
@@ -891,51 +977,7 @@
   </div>
 
   <div class="section-label">Enterprise agents</div>
-
-  <div class="agent-item active" id="agent-personal" onclick="switchAgent('personal')">
-    <div class="agent-icon">✦</div>
-    Personal
-  </div>
-  <div class="agent-item" id="agent-finance" onclick="switchAgent('finance')">
-    <div class="agent-icon">📊</div>
-    Finance
-  </div>
-  <div class="agent-item" id="agent-operations" onclick="switchAgent('operations')">
-    <div class="agent-icon">⚙️</div>
-    Operations
-  </div>
-  <div class="agent-item" id="agent-commercial" onclick="switchAgent('commercial')">
-    <div class="agent-icon">🚀</div>
-    Sales
-  </div>
-  <div class="agent-item" id="agent-marketing" onclick="switchAgent('marketing')">
-    <div class="agent-icon">📣</div>
-    Marketing
-  </div>
-  <div class="agent-item" id="agent-sustainability" onclick="switchAgent('sustainability')">
-    <div class="agent-icon">🌿</div>
-    Sustainability
-  </div>
-  <div class="agent-item" id="agent-legal" onclick="switchAgent('legal')">
-    <div class="agent-icon">📋</div>
-    Legal
-  </div>
-  <div class="agent-item" id="agent-matching" onclick="switchAgent('matching')">
-    <div class="agent-icon">🎯</div>
-    Matching
-  </div>
-  <div class="agent-item" id="agent-hr" onclick="switchAgent('hr')">
-    <div class="agent-icon">👥</div>
-    HR
-  </div>
-  <div class="agent-item" id="agent-leadership" onclick="switchAgent('leadership')">
-    <div class="agent-icon">🧭</div>
-    Leadership
-  </div>
-  <div class="agent-item" id="agent-board" onclick="switchAgent('board')">
-    <div class="agent-icon">📐</div>
-    Board
-  </div>
+  <div id="agentList"></div>
 
   <div class="custom-section-header">
     <div class="section-label">Custom Agents (GPTs)</div>
@@ -1233,6 +1275,26 @@
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
 </main>
+
+<!-- ─── AGENT EDIT MODAL ─── -->
+<div class="agent-edit-overlay" id="agentEditOverlay">
+  <div class="agent-edit-modal">
+    <h3>Edit agent</h3>
+    <div class="agent-edit-label">Display name</div>
+    <input class="agent-edit-input" id="agentEditName" placeholder="e.g. Kalle (Personal)">
+    <div class="agent-edit-label">Icon</div>
+    <div class="icon-picker" id="iconPicker"></div>
+    <div class="agent-edit-label">Order</div>
+    <div class="agent-edit-order">
+      <button class="order-btn" id="moveUpBtn" onclick="moveEditingAgent(-1)">↑ Move up</button>
+      <button class="order-btn" id="moveDownBtn" onclick="moveEditingAgent(1)">↓ Move down</button>
+    </div>
+    <div class="agent-edit-actions">
+      <button class="btn-cancel-edit" onclick="closeAgentEdit()">Cancel</button>
+      <button class="btn-save-edit" onclick="saveAgentEdit()">Save</button>
+    </div>
+  </div>
+</div>
 
 <!-- ─── AGENT BUILDER MODAL ─── -->
 <div class="modal-overlay" id="agentBuilderOverlay">
@@ -1861,10 +1923,15 @@ const demoAnswers = {
 let currentAgent = 'personal';
 
 function switchAgent(id) {
-  // Update active state
-  document.querySelectorAll('.agent-item').forEach(el => el.classList.remove('active'));
-  document.getElementById('agent-' + id).classList.add('active');
   currentAgent = id;
+  // Update active state via re-render if dynamic list exists
+  if (document.getElementById('agentList').children.length) {
+    renderAgentSidebar();
+  } else {
+    document.querySelectorAll('.agent-item').forEach(el => el.classList.remove('active'));
+    const el = document.getElementById('agent-' + id);
+    if (el) el.classList.add('active');
+  }
 
   const agent = agents[id];
 
@@ -1978,7 +2045,101 @@ function sendMessage() {
   }, 1400);
 }
 
+/* ─── DYNAMIC AGENT SIDEBAR ─── */
+let agentOrder = ['personal','finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board'];
+const agentOverrides = {}; // { id: { name, icon } }
+
+const ICON_OPTIONS = ['✦','📊','⚙️','🚀','📣','🌿','📋','🎯','👥','🧭','📐','💼','🏦','🎨','🔬','📈','💡','🤝','🌍','⚡','🏆','🔧','📱','💻','🛡️','🌐','🔑','📝','💰','🧠','👔','🏢'];
+
+const DEFAULT_ICONS = {
+  personal:'✦', finance:'📊', operations:'⚙️', commercial:'🚀',
+  marketing:'📣', sustainability:'🌿', legal:'📋', matching:'🎯',
+  hr:'👥', leadership:'🧭', board:'📐'
+};
+
+function agentDisplayName(id) {
+  return (agentOverrides[id] && agentOverrides[id].name) || agents[id].label;
+}
+function agentDisplayIcon(id) {
+  return (agentOverrides[id] && agentOverrides[id].icon) || DEFAULT_ICONS[id] || '✦';
+}
+
+function renderAgentSidebar() {
+  const list = document.getElementById('agentList');
+  list.innerHTML = '';
+  agentOrder.forEach(id => {
+    const div = document.createElement('div');
+    div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
+    div.id = 'agent-' + id;
+    div.innerHTML = `<div class="agent-icon">${agentDisplayIcon(id)}</div><span>${agentDisplayName(id)}</span><button class="agent-edit-btn" onclick="event.stopPropagation();openAgentEdit('${id}')" title="Edit">✎</button>`;
+    div.onclick = () => switchAgent(id);
+    list.appendChild(div);
+  });
+}
+
+/* ─── AGENT EDIT ─── */
+let editingAgentId = null;
+let editingIcon = null;
+
+function openAgentEdit(id) {
+  editingAgentId = id;
+  editingIcon = agentDisplayIcon(id);
+  document.getElementById('agentEditName').value = agentOverrides[id]?.name || '';
+  document.getElementById('agentEditName').placeholder = agents[id].label;
+
+  // Build icon picker
+  const picker = document.getElementById('iconPicker');
+  picker.innerHTML = '';
+  ICON_OPTIONS.forEach(em => {
+    const el = document.createElement('div');
+    el.className = 'icon-option' + (em === editingIcon ? ' selected' : '');
+    el.textContent = em;
+    el.onclick = () => {
+      picker.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      editingIcon = em;
+    };
+    picker.appendChild(el);
+  });
+
+  // Up/down btn state
+  const idx = agentOrder.indexOf(id);
+  document.getElementById('moveUpBtn').disabled = idx === 0;
+  document.getElementById('moveDownBtn').disabled = idx === agentOrder.length - 1;
+
+  document.getElementById('agentEditOverlay').classList.add('show');
+}
+
+function closeAgentEdit() {
+  document.getElementById('agentEditOverlay').classList.remove('show');
+  editingAgentId = null;
+}
+
+function saveAgentEdit() {
+  if (!editingAgentId) return;
+  const name = document.getElementById('agentEditName').value.trim();
+  agentOverrides[editingAgentId] = { name: name || null, icon: editingIcon };
+  renderAgentSidebar();
+  closeAgentEdit();
+}
+
+function moveEditingAgent(dir) {
+  const idx = agentOrder.indexOf(editingAgentId);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= agentOrder.length) return;
+  agentOrder.splice(idx, 1);
+  agentOrder.splice(newIdx, 0, editingAgentId);
+  document.getElementById('moveUpBtn').disabled = newIdx === 0;
+  document.getElementById('moveDownBtn').disabled = newIdx === agentOrder.length - 1;
+  renderAgentSidebar();
+}
+
+document.getElementById('agentEditOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAgentEdit();
+});
+
 // Init with personal agent use cases
+renderAgentSidebar();
 switchAgent('personal');
 
 /* ─── LEARNING PAGE ─── */
