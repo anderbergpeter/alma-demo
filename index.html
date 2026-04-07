@@ -426,12 +426,41 @@
       padding: 16px 18px;
       cursor: pointer;
       transition: all 0.2s;
+      position: relative;
     }
     .use-case-card:hover {
       background: rgba(255,255,255,0.09);
       border-color: rgba(194,109,230,0.4);
       transform: translateY(-1px);
     }
+    .use-case-card:hover .uc-actions { opacity: 1; }
+
+    .uc-actions {
+      position: absolute; top: 8px; right: 8px;
+      display: flex; gap: 4px; opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .uc-action-btn {
+      background: rgba(0,0,0,0.5); border: none;
+      border-radius: 6px; color: rgba(255,255,255,0.7);
+      font-size: 11px; padding: 3px 7px; cursor: pointer;
+      transition: all 0.15s; line-height: 1.4;
+    }
+    .uc-action-btn:hover { background: rgba(0,0,0,0.8); color: #fff; }
+    .uc-action-btn.del:hover { background: rgba(200,50,50,0.8); }
+
+    .use-case-card.add-card {
+      border-style: dashed; border-color: rgba(255,255,255,0.15);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px; color: var(--text-muted);
+      font-size: 13px; min-height: 90px;
+    }
+    .use-case-card.add-card:hover {
+      border-color: rgba(194,109,230,0.5);
+      color: rgba(255,255,255,0.7);
+    }
+    .add-card-plus { font-size: 22px; line-height: 1; }
 
     .use-case-card .uc-icon {
       font-size: 20px; margin-bottom: 8px;
@@ -447,6 +476,34 @@
       font-size: 11px; color: var(--text-muted);
       line-height: 1.4;
     }
+
+    /* Use case edit modal */
+    .uc-edit-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      z-index: 2000; align-items: center; justify-content: center;
+    }
+    .uc-edit-overlay.show { display: flex; }
+    .uc-edit-modal {
+      background: #13152b; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 28px; width: 420px;
+      position: relative; max-height: 90vh; overflow-y: auto;
+    }
+    .uc-edit-modal h3 { font-size: 16px; font-weight: 600; color: #fff; margin: 0 0 20px; }
+    .uc-edit-label {
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
+    .uc-edit-input {
+      width: 100%; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+      padding: 9px 12px; font-size: 13px; color: #fff;
+      margin-bottom: 16px; box-sizing: border-box;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    .uc-edit-input:focus { border-color: var(--alma-blue); }
+    textarea.uc-edit-input { resize: vertical; min-height: 60px; }
+    .uc-edit-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
 
     /* ─── CHAT MESSAGES ─── */
     .chat-messages {
@@ -1276,6 +1333,25 @@
   </div>
 </main>
 
+<!-- ─── USE CASE EDIT MODAL ─── -->
+<div class="uc-edit-overlay" id="ucEditOverlay">
+  <div class="uc-edit-modal">
+    <h3 id="ucEditTitle">Edit use case</h3>
+    <div class="uc-edit-label">Icon</div>
+    <div class="icon-picker" id="ucIconPicker"></div>
+    <div class="uc-edit-label">Title</div>
+    <input class="uc-edit-input" id="ucEditName" placeholder="e.g. Q2 Cash Flow Forecast">
+    <div class="uc-edit-label">Description</div>
+    <input class="uc-edit-input" id="ucEditDesc" placeholder="Short description shown on the card">
+    <div class="uc-edit-label">Prompt (sent to ALMA when clicked)</div>
+    <textarea class="uc-edit-input" id="ucEditPrompt" placeholder="e.g. Show me the cash flow forecast for Q2"></textarea>
+    <div class="uc-edit-actions">
+      <button class="btn-cancel-edit" onclick="closeUCEdit()">Cancel</button>
+      <button class="btn-save-edit" onclick="saveUCEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
 <!-- ─── AGENT EDIT MODAL ─── -->
 <div class="agent-edit-overlay" id="agentEditOverlay">
   <div class="agent-edit-modal">
@@ -1964,13 +2040,27 @@ function switchAgent(id) {
   }
   subtitle.textContent = agent.subtitle;
 
-  agent.useCases.forEach(uc => {
+  agent.useCases.forEach((uc, idx) => {
     const card = document.createElement('div');
     card.className = 'use-case-card';
-    card.innerHTML = `<div class="uc-icon">${uc.icon}</div><div class="uc-title">${uc.title}</div><div class="uc-desc">${uc.desc}</div>`;
+    card.innerHTML = `
+      <div class="uc-actions">
+        <button class="uc-action-btn" onclick="event.stopPropagation();openUCEdit('${id}',${idx})">✎ Edit</button>
+        <button class="uc-action-btn del" onclick="event.stopPropagation();deleteUC('${id}',${idx})">✕</button>
+      </div>
+      <div class="uc-icon">${uc.icon}</div>
+      <div class="uc-title">${uc.title}</div>
+      <div class="uc-desc">${uc.desc}</div>`;
     card.onclick = () => { sendPrompt(uc.prompt); };
     grid.appendChild(card);
   });
+
+  // "Add new" card
+  const addCard = document.createElement('div');
+  addCard.className = 'use-case-card add-card';
+  addCard.innerHTML = `<div class="add-card-plus">+</div><div>Add use case</div>`;
+  addCard.onclick = () => openUCAdd(id);
+  grid.appendChild(addCard);
 }
 
 function newChat() {
@@ -2044,6 +2134,82 @@ function sendMessage() {
     }
   }, 1400);
 }
+
+/* ─── USE CASE EDIT ─── */
+let ucEditAgentId = null;
+let ucEditIndex = null; // null = new
+let ucEditIcon = '💡';
+
+const UC_ICONS = ['💡','📊','📈','📉','💰','📬','🔍','🏢','🔧','📡','📦','🚚','🤝','📋','⚖️','🔐','🌿','♻️','🏖️','📧','🎯','🚀','📣','👥','🧭','📐','🔬','🎨','⚡','🌍','🔑','📝','🏆','💼'];
+
+function openUCEdit(agentId, idx) {
+  ucEditAgentId = agentId;
+  ucEditIndex = idx;
+  const uc = agents[agentId].useCases[idx];
+  ucEditIcon = uc.icon;
+  document.getElementById('ucEditTitle').textContent = 'Edit use case';
+  document.getElementById('ucEditName').value = uc.title;
+  document.getElementById('ucEditDesc').value = uc.desc;
+  document.getElementById('ucEditPrompt').value = uc.prompt;
+  renderUCIconPicker();
+  document.getElementById('ucEditOverlay').classList.add('show');
+}
+
+function openUCAdd(agentId) {
+  ucEditAgentId = agentId;
+  ucEditIndex = null;
+  ucEditIcon = '💡';
+  document.getElementById('ucEditTitle').textContent = 'New use case';
+  document.getElementById('ucEditName').value = '';
+  document.getElementById('ucEditDesc').value = '';
+  document.getElementById('ucEditPrompt').value = '';
+  renderUCIconPicker();
+  document.getElementById('ucEditOverlay').classList.add('show');
+}
+
+function renderUCIconPicker() {
+  const picker = document.getElementById('ucIconPicker');
+  picker.innerHTML = '';
+  UC_ICONS.forEach(em => {
+    const el = document.createElement('div');
+    el.className = 'icon-option' + (em === ucEditIcon ? ' selected' : '');
+    el.textContent = em;
+    el.onclick = () => {
+      picker.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      ucEditIcon = em;
+    };
+    picker.appendChild(el);
+  });
+}
+
+function saveUCEdit() {
+  const title = document.getElementById('ucEditName').value.trim();
+  const desc = document.getElementById('ucEditDesc').value.trim();
+  const prompt = document.getElementById('ucEditPrompt').value.trim();
+  if (!title) return;
+  const uc = { icon: ucEditIcon, title, desc, prompt };
+  if (ucEditIndex === null) {
+    agents[ucEditAgentId].useCases.push(uc);
+  } else {
+    agents[ucEditAgentId].useCases[ucEditIndex] = uc;
+  }
+  closeUCEdit();
+  switchAgent(ucEditAgentId);
+}
+
+function deleteUC(agentId, idx) {
+  agents[agentId].useCases.splice(idx, 1);
+  switchAgent(agentId);
+}
+
+function closeUCEdit() {
+  document.getElementById('ucEditOverlay').classList.remove('show');
+}
+
+document.getElementById('ucEditOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeUCEdit();
+});
 
 /* ─── DYNAMIC AGENT SIDEBAR ─── */
 let agentOrder = ['personal','finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board'];
