@@ -2230,7 +2230,9 @@ const SIDEBAR_NAMES = {
 };
 
 function agentDisplayName(id) {
-  return (agentOverrides[id] && agentOverrides[id].name) || SIDEBAR_NAMES[id] || agents[id].label;
+  const custom = agentOverrides[id] && agentOverrides[id].name;
+  const base = SIDEBAR_NAMES[id] || agents[id].label;
+  return custom ? `${custom} (${base})` : base;
 }
 function agentDisplayIcon(id) {
   return (agentOverrides[id] && agentOverrides[id].icon) || DEFAULT_ICONS[id] || '✦';
