@@ -247,6 +247,63 @@
       overflow: hidden;
     }
 
+    /* ─── TASKS DRAWER ─── */
+    .tasks-drawer {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 280px; z-index: 50;
+      background: #10122a;
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: -8px 0 32px rgba(0,0,0,0.3);
+    }
+    .tasks-drawer.open { transform: translateX(0); }
+    .tasks-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tasks-drawer-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .tasks-drawer-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 16px; line-height: 1;
+      transition: color 0.15s;
+    }
+    .tasks-drawer-close:hover { color: #fff; }
+    .tasks-drawer-body {
+      flex: 1; overflow-y: auto; padding: 10px 8px;
+    }
+    .drawer-task-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 10px; border-radius: 10px;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .drawer-task-item:hover { background: rgba(255,255,255,0.06); }
+    .drawer-task-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .drawer-task-info { flex: 1; min-width: 0; }
+    .drawer-task-title {
+      font-size: 12px; font-weight: 600; color: var(--text-primary);
+      margin-bottom: 2px; line-height: 1.3;
+    }
+    .drawer-task-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .drawer-task-divider { height: 1px; background: var(--border); margin: 4px 0; }
+    .tasks-drawer-btn {
+      background: none; border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text-secondary);
+      font-size: 12px; padding: 6px 12px;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tasks-drawer-btn:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.2); }
+    .tasks-drawer-btn.active {
+      background: rgba(38,101,226,0.15); border-color: var(--alma-blue); color: #7aadff;
+    }
+
     /* Subtle background glow */
     .main::before {
       content: '';
@@ -1141,6 +1198,10 @@
     <div class="model-selector" onclick="toggleModelDropdown()" id="modelSelectorBtn">
       <span id="selectedModelLabel">gpt-5.4</span> <span class="chevron">▾</span>
     </div>
+    <button class="tasks-drawer-btn" id="tasksDrawerBtn" onclick="toggleTasksDrawer()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Tasks
+    </button>
 
     <!-- Model dropdown -->
     <div class="model-dropdown" id="modelDropdown">
@@ -1378,6 +1439,14 @@
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
 
+  <!-- Tasks drawer -->
+  <div class="tasks-drawer" id="tasksDrawer">
+    <div class="tasks-drawer-header">
+      <span class="tasks-drawer-title" id="tasksDrawerLabel">Tasks</span>
+      <button class="tasks-drawer-close" onclick="toggleTasksDrawer()">✕</button>
+    </div>
+    <div class="tasks-drawer-body" id="tasksDrawerBody"></div>
+  </div>
 
 </main>
 
@@ -2077,6 +2146,9 @@ function switchAgent(id) {
   document.getElementById('welcomeHeading').innerHTML =
     `I'm <span>${headingName}</span>, what can I help you with?`;
 
+  // Update tasks drawer
+  renderTasksDrawer(id);
+
   // Render use cases
   const grid = document.getElementById('useCaseGrid');
   grid.innerHTML = '';
@@ -2480,6 +2552,34 @@ function toggleReleaseNotes() {
   const body = document.getElementById('rnBody');
   btn.classList.toggle('open');
   body.classList.toggle('show');
+}
+
+/* ─── TASKS DRAWER ─── */
+let drawerOpen = false;
+
+function toggleTasksDrawer() {
+  drawerOpen = !drawerOpen;
+  document.getElementById('tasksDrawer').classList.toggle('open', drawerOpen);
+  document.getElementById('tasksDrawerBtn').classList.toggle('active', drawerOpen);
+}
+
+function renderTasksDrawer(id) {
+  const agent = agents[id];
+  if (!agent) return;
+  const customName = agentOverrides[id] && agentOverrides[id].name;
+  const label = customName || SIDEBAR_NAMES[id] || agent.label;
+  document.getElementById('tasksDrawerLabel').textContent = label + ' · Tasks';
+  const body = document.getElementById('tasksDrawerBody');
+  body.innerHTML = agent.useCases.map((uc, i) => `
+    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'")}')">
+      <div class="drawer-task-icon">${uc.icon}</div>
+      <div class="drawer-task-info">
+        <div class="drawer-task-title">${uc.title}</div>
+        <div class="drawer-task-desc">${uc.desc}</div>
+      </div>
+    </div>
+    ${i < agent.useCases.length - 1 ? '<div class="drawer-task-divider"></div>' : ''}
+  `).join('');
 }
 
 /* ─── WHAT'S NEW BELL ─── */
