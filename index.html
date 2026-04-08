@@ -477,6 +477,33 @@
       line-height: 1.4;
     }
 
+    /* Agent chat history */
+    .agent-history {
+      max-width: 680px; width: 100%;
+      margin-top: 8px;
+    }
+    .agent-history-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--text-muted); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .history-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; border-radius: 8px;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .history-item:hover { background: rgba(255,255,255,0.05); }
+    .history-item-icon {
+      color: var(--text-muted); font-size: 14px; flex-shrink: 0; opacity: 0.5;
+    }
+    .history-item-text {
+      flex: 1; font-size: 12px; color: rgba(255,255,255,0.5);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .history-item-date {
+      font-size: 10px; color: rgba(255,255,255,0.25); flex-shrink: 0;
+    }
+
     /* Use case edit modal */
     .uc-edit-overlay {
       display: none; position: fixed; inset: 0;
@@ -1174,6 +1201,9 @@
       Welcome to <span id="agentTitle">ALMA</span>, Peter
     </div>
     <div class="use-case-grid" id="useCaseGrid"></div>
+
+    <!-- Chat history for current agent -->
+    <div class="agent-history" id="agentHistory"></div>
 
   </div>
 
@@ -2061,6 +2091,16 @@ function switchAgent(id) {
   addCard.innerHTML = `<div class="add-card-plus">+</div><div>Add use case</div>`;
   addCard.onclick = () => openUCAdd(id);
   grid.appendChild(addCard);
+
+  // Render chat history
+  const histEl = document.getElementById('agentHistory');
+  const history = AGENT_HISTORY[id];
+  if (history && history.length) {
+    histEl.innerHTML = `<div class="agent-history-label">Recent chats</div>` +
+      history.map(h => `<div class="history-item"><span class="history-item-icon">💬</span><span class="history-item-text">${h.title}</span><span class="history-item-date">${h.date}</span></div>`).join('');
+  } else {
+    histEl.innerHTML = '';
+  }
 }
 
 function newChat() {
@@ -2134,6 +2174,64 @@ function sendMessage() {
     }
   }, 1400);
 }
+
+/* ─── AGENT CHAT HISTORY ─── */
+const AGENT_HISTORY = {
+  personal: [
+    { title: 'How much vacation do I have left this year?', date: 'Today' },
+    { title: 'Draft reply to Erik about the Q3 planning', date: 'Yesterday' },
+    { title: 'Summarize my action items from Monday standup', date: 'Apr 4' },
+  ],
+  finance: [
+    { title: 'Q2 cash flow forecast vs budget', date: 'Today' },
+    { title: 'Overdue invoices Nordics — exposure analysis', date: 'Yesterday' },
+    { title: 'Consolidated group report Q1 2026', date: 'Apr 3' },
+    { title: 'Anomaly detection on March transactions', date: 'Mar 28' },
+  ],
+  operations: [
+    { title: 'Predictive maintenance alerts — Gothenburg plant', date: 'Today' },
+    { title: 'Inventory optimization recommendations Q2', date: 'Apr 5' },
+    { title: 'Production deviation summary week 14', date: 'Apr 2' },
+  ],
+  commercial: [
+    { title: 'Pipeline health check — Nordic region', date: 'Today' },
+    { title: 'Lookalike prospects based on Volvo deal', date: 'Yesterday' },
+    { title: 'Win/loss analysis Q1 enterprise deals', date: 'Mar 31' },
+  ],
+  marketing: [
+    { title: 'Campaign ROI comparison — LinkedIn vs Google', date: 'Today' },
+    { title: 'Content calendar suggestions for May', date: 'Apr 5' },
+    { title: 'SEO keyword gap analysis vs competitors', date: 'Apr 1' },
+  ],
+  sustainability: [
+    { title: 'Carbon footprint Q1 breakdown by site', date: 'Yesterday' },
+    { title: 'ESG score comparison year-over-year', date: 'Apr 3' },
+  ],
+  legal: [
+    { title: 'NDA review — Sandvik partnership', date: 'Today' },
+    { title: 'GDPR compliance checklist update', date: 'Apr 4' },
+    { title: 'Vendor contract risk flags', date: 'Mar 30' },
+  ],
+  matching: [
+    { title: 'Supplier comparison — packaging materials', date: 'Today' },
+    { title: 'RFQ evaluation matrix — logistics partners', date: 'Apr 5' },
+  ],
+  hr: [
+    { title: 'Headcount plan Q3 — engineering team', date: 'Today' },
+    { title: 'Onboarding progress — April cohort', date: 'Yesterday' },
+    { title: 'Culture survey highlights and actions', date: 'Apr 2' },
+  ],
+  leadership: [
+    { title: 'OKR progress update — all teams', date: 'Today' },
+    { title: 'Team pulse survey trends Q1', date: 'Apr 4' },
+    { title: 'Strategic roadmap review notes', date: 'Mar 29' },
+  ],
+  board: [
+    { title: 'Board pack draft — April meeting', date: 'Today' },
+    { title: 'Investor KPI dashboard Q1', date: 'Apr 3' },
+    { title: 'Equity structure overview', date: 'Mar 25' },
+  ]
+};
 
 /* ─── USE CASE EDIT ─── */
 let ucEditAgentId = null;
