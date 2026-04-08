@@ -292,6 +292,15 @@
     }
     .drawer-task-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
     .drawer-task-divider { height: 1px; background: var(--border); margin: 4px 0; }
+    .drawer-task-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+    .drawer-task-item:hover .drawer-task-actions { opacity: 1; }
+    .drawer-task-act {
+      background: none; border: none; color: rgba(255,255,255,0.4);
+      cursor: pointer; padding: 3px 5px; border-radius: 4px;
+      font-size: 11px; transition: all 0.15s;
+    }
+    .drawer-task-act:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .drawer-task-act.del:hover { background: rgba(239,68,68,0.15); color: #ef4444; }
     .tasks-drawer-btn {
       background: none; border: 1px solid var(--border);
       border-radius: 8px; color: var(--text-secondary);
@@ -2149,9 +2158,8 @@ function switchAgent(id) {
   // Update tasks drawer
   renderTasksDrawer(id);
 
-  // Render use cases
-  const grid = document.getElementById('useCaseGrid');
-  grid.innerHTML = '';
+  // Clear center grid (tasks are in drawer only)
+  document.getElementById('useCaseGrid').innerHTML = '';
 
   // Optional subtitle
   let subtitle = document.getElementById('agentSubtitle');
@@ -2159,31 +2167,9 @@ function switchAgent(id) {
     subtitle = document.createElement('p');
     subtitle.id = 'agentSubtitle';
     subtitle.style.cssText = 'font-size:13px;color:var(--text-muted);text-align:center;margin-top:-30px;margin-bottom:28px;max-width:520px;line-height:1.5;';
-    document.getElementById('centerArea').insertBefore(subtitle, grid);
+    document.getElementById('centerArea').insertBefore(subtitle, document.getElementById('useCaseGrid'));
   }
   subtitle.textContent = agent.subtitle;
-
-  agent.useCases.forEach((uc, idx) => {
-    const card = document.createElement('div');
-    card.className = 'use-case-card';
-    card.innerHTML = `
-      <div class="uc-actions">
-        <button class="uc-action-btn" onclick="event.stopPropagation();openUCEdit('${id}',${idx})">✎ Edit</button>
-        <button class="uc-action-btn del" onclick="event.stopPropagation();deleteUC('${id}',${idx})">✕</button>
-      </div>
-      <div class="uc-icon">${uc.icon}</div>
-      <div class="uc-title">${uc.title}</div>
-      <div class="uc-desc">${uc.desc}</div>`;
-    card.onclick = () => { sendPrompt(uc.prompt); };
-    grid.appendChild(card);
-  });
-
-  // "Add new" card
-  const addCard = document.createElement('div');
-  addCard.className = 'use-case-card add-card';
-  addCard.innerHTML = `<div class="add-card-plus">+</div><div>Add task</div>`;
-  addCard.onclick = () => openUCAdd(id);
-  grid.appendChild(addCard);
 
   // Render chat history
   const histEl = document.getElementById('agentHistory');
@@ -2522,9 +2508,13 @@ Object.assign(agentOverrides, {
   board:         { name: 'Charles', icon: null },
 });
 
-// Init with personal agent use cases
+// Init
 renderAgentSidebar();
 switchAgent('personal');
+// Open drawer by default
+document.getElementById('tasksDrawer').classList.add('open');
+document.getElementById('tasksDrawerBtn').classList.add('active');
+document.querySelector('.main').style.paddingRight = '280px';
 
 /* ─── LEARNING PAGE ─── */
 function openLearning() {
@@ -2555,12 +2545,13 @@ function toggleReleaseNotes() {
 }
 
 /* ─── TASKS DRAWER ─── */
-let drawerOpen = false;
+let drawerOpen = true;
 
 function toggleTasksDrawer() {
   drawerOpen = !drawerOpen;
   document.getElementById('tasksDrawer').classList.toggle('open', drawerOpen);
   document.getElementById('tasksDrawerBtn').classList.toggle('active', drawerOpen);
+  document.querySelector('.main').style.paddingRight = drawerOpen ? '280px' : '0';
 }
 
 function renderTasksDrawer(id) {
@@ -2571,15 +2562,21 @@ function renderTasksDrawer(id) {
   document.getElementById('tasksDrawerLabel').textContent = label + ' · Tasks';
   const body = document.getElementById('tasksDrawerBody');
   body.innerHTML = agent.useCases.map((uc, i) => `
-    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'")}')">
+    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
       <div class="drawer-task-icon">${uc.icon}</div>
       <div class="drawer-task-info">
         <div class="drawer-task-title">${uc.title}</div>
         <div class="drawer-task-desc">${uc.desc}</div>
       </div>
+      <div class="drawer-task-actions">
+        <button class="drawer-task-act" onclick="event.stopPropagation();openUCEdit('${id}',${i})" title="Edit">✎</button>
+        <button class="drawer-task-act del" onclick="event.stopPropagation();deleteUC('${id}',${i})" title="Delete">✕</button>
+      </div>
     </div>
     ${i < agent.useCases.length - 1 ? '<div class="drawer-task-divider"></div>' : ''}
   `).join('');
+  // Add task button at bottom
+  body.innerHTML += `<div style="padding:12px 6px 4px"><button onclick="openUCAdd('${id}')" style="width:100%;background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.15);border-radius:10px;color:var(--text-muted);font-size:12px;padding:10px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.color='var(--text-muted)'">+ Add task</button></div>`;
 }
 
 /* ─── WHAT'S NEW BELL ─── */
