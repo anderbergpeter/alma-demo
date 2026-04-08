@@ -1214,7 +1214,7 @@
     </div>
 
     <div class="welcome-heading" id="welcomeHeading">
-      Welcome to <span id="agentTitle">ALMA</span>, Peter
+      I'm <span id="agentTitle">James</span>, what can I help you with?
     </div>
     <div class="use-case-grid" id="useCaseGrid"></div>
 
@@ -2070,8 +2070,12 @@ function switchAgent(id) {
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
 
   // Update heading
+  const customName = agentOverrides[id] && agentOverrides[id].name;
+  const headingName = customName
+    ? customName
+    : `your ${SIDEBAR_NAMES[id] ? SIDEBAR_NAMES[id].toLowerCase() : agent.label.toLowerCase()} agent`;
   document.getElementById('welcomeHeading').innerHTML =
-    `Welcome to <span>${agent.label}</span>, ${USER_NAME}`;
+    `I'm <span>${headingName}</span>, what can I help you with?`;
 
   // Render use cases
   const grid = document.getElementById('useCaseGrid');
@@ -2629,7 +2633,7 @@ function switchCustomAgent(id, name, desc) {
   document.getElementById('centerArea').style.display = 'flex';
 
   document.getElementById('welcomeHeading').innerHTML =
-    `Welcome to <span>${name}</span>, ${USER_NAME}`;
+    `I'm <span>${name}</span>, what can I help you with?`;
 
   let subtitle = document.getElementById('agentSubtitle');
   if (!subtitle) {
