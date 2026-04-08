@@ -2644,7 +2644,6 @@ renderAgentSidebar();
 switchAgent('personal');
 // Open drawer by default
 document.getElementById('tasksDrawer').classList.add('open');
-document.querySelector('.main').style.paddingRight = '280px';
 
 /* ─── SEARCH PAGE ─── */
 function openSearch() {
@@ -2730,13 +2729,11 @@ function toggleTasksDrawer() {
   const drawer = document.getElementById('tasksDrawer');
   drawer.classList.toggle('open', drawerOpen);
   if (!drawerOpen) { drawerExpanded = false; drawer.classList.remove('expanded'); }
-  document.querySelector('.main').style.paddingRight = drawerOpen ? (drawerExpanded ? '480px' : '280px') : '0';
 }
 
 function toggleDrawerExpand() {
   drawerExpanded = !drawerExpanded;
   document.getElementById('tasksDrawer').classList.toggle('expanded', drawerExpanded);
-  document.querySelector('.main').style.paddingRight = drawerExpanded ? '480px' : '280px';
 }
 
 function renderTasksDrawer(id) {
