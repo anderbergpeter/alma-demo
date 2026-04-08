@@ -481,19 +481,29 @@
     /* Agent chat history */
     .agent-history {
       max-width: 720px; width: 100%;
-      margin: 0 auto; padding: 0 40px 24px;
+      margin: 0 auto; padding: 0 0 24px;
     }
     .agent-history-label {
       font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
       color: var(--text-muted); text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 8px; padding: 0 4px;
     }
     .history-item {
       display: flex; align-items: center; gap: 10px;
       padding: 9px 14px; border-radius: 8px;
       cursor: pointer; transition: background 0.15s;
+      position: relative;
     }
     .history-item:hover { background: rgba(255,255,255,0.05); }
+    .history-item:hover .history-del { opacity: 1; }
+    .history-del {
+      opacity: 0; background: none; border: none;
+      color: rgba(255,255,255,0.35); font-size: 14px;
+      cursor: pointer; padding: 2px 6px; border-radius: 4px;
+      transition: opacity 0.15s, color 0.15s, background 0.15s;
+      flex-shrink: 0; line-height: 1;
+    }
+    .history-del:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
     .history-item-icon {
       color: var(--text-muted); font-size: 14px; flex-shrink: 0; opacity: 0.7;
     }
@@ -2104,7 +2114,7 @@ function switchAgent(id) {
   const history = AGENT_HISTORY[id];
   if (history && history.length) {
     histEl.innerHTML = `<div class="agent-history-label">Recent chats</div>` +
-      history.map(h => `<div class="history-item"><span class="history-item-icon">💬</span><span class="history-item-text">${h.title}</span><span class="history-item-date">${h.date}</span></div>`).join('');
+      history.map((h, i) => `<div class="history-item"><span class="history-item-icon">💬</span><span class="history-item-text">${h.title}</span><span class="history-item-date">${h.date}</span><button class="history-del" onclick="event.stopPropagation();deleteHistory('${id}',${i})" title="Remove">✕</button></div>`).join('');
   } else {
     histEl.innerHTML = '';
   }
@@ -2239,6 +2249,11 @@ const AGENT_HISTORY = {
     { title: 'Equity structure overview', date: 'Mar 25' },
   ]
 };
+
+function deleteHistory(agentId, idx) {
+  AGENT_HISTORY[agentId].splice(idx, 1);
+  switchAgent(agentId);
+}
 
 /* ─── USE CASE EDIT ─── */
 let ucEditAgentId = null;
