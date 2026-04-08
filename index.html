@@ -45,21 +45,24 @@
     }
     .sidebar.collapsed { width: 56px; }
 
-    /* Collapsed: hide text, center icons */
+    /* Collapsed: hide all text/labels */
     .sidebar.collapsed .logo-name,
-    .sidebar.collapsed .sidebar-action span,
+    .sidebar.collapsed .nav-label,
     .sidebar.collapsed .section-label,
     .sidebar.collapsed .recents-list,
     .sidebar.collapsed .user-info,
     .sidebar.collapsed .agent-edit-btn,
-    .sidebar.collapsed .custom-section-header .section-label,
+    .sidebar.collapsed .agent-item > span,
+    .sidebar.collapsed .custom-agent-item > span,
     .sidebar.collapsed #customAgentList { display: none; }
 
-    .sidebar.collapsed .sidebar-top { justify-content: center; flex-direction: column-reverse; gap: 6px; padding: 4px 0 12px; }
+    /* Collapsed: center icons */
+    .sidebar.collapsed .sidebar-top { justify-content: center; flex-direction: column-reverse; gap: 8px; padding: 4px 0 12px; }
+    .sidebar.collapsed .logo { padding: 4px 0; justify-content: center; }
     .sidebar.collapsed .sidebar-action { justify-content: center; padding: 10px 0; margin: 0 4px; }
-    .sidebar.collapsed .agent-item { justify-content: center; padding: 10px 0; margin: 1px 4px; }
-    .sidebar.collapsed .custom-section-header { justify-content: center; padding: 0; }
-    .sidebar.collapsed .new-agent-btn { margin: 0 auto; display: block; }
+    .sidebar.collapsed .agent-item { justify-content: center; padding: 9px 0; margin: 1px 4px; }
+    .sidebar.collapsed .custom-section-header { justify-content: center; padding: 4px 0; }
+    .sidebar.collapsed .new-agent-btn { display: flex; align-items: center; justify-content: center; }
     .sidebar.collapsed .user-row { justify-content: center; }
     .sidebar.collapsed .sidebar-footer { padding: 12px 0 4px; }
 
@@ -1348,15 +1351,15 @@
 
   <div class="sidebar-action" onclick="newChat()">
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-    New chat
+    <span class="nav-label">New chat</span>
   </div>
   <div class="sidebar-action" id="searchSidebarBtn" onclick="openSearch()">
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    Search
+    <span class="nav-label">Search</span>
   </div>
   <div class="sidebar-action" id="learningSidebarBtn" onclick="openLearning()">
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    Learning ALMA
+    <span class="nav-label">Learning ALMA</span>
   </div>
 
   <div class="section-label">Enterprise AI Colleagues</div>
