@@ -40,7 +40,28 @@
       flex-direction: column;
       flex-shrink: 0;
       padding: 12px 0;
+      transition: width 0.25s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
     }
+    .sidebar.collapsed { width: 56px; }
+
+    /* Collapsed: hide text, center icons */
+    .sidebar.collapsed .logo-name,
+    .sidebar.collapsed .sidebar-action span,
+    .sidebar.collapsed .section-label,
+    .sidebar.collapsed .recents-list,
+    .sidebar.collapsed .user-info,
+    .sidebar.collapsed .agent-edit-btn,
+    .sidebar.collapsed .custom-section-header .section-label,
+    .sidebar.collapsed #customAgentList { display: none; }
+
+    .sidebar.collapsed .sidebar-top { justify-content: center; flex-direction: column-reverse; gap: 6px; padding: 4px 0 12px; }
+    .sidebar.collapsed .sidebar-action { justify-content: center; padding: 10px 0; margin: 0 4px; }
+    .sidebar.collapsed .agent-item { justify-content: center; padding: 10px 0; margin: 1px 4px; }
+    .sidebar.collapsed .custom-section-header { justify-content: center; padding: 0; }
+    .sidebar.collapsed .new-agent-btn { margin: 0 auto; display: block; }
+    .sidebar.collapsed .user-row { justify-content: center; }
+    .sidebar.collapsed .sidebar-footer { padding: 12px 0 4px; }
 
     .sidebar-top {
       padding: 4px 10px 12px;
@@ -1290,7 +1311,7 @@
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span id="notifDot" style="position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,0.6)"></span>
       </button>
-      <button class="sidebar-icon-btn" title="Toggle sidebar">
+      <button class="sidebar-icon-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="Close sidebar">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
       </button>
     </div>
@@ -2842,6 +2863,13 @@ function showDrawerTooltip(el) {
 }
 function hideDrawerTooltip() {
   document.getElementById('drawerTooltip').classList.remove('show');
+}
+
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const opening = sidebar.classList.contains('collapsed');
+  sidebar.classList.toggle('collapsed');
+  document.getElementById('sidebarToggleBtn').title = opening ? 'Close sidebar' : 'Open sidebar';
 }
 
 function toggleDrawerExpand() {
