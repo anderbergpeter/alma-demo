@@ -1419,7 +1419,7 @@
     <!-- Home chat input -->
     <div class="home-input-wrap">
       <span class="home-input-plus">+</span>
-      <input class="home-input-field" id="homeInput" placeholder="New chat in James…"
+      <input class="home-input-field" id="homeInput" placeholder="New chat with James…"
         onkeydown="if(event.key==='Enter'&&this.value.trim()){sendPrompt(this.value.trim());this.value='';}">
       <button class="home-input-icon-btn" title="Voice">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -2340,7 +2340,7 @@ function switchAgent(id) {
 
   // Update home input placeholder
   const agentDisplayLabel = agentOverrides[id]?.name || SIDEBAR_NAMES[id] || agent.label;
-  document.getElementById('homeInput').placeholder = `New chat in ${agentDisplayLabel}…`;
+  document.getElementById('homeInput').placeholder = `New chat with ${agentDisplayLabel}…`;
 
   // Hide bottom input on home screen
   document.querySelector('.input-area').style.display = 'none';
@@ -2703,7 +2703,7 @@ function openSearch() {
   const customName = agentOverrides[id] && agentOverrides[id].name;
   const label = customName || SIDEBAR_NAMES[id] || agents[id].label;
   document.getElementById('searchPageTitle').textContent = label;
-  document.getElementById('searchField').placeholder = `New chat in ${label}…`;
+  document.getElementById('searchField').placeholder = `New chat with ${label}…`;
 
   const history = AGENT_HISTORY[id] || [];
   const results = document.getElementById('searchResults');
