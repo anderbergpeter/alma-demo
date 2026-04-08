@@ -371,7 +371,33 @@
       text-align: center; margin-top: 8px; letter-spacing: 0.04em;
     }
 
-    /* Release notes (used in What's new dropdown) */
+    /* Release notes */
+    .release-notes {
+      max-width: 680px; width: 100%;
+      margin-bottom: 24px;
+    }
+    .release-notes-toggle {
+      display: flex; align-items: center; gap: 8px;
+      background: none; border: none;
+      color: var(--text-muted); font-size: 12px;
+      cursor: pointer; padding: 0; letter-spacing: 0.03em;
+      transition: color 0.15s;
+    }
+    .release-notes-toggle:hover { color: rgba(255,255,255,0.6); }
+    .release-notes-toggle .rn-badge {
+      background: var(--alma-blue); color: #fff;
+      font-size: 10px; font-weight: 600;
+      padding: 1px 7px; border-radius: 20px; letter-spacing: 0;
+    }
+    .release-notes-toggle .rn-chevron { transition: transform 0.2s; font-size: 10px; }
+    .release-notes-toggle.open .rn-chevron { transform: rotate(180deg); }
+    .release-notes-body {
+      display: none; margin-top: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 16px 20px;
+    }
+    .release-notes-body.show { display: block; }
     .rn-version {
       font-size: 11px; font-weight: 600; color: var(--alma-purple);
       letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;
@@ -700,31 +726,6 @@
       font-size: 10px; font-weight: 700; color: white; flex-shrink: 0;
     }
 
-    /* ─── WHAT'S NEW ─── */
-    .whats-new-btn { position: relative; }
-    .notif-dot {
-      position: absolute; top: 4px; right: 4px;
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #ef4444;
-      box-shadow: 0 0 6px rgba(239,68,68,0.6);
-    }
-    .notif-dot.hidden { display: none; }
-    .whats-new-dropdown {
-      display: none; position: absolute;
-      top: 44px; left: 10px; right: 10px;
-      background: #1a1d35; border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 14px; z-index: 100;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      max-height: 400px; overflow-y: auto;
-    }
-    .whats-new-dropdown.show { display: block; }
-    .whats-new-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px 10px; font-size: 13px; font-weight: 600; color: #fff;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .whats-new-body { padding: 12px 16px 16px; }
-
     /* ─── LEARNING PAGE ─── */
     .learning-page {
       display: none; flex-direction: column;
@@ -1042,44 +1043,9 @@
       <div class="logo-icon">A</div>
       <span class="logo-name">ALMA</span>
     </div>
-    <div style="display:flex;align-items:center;gap:4px">
-      <button class="sidebar-icon-btn whats-new-btn" id="whatsNewBtn" onclick="toggleWhatsNew()" title="What's new">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-dot" id="notifDot"></span>
-      </button>
-      <button class="sidebar-icon-btn" title="Toggle sidebar">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- What's new dropdown -->
-  <div class="whats-new-dropdown" id="whatsNewDropdown">
-    <div class="whats-new-header">
-      <span>What's new in ALMA</span>
-      <button class="modal-close" onclick="toggleWhatsNew()">✕</button>
-    </div>
-    <div class="whats-new-body">
-      <div class="rn-version">v1.4 · April 2026</div>
-      <ul class="rn-items">
-        <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
-        <li>Board agent with investor metrics, equity overview and board pack generation</li>
-        <li>Leadership agent with OKR tracking, team pulse and strategic roadmap views</li>
-        <li>HR agent with headcount planning, onboarding status and culture survey insights</li>
-      </ul>
-      <div class="rn-version">v1.3 · March 2026</div>
-      <ul class="rn-items">
-        <li>Marketing agent added with campaign performance and SEO analysis</li>
-        <li>Sales agent — new Prospecting use case for finding lookalike customers</li>
-        <li>Custom Agent Builder — create and configure your own agents with MCP tools</li>
-      </ul>
-      <div class="rn-version">v1.2 · February 2026</div>
-      <ul class="rn-items">
-        <li>Personal agent with calendar, email, vacation balance and document generation</li>
-        <li>Sustainability agent with carbon tracking and ESG reporting</li>
-        <li>Source pills — trace every answer back to its connected system</li>
-      </ul>
-    </div>
+    <button class="sidebar-icon-btn" title="Toggle sidebar">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+    </button>
   </div>
 
   <div class="sidebar-action" onclick="newChat()">
@@ -1190,6 +1156,36 @@
 
   <!-- Center welcome / use-cases area -->
   <div class="center-area" id="centerArea">
+
+    <!-- Release notes -->
+    <div class="release-notes" id="releaseNotes">
+      <button class="release-notes-toggle" id="rnToggle" onclick="toggleReleaseNotes()">
+        <span class="rn-badge">New</span>
+        What's new in ALMA
+        <span class="rn-chevron">▾</span>
+      </button>
+      <div class="release-notes-body" id="rnBody">
+        <div class="rn-version">v1.4 · April 2026</div>
+        <ul class="rn-items">
+          <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
+          <li>Board agent with investor metrics, equity overview and board pack generation</li>
+          <li>Leadership agent with OKR tracking, team pulse and strategic roadmap views</li>
+          <li>HR agent with headcount planning, onboarding status and culture survey insights</li>
+        </ul>
+        <div class="rn-version">v1.3 · March 2026</div>
+        <ul class="rn-items">
+          <li>Marketing agent added with campaign performance and SEO analysis</li>
+          <li>Sales agent — new Prospecting use case for finding lookalike customers</li>
+          <li>Custom Agent Builder — create and configure your own agents with MCP tools</li>
+        </ul>
+        <div class="rn-version">v1.2 · February 2026</div>
+        <ul class="rn-items">
+          <li>Personal agent with calendar, email, vacation balance and document generation</li>
+          <li>Sustainability agent with carbon tracking and ESG reporting</li>
+          <li>Source pills — trace every answer back to its connected system</li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Onboarding video (home screen only) -->
     <div class="onboarding-section" id="onboardingVideo">
@@ -2057,6 +2053,7 @@ function switchAgent(id) {
   document.getElementById('agentHistory').style.display = '';
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
+  document.getElementById('releaseNotes').style.display = isHome ? '' : 'none';
 
   // Update heading
   document.getElementById('welcomeHeading').innerHTML =
@@ -2150,6 +2147,7 @@ function sendMessage() {
   // Switch to chat view
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('onboardingVideo').style.display = 'none';
+  document.getElementById('releaseNotes').style.display = 'none';
   document.getElementById('agentHistory').style.display = 'none';
   const chatEl = document.getElementById('chatMessages');
   chatEl.classList.add('active');
@@ -2440,18 +2438,12 @@ function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-/* ─── WHAT'S NEW ─── */
-function toggleWhatsNew() {
-  const dd = document.getElementById('whatsNewDropdown');
-  dd.classList.toggle('show');
-  if (dd.classList.contains('show')) {
-    document.getElementById('notifDot').classList.add('hidden');
-  }
-}
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#whatsNewBtn') && !e.target.closest('#whatsNewDropdown')) {
-    document.getElementById('whatsNewDropdown').classList.remove('show');
-  }
+/* ─── RELEASE NOTES ─── */
+function toggleReleaseNotes() {
+  const btn = document.getElementById('rnToggle');
+  const body = document.getElementById('rnBody');
+  btn.classList.toggle('open');
+  body.classList.toggle('show');
 }
 
 /* ─── MODEL SELECTOR ─── */
