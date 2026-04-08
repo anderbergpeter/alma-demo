@@ -1302,20 +1302,20 @@
       <div class="rn-version">v1.4 · April 2026</div>
       <ul class="rn-items">
         <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
-        <li>Board agent with investor metrics, equity overview and board pack generation</li>
-        <li>Leadership agent with OKR tracking, team pulse and strategic roadmap views</li>
-        <li>HR agent with headcount planning, onboarding status and culture survey insights</li>
+        <li>Board AI Colleague with investor metrics, equity overview and board pack generation</li>
+        <li>Leadership AI Colleague with OKR tracking, team pulse and strategic roadmap views</li>
+        <li>HR AI Colleague with headcount planning, onboarding status and culture survey insights</li>
       </ul>
       <div class="rn-version">v1.3 · March 2026</div>
       <ul class="rn-items">
-        <li>Marketing agent added with campaign performance and SEO analysis</li>
-        <li>Sales agent — new Prospecting use case for finding lookalike customers</li>
-        <li>Custom Agent Builder — create and configure your own agents with MCP tools</li>
+        <li>Marketing AI Colleague added with campaign performance and SEO analysis</li>
+        <li>Sales AI Colleague with new Prospecting task for finding lookalike customers</li>
+        <li>Custom AI Colleague Builder — create and configure your own AI Colleagues with MCP tools</li>
       </ul>
       <div class="rn-version">v1.2 · February 2026</div>
       <ul class="rn-items">
-        <li>Personal agent with calendar, email, vacation balance and document generation</li>
-        <li>Sustainability agent with carbon tracking and ESG reporting</li>
+        <li>Personal AI Colleague with calendar, email, vacation balance and document generation</li>
+        <li>Sustainability AI Colleague with carbon tracking and ESG reporting</li>
         <li>Source pills — trace every answer back to its connected system</li>
       </ul>
     </div>
@@ -1334,12 +1334,12 @@
     Learning ALMA
   </div>
 
-  <div class="section-label">Enterprise agents</div>
+  <div class="section-label">AI Colleagues</div>
   <div id="agentList"></div>
 
   <div class="custom-section-header">
-    <div class="section-label">Custom Agents (GPTs)</div>
-    <button class="new-agent-btn" onclick="openAgentBuilder()" title="New agent">+</button>
+    <div class="section-label">Custom AI Colleagues (GPTs)</div>
+    <button class="new-agent-btn" onclick="openAgentBuilder()" title="New AI Colleague">+</button>
   </div>
   <div id="customAgentList"></div>
 
@@ -1516,7 +1516,7 @@
       <div class="learning-card">
         <div class="learning-thumb">🤖</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">How to use AI agents effectively</div>
+          <div class="learning-card-title">How to use AI Colleagues effectively</div>
           <div class="learning-card-meta"><span>8 min</span><span>All employees</span></div>
         </div>
       </div>
@@ -1530,14 +1530,14 @@
       <div class="learning-card">
         <div class="learning-thumb">⚙️</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">Building your own Custom Agent</div>
+          <div class="learning-card-title">Building your own Custom AI Colleague</div>
           <div class="learning-card-meta"><span>15 min</span><span>Power users</span></div>
         </div>
       </div>
       <div class="learning-card">
         <div class="learning-thumb">📊</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">Finance Agent deep-dive</div>
+          <div class="learning-card-title">Finance AI Colleague deep-dive</div>
           <div class="learning-card-meta"><span>10 min</span><span>Finance team</span></div>
         </div>
       </div>
@@ -1564,7 +1564,7 @@
         <div class="learning-doc-icon">📋</div>
         <div class="learning-doc-info">
           <div class="learning-doc-name">Prompt Engineering Best Practices</div>
-          <div class="learning-doc-desc">How to write effective prompts for enterprise agents · PDF · 8 pages</div>
+          <div class="learning-doc-desc">How to write effective prompts for your AI Colleagues · PDF · 8 pages</div>
         </div>
         <span class="learning-doc-tag">Best practice</span>
       </div>
@@ -1597,12 +1597,12 @@
         <div class="faq-answer">All data stays within your company's cloud environment. ALMA does not send data to third-party AI providers without encryption and anonymisation. Conversations are stored in your own tenant for audit purposes only, and admins can configure retention policies.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What are agents and how do I choose the right one? <span class="faq-chevron">▾</span></div>
-        <div class="faq-answer">Agents are pre-configured AI assistants tuned for specific departments or tasks — Finance, Sales, HR, Legal and more. Each agent has access to the relevant internal systems for that domain. Choose the agent that matches your current task, or use the Personal agent for general queries.</div>
+        <div class="faq-question">What are AI Colleagues and how do I choose the right one? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">AI Colleagues are pre-configured AI assistants tuned for specific departments or tasks — Finance, Sales, HR, Legal and more. Each AI Colleague has access to the relevant internal systems for that domain. Choose the one that matches your current task, or use James for general queries.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Can I create my own custom agent? <span class="faq-chevron">▾</span></div>
-        <div class="faq-answer">Yes — click "Custom Agents (GPTs)" in the sidebar and then "+ New agent". You can give it a name, description, instructions, and connect it to any available MCP tools. Watch the "Building your own Custom Agent" video above for a step-by-step walkthrough.</div>
+        <div class="faq-question">Can I create my own custom AI Colleague? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Yes. Click "Custom AI Colleagues (GPTs)" in the sidebar and then "+". You can give it a name, description, instructions, and connect it to any available MCP tools. Watch the "Building your own Custom AI Colleague" video above for a step-by-step walkthrough.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Which AI models does ALMA support? <span class="faq-chevron">▾</span></div>
@@ -1689,7 +1689,7 @@
 <!-- ─── AGENT EDIT MODAL ─── -->
 <div class="agent-edit-overlay" id="agentEditOverlay">
   <div class="agent-edit-modal">
-    <h3>Edit agent</h3>
+    <h3>Edit AI Colleague</h3>
     <div class="agent-edit-label">Display name</div>
     <input class="agent-edit-input" id="agentEditName" placeholder="e.g. Kalle (Personal)">
     <div class="agent-edit-label">Icon</div>
@@ -1716,7 +1716,7 @@
         <button class="mcp-back" onclick="closeMcpPanel()">‹</button>
         <h3>Enterprise MCP</h3>
       </div>
-      <p>Select the enterprise tools to connect to your agent.</p>
+      <p>Select the enterprise tools to connect to your AI Colleague.</p>
       <div class="mcp-empty">No enterprise MCP servers available</div>
       <div style="margin-top:16px;overflow:hidden">
         <div class="mcp-tools-count">0 tools selected</div>
@@ -1734,14 +1734,14 @@
 
         <div class="form-group">
           <div class="form-label">Name <span class="req">*</span> <span id="nameCount">0/50</span></div>
-          <input class="form-input" id="agentName" maxlength="50" placeholder="Name your agent"
+          <input class="form-input" id="agentName" maxlength="50" placeholder="Name your AI Colleague"
             oninput="onFormInput()">
         </div>
 
         <div class="form-group">
           <div class="form-label">Description <span class="req">*</span> <span id="descCount">0/200</span></div>
           <textarea class="form-textarea" id="agentDesc" maxlength="200"
-            placeholder="Add a short description about what this agent does"
+            placeholder="Add a short description about what this AI Colleague does"
             oninput="onFormInput()"></textarea>
         </div>
 
