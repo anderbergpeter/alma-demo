@@ -2851,7 +2851,8 @@ function renderTasksDrawer(id) {
   if (!agent) return;
   const customName = agentOverrides[id] && agentOverrides[id].name;
   const label = customName || SIDEBAR_NAMES[id] || agent.label;
-  document.getElementById('tasksDrawerLabel').textContent = label + ' · Tasks';
+  const domainLabel = SIDEBAR_NAMES[id] || agent.label;
+  document.getElementById('tasksDrawerLabel').textContent = domainLabel + ' Tasks';
   const body = document.getElementById('tasksDrawerBody');
   body.innerHTML = agent.useCases.map((uc, i) => `
     <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')"
