@@ -2431,6 +2431,21 @@ document.getElementById('agentEditOverlay').addEventListener('click', function(e
   if (e.target === this) closeAgentEdit();
 });
 
+// Default agent names
+Object.assign(agentOverrides, {
+  personal:      { name: 'James', icon: null },
+  finance:       { name: 'Penny', icon: null },
+  operations:    { name: 'Chester', icon: null },
+  commercial:    { name: 'Harvey', icon: null },
+  marketing:     { name: 'Madison', icon: null },
+  sustainability:{ name: 'Ivy', icon: null },
+  legal:         { name: 'Atticus', icon: null },
+  matching:      { name: 'Barney', icon: null },
+  hr:            { name: 'Grace', icon: null },
+  leadership:    { name: 'Winston', icon: null },
+  board:         { name: 'Charles', icon: null },
+});
+
 // Init with personal agent use cases
 renderAgentSidebar();
 switchAgent('personal');
