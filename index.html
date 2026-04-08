@@ -199,6 +199,13 @@
       transition: opacity 0.15s;
     }
     .btn-save-edit:hover { opacity: 0.85; }
+    .btn-delete-edit {
+      background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px; color: #f87171;
+      font-size: 13px; padding: 8px 16px; cursor: pointer;
+      transition: all 0.15s; margin-right: auto;
+    }
+    .btn-delete-edit:hover { background: rgba(239,68,68,0.22); border-color: #ef4444; color: #fff; }
 
     .sidebar-section {
       margin-top: 8px;
@@ -1645,6 +1652,7 @@
     <textarea class="uc-edit-input" id="ucEditPrompt" placeholder="e.g. Show me the cash flow forecast for Q2"></textarea>
     <div class="uc-edit-actions">
       <button class="btn-cancel-edit" onclick="closeUCEdit()">Cancel</button>
+      <button class="btn-delete-edit" id="ucDeleteBtn" onclick="deleteUCFromEdit()" style="display:none">Delete task</button>
       <button class="btn-save-edit" onclick="saveUCEdit()">Save</button>
     </div>
   </div>
@@ -2507,6 +2515,7 @@ function openUCEdit(agentId, idx) {
   document.getElementById('ucEditName').value = uc.title;
   document.getElementById('ucEditDesc').value = uc.desc;
   document.getElementById('ucEditPrompt').value = uc.prompt;
+  document.getElementById('ucDeleteBtn').style.display = '';
   renderUCIconPicker();
   document.getElementById('ucEditOverlay').classList.add('show');
 }
@@ -2519,8 +2528,14 @@ function openUCAdd(agentId) {
   document.getElementById('ucEditName').value = '';
   document.getElementById('ucEditDesc').value = '';
   document.getElementById('ucEditPrompt').value = '';
+  document.getElementById('ucDeleteBtn').style.display = 'none';
   renderUCIconPicker();
   document.getElementById('ucEditOverlay').classList.add('show');
+}
+
+function deleteUCFromEdit() {
+  closeUCEdit();
+  deleteUC(ucEditAgentId, ucEditIndex);
 }
 
 function renderUCIconPicker() {
@@ -2786,7 +2801,6 @@ function renderTasksDrawer(id) {
       </div>
       <div class="drawer-task-actions">
         <button class="drawer-task-act" onclick="event.stopPropagation();openUCEdit('${id}',${i})" title="Edit">✎</button>
-        <button class="drawer-task-act del" onclick="event.stopPropagation();deleteUC('${id}',${i})" title="Delete">✕</button>
       </div>
     </div>
     ${i < agent.useCases.length - 1 ? '<div class="drawer-task-divider"></div>' : ''}
