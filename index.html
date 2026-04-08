@@ -255,10 +255,28 @@
       border-left: 1px solid var(--border);
       display: flex; flex-direction: column;
       transform: translateX(100%);
-      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1);
       box-shadow: -8px 0 32px rgba(0,0,0,0.3);
     }
     .tasks-drawer.open { transform: translateX(0); }
+    .tasks-drawer.expanded { width: 480px; }
+
+    /* Toggle tab on left edge */
+    .drawer-toggle-tab {
+      position: absolute; left: -28px; top: 50%;
+      transform: translateY(-50%);
+      width: 28px; height: 64px;
+      background: #10122a;
+      border: 1px solid var(--border); border-right: none;
+      border-radius: 8px 0 0 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.2);
+      transition: background 0.15s;
+    }
+    .drawer-toggle-tab:hover { background: #181b38; }
+    .drawer-toggle-tab svg { transition: transform 0.25s; }
+    .tasks-drawer.expanded .drawer-toggle-tab svg { transform: rotate(180deg); }
     .tasks-drawer-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 18px 12px;
@@ -1207,11 +1225,6 @@
     <div class="model-selector" onclick="toggleModelDropdown()" id="modelSelectorBtn">
       <span id="selectedModelLabel">gpt-5.4</span> <span class="chevron">▾</span>
     </div>
-    <button class="tasks-drawer-btn" id="tasksDrawerBtn" onclick="toggleTasksDrawer()">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Tasks
-    </button>
-
     <!-- Model dropdown -->
     <div class="model-dropdown" id="modelDropdown">
 
@@ -1450,9 +1463,13 @@
 
   <!-- Tasks drawer -->
   <div class="tasks-drawer" id="tasksDrawer">
+    <!-- Toggle tab on left edge: click to expand/collapse drawer -->
+    <div class="drawer-toggle-tab" onclick="toggleDrawerExpand()" title="Expand / collapse">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
     <div class="tasks-drawer-header">
       <span class="tasks-drawer-title" id="tasksDrawerLabel">Tasks</span>
-      <button class="tasks-drawer-close" onclick="toggleTasksDrawer()">✕</button>
+      <button class="tasks-drawer-close" onclick="toggleTasksDrawer()" title="Close">✕</button>
     </div>
     <div class="tasks-drawer-body" id="tasksDrawerBody"></div>
   </div>
@@ -2513,7 +2530,6 @@ renderAgentSidebar();
 switchAgent('personal');
 // Open drawer by default
 document.getElementById('tasksDrawer').classList.add('open');
-document.getElementById('tasksDrawerBtn').classList.add('active');
 document.querySelector('.main').style.paddingRight = '280px';
 
 /* ─── LEARNING PAGE ─── */
@@ -2546,12 +2562,20 @@ function toggleReleaseNotes() {
 
 /* ─── TASKS DRAWER ─── */
 let drawerOpen = true;
+let drawerExpanded = false;
 
 function toggleTasksDrawer() {
   drawerOpen = !drawerOpen;
-  document.getElementById('tasksDrawer').classList.toggle('open', drawerOpen);
-  document.getElementById('tasksDrawerBtn').classList.toggle('active', drawerOpen);
-  document.querySelector('.main').style.paddingRight = drawerOpen ? '280px' : '0';
+  const drawer = document.getElementById('tasksDrawer');
+  drawer.classList.toggle('open', drawerOpen);
+  if (!drawerOpen) { drawerExpanded = false; drawer.classList.remove('expanded'); }
+  document.querySelector('.main').style.paddingRight = drawerOpen ? (drawerExpanded ? '480px' : '280px') : '0';
+}
+
+function toggleDrawerExpand() {
+  drawerExpanded = !drawerExpanded;
+  document.getElementById('tasksDrawer').classList.toggle('expanded', drawerExpanded);
+  document.querySelector('.main').style.paddingRight = drawerExpanded ? '480px' : '280px';
 }
 
 function renderTasksDrawer(id) {
