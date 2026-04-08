@@ -481,7 +481,7 @@
     /* Agent chat history */
     .agent-history {
       max-width: 680px; width: 100%;
-      margin-top: 8px;
+      margin: 0 auto; padding: 0 40px 24px;
     }
     .agent-history-label {
       font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
@@ -1203,9 +1203,6 @@
     </div>
     <div class="use-case-grid" id="useCaseGrid"></div>
 
-    <!-- Chat history for current agent -->
-    <div class="agent-history" id="agentHistory"></div>
-
   </div>
 
   <!-- Learning page -->
@@ -1362,6 +1359,10 @@
     </div>
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
+
+  <!-- Chat history for current agent (below input) -->
+  <div class="agent-history" id="agentHistory"></div>
+
 </main>
 
 <!-- ─── USE CASE EDIT MODAL ─── -->
@@ -2049,6 +2050,7 @@ function switchAgent(id) {
   document.getElementById('learningPage').classList.remove('show');
   document.querySelector('.input-area').style.display = '';
   document.getElementById('learningSidebarBtn').classList.remove('active');
+  document.getElementById('agentHistory').style.display = '';
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
   document.getElementById('releaseNotes').style.display = isHome ? '' : 'none';
@@ -2146,6 +2148,7 @@ function sendMessage() {
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('onboardingVideo').style.display = 'none';
   document.getElementById('releaseNotes').style.display = 'none';
+  document.getElementById('agentHistory').style.display = 'none';
   const chatEl = document.getElementById('chatMessages');
   chatEl.classList.add('active');
 
