@@ -204,14 +204,14 @@
       margin-top: 8px;
     }
 
-    .sidebar-collapsible {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 18px; cursor: pointer;
+    .recents-list { padding: 0 8px; }
+    .recent-item {
+      padding: 6px 14px; border-radius: 6px;
       font-size: 12px; color: var(--text-muted);
-      transition: color 0.15s;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .sidebar-collapsible:hover { color: var(--text-secondary); }
-    .sidebar-collapsible .chevron { font-size: 10px; }
+    .recent-item:hover { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
 
     .sidebar-footer {
       margin-top: auto;
@@ -1042,13 +1042,13 @@
   </div>
   <div id="customAgentList"></div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-collapsible">
-      Projects <span class="chevron">›</span>
-    </div>
-    <div class="sidebar-collapsible">
-      Chats <span class="chevron">›</span>
-    </div>
+  <div class="section-label" style="margin-top:12px">Recents</div>
+  <div class="recents-list">
+    <div class="recent-item">Q2 revenue forecast analysis</div>
+    <div class="recent-item">Supplier contract renewal</div>
+    <div class="recent-item">Onboarding checklist — new hires</div>
+    <div class="recent-item">Carbon footprint Q1 summary</div>
+    <div class="recent-item">Board meeting prep notes</div>
   </div>
 
   <div class="sidebar-footer">
