@@ -1065,7 +1065,7 @@
   </div>
 
   <!-- What's new dropdown -->
-  <div id="whatsNewDropdown" style="display:none;position:absolute;top:44px;left:10px;width:200px;background:#1a1d35;border:1px solid rgba(255,255,255,0.12);border-radius:14px;z-index:100;box-shadow:0 12px 40px rgba(0,0,0,0.5);max-height:400px;overflow-y:auto">
+  <div id="whatsNewDropdown" style="display:none;position:absolute;top:44px;left:10px;width:500px;background:#1a1d35;border:1px solid rgba(255,255,255,0.12);border-radius:14px;z-index:100;box-shadow:0 12px 40px rgba(0,0,0,0.5);max-height:400px;overflow-y:auto">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;font-size:13px;font-weight:600;color:#fff;border-bottom:1px solid rgba(255,255,255,0.08)">
       <span>What's new in ALMA</span>
       <button onclick="toggleWhatsNew()" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:16px">✕</button>
@@ -1217,6 +1217,9 @@
       Welcome to <span id="agentTitle">ALMA</span>, Peter
     </div>
     <div class="use-case-grid" id="useCaseGrid"></div>
+
+    <!-- Chat history for current agent -->
+    <div class="agent-history" id="agentHistory"></div>
 
   </div>
 
@@ -1375,8 +1378,6 @@
     <div class="disclaimer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
   </div>
 
-  <!-- Chat history for current agent (below input) -->
-  <div class="agent-history" id="agentHistory"></div>
 
 </main>
 
@@ -2065,7 +2066,6 @@ function switchAgent(id) {
   document.getElementById('learningPage').classList.remove('show');
   document.querySelector('.input-area').style.display = '';
   document.getElementById('learningSidebarBtn').classList.remove('active');
-  document.getElementById('agentHistory').style.display = '';
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
 
@@ -2161,7 +2161,6 @@ function sendMessage() {
   // Switch to chat view
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('onboardingVideo').style.display = 'none';
-  document.getElementById('agentHistory').style.display = 'none';
   const chatEl = document.getElementById('chatMessages');
   chatEl.classList.add('active');
 
