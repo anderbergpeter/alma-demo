@@ -298,13 +298,35 @@
       cursor: pointer; transition: background 0.15s;
     }
     .drawer-task-item:hover { background: rgba(255,255,255,0.06); }
+    .drawer-task-item { position: relative; }
     .drawer-task-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
     .drawer-task-info { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; }
     .drawer-task-title {
       font-size: 12px; font-weight: 600; color: var(--text-primary);
       margin-bottom: 2px; line-height: 1.3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .drawer-task-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .drawer-task-desc {
+      font-size: 11px; color: var(--text-muted); line-height: 1.4;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    /* Hover tooltip (fixed-positioned via JS) */
+    #drawerTooltip {
+      display: none; position: fixed;
+      background: #1a1d3a; border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px;
+      width: 220px; z-index: 9999;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+      pointer-events: none;
+    }
+    #drawerTooltip.show { display: block; }
+    #drawerTooltip-title {
+      font-size: 12px; font-weight: 600; color: var(--text-primary);
+      margin-bottom: 5px; line-height: 1.4;
+    }
+    #drawerTooltip-desc {
+      font-size: 11px; color: var(--text-secondary); line-height: 1.5;
+    }
     .drawer-task-divider { height: 1px; background: var(--border); margin: 4px 0; }
     .drawer-task-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
     .drawer-task-item:hover .drawer-task-actions { opacity: 1; }
@@ -1638,6 +1660,12 @@
 
 </main>
 
+<!-- ─── DRAWER TOOLTIP ─── -->
+<div id="drawerTooltip">
+  <div id="drawerTooltip-title"></div>
+  <div id="drawerTooltip-desc"></div>
+</div>
+
 <!-- ─── USE CASE EDIT MODAL ─── -->
 <div class="uc-edit-overlay" id="ucEditOverlay">
   <div class="uc-edit-modal">
@@ -2778,6 +2806,25 @@ function toggleReleaseNotes() {
 }
 
 /* ─── TASKS DRAWER ─── */
+function showDrawerTooltip(el) {
+  const r = el.getBoundingClientRect();
+  const tip = document.getElementById('drawerTooltip');
+  document.getElementById('drawerTooltip-title').textContent = el.dataset.tipTitle;
+  document.getElementById('drawerTooltip-desc').textContent = el.dataset.tipDesc;
+  tip.classList.add('show');
+  // Position to the left of the drawer item
+  const tipW = 220;
+  tip.style.top = (r.top + r.height / 2 - tip.offsetHeight / 2) + 'px';
+  tip.style.left = (r.left - tipW - 10) + 'px';
+  // Reposition after render so height is correct
+  requestAnimationFrame(() => {
+    tip.style.top = (r.top + r.height / 2 - tip.offsetHeight / 2) + 'px';
+  });
+}
+function hideDrawerTooltip() {
+  document.getElementById('drawerTooltip').classList.remove('show');
+}
+
 function toggleDrawerExpand() {
   const drawer = document.getElementById('tasksDrawer');
   const opening = !drawer.classList.contains('open');
@@ -2793,7 +2840,9 @@ function renderTasksDrawer(id) {
   document.getElementById('tasksDrawerLabel').textContent = label + ' · Tasks';
   const body = document.getElementById('tasksDrawerBody');
   body.innerHTML = agent.useCases.map((uc, i) => `
-    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
+    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')"
+      data-tip-title="${uc.title.replace(/"/g,'&quot;')}" data-tip-desc="${uc.desc.replace(/"/g,'&quot;')}"
+      onmouseenter="showDrawerTooltip(this)" onmouseleave="hideDrawerTooltip()">
       <div class="drawer-task-icon">${uc.icon}</div>
       <div class="drawer-task-info">
         <div class="drawer-task-title">${uc.title}</div>
