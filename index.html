@@ -2334,17 +2334,17 @@ let currentAgent = 'personal';
 
 // Greeting templates per agent — {name} is replaced with the display name
 const AGENT_GREETINGS = {
-  personal:       n => `I'm <span>${n}</span>. What's on your agenda today?`,
-  finance:        n => `<span>${n}</span> here. Numbers, forecasts, anomalies. What do you need?`,
-  operations:     n => `<span>${n}</span> reporting in. What needs fixing today?`,
-  commercial:     n => `<span>${n}</span> is ready to close. What deal are we working on?`,
-  marketing:      n => `I'm <span>${n}</span>. Let's make some noise. What's the campaign?`,
-  sustainability: n => `I'm <span>${n}</span>. Let's make today a little greener. How can I help?`,
-  legal:          n => `<span>${n}</span> at your service. What needs reviewing?`,
-  matching:       n => `<span>${n}</span> here. Let's get the best deal. What are we sourcing?`,
-  hr:             n => `Hi, I'm <span>${n}</span>. How can I support your team today?`,
-  leadership:     n => `<span>${n}</span> here. What's the strategic challenge on your mind?`,
-  board:          n => `<span>${n}</span> speaking. What's on the agenda?`,
+  personal:       n => `What's on your agenda today, <span>${n}</span>?`,
+  finance:        n => `Numbers, forecasts, anomalies. What do you need?`,
+  operations:     n => `What needs fixing today?`,
+  commercial:     n => `What deal are we working on?`,
+  marketing:      n => `Let's make some noise. What's the campaign?`,
+  sustainability: n => `Let's make today a little greener. How can I help?`,
+  legal:          n => `What needs reviewing today?`,
+  matching:       n => `Let's get the best deal. What are we sourcing?`,
+  hr:             n => `How can I support your team today?`,
+  leadership:     n => `What's the strategic challenge on your mind?`,
+  board:          n => `What's on the agenda?`,
 };
 
 function switchAgent(id) {
