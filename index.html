@@ -1055,7 +1055,7 @@
   </div>
 
   <!-- What's new dropdown -->
-  <div id="whatsNewDropdown" style="display:none;position:absolute;top:44px;left:10px;right:10px;background:#1a1d35;border:1px solid rgba(255,255,255,0.12);border-radius:14px;z-index:100;box-shadow:0 12px 40px rgba(0,0,0,0.5);max-height:400px;overflow-y:auto">
+  <div id="whatsNewDropdown" style="display:none;position:absolute;top:44px;left:10px;width:200px;background:#1a1d35;border:1px solid rgba(255,255,255,0.12);border-radius:14px;z-index:100;box-shadow:0 12px 40px rgba(0,0,0,0.5);max-height:400px;overflow-y:auto">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;font-size:13px;font-weight:600;color:#fff;border-bottom:1px solid rgba(255,255,255,0.08)">
       <span>What's new in ALMA</span>
       <button onclick="toggleWhatsNew()" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:16px">✕</button>
@@ -1191,36 +1191,6 @@
 
   <!-- Center welcome / use-cases area -->
   <div class="center-area" id="centerArea">
-
-    <!-- Release notes -->
-    <div class="release-notes" id="releaseNotes">
-      <button class="release-notes-toggle" id="rnToggle" onclick="toggleReleaseNotes()">
-        <span class="rn-badge">New</span>
-        What's new in ALMA
-        <span class="rn-chevron">▾</span>
-      </button>
-      <div class="release-notes-body" id="rnBody">
-        <div class="rn-version">v1.4 · April 2026</div>
-        <ul class="rn-items">
-          <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
-          <li>Board agent with investor metrics, equity overview and board pack generation</li>
-          <li>Leadership agent with OKR tracking, team pulse and strategic roadmap views</li>
-          <li>HR agent with headcount planning, onboarding status and culture survey insights</li>
-        </ul>
-        <div class="rn-version">v1.3 · March 2026</div>
-        <ul class="rn-items">
-          <li>Marketing agent added with campaign performance and SEO analysis</li>
-          <li>Sales agent — new Prospecting use case for finding lookalike customers</li>
-          <li>Custom Agent Builder — create and configure your own agents with MCP tools</li>
-        </ul>
-        <div class="rn-version">v1.2 · February 2026</div>
-        <ul class="rn-items">
-          <li>Personal agent with calendar, email, vacation balance and document generation</li>
-          <li>Sustainability agent with carbon tracking and ESG reporting</li>
-          <li>Source pills — trace every answer back to its connected system</li>
-        </ul>
-      </div>
-    </div>
 
     <!-- Onboarding video (home screen only) -->
     <div class="onboarding-section" id="onboardingVideo">
@@ -2088,7 +2058,6 @@ function switchAgent(id) {
   document.getElementById('agentHistory').style.display = '';
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
-  document.getElementById('releaseNotes').style.display = isHome ? '' : 'none';
 
   // Update heading
   document.getElementById('welcomeHeading').innerHTML =
@@ -2182,7 +2151,6 @@ function sendMessage() {
   // Switch to chat view
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('onboardingVideo').style.display = 'none';
-  document.getElementById('releaseNotes').style.display = 'none';
   document.getElementById('agentHistory').style.display = 'none';
   const chatEl = document.getElementById('chatMessages');
   chatEl.classList.add('active');
