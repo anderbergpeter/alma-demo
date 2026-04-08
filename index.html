@@ -2332,6 +2332,21 @@ const demoAnswers = {
 
 let currentAgent = 'personal';
 
+// Greeting templates per agent — {name} is replaced with the display name
+const AGENT_GREETINGS = {
+  personal:       n => `I'm <span>${n}</span> — what's on your agenda today?`,
+  finance:        n => `<span>${n}</span> here. Numbers, forecasts, anomalies — what do you need?`,
+  operations:     n => `<span>${n}</span> reporting in. What needs fixing today?`,
+  commercial:     n => `<span>${n}</span> is ready to close. What deal are we working on?`,
+  marketing:      n => `I'm <span>${n}</span> — let's make some noise. What's the campaign?`,
+  sustainability: n => `I'm <span>${n}</span>. Let's make today a little greener. How can I help?`,
+  legal:          n => `<span>${n}</span> at your service. What needs reviewing?`,
+  matching:       n => `<span>${n}</span> here. Let's get the best deal — what are we sourcing?`,
+  hr:             n => `Hi, I'm <span>${n}</span>. How can I support your team today?`,
+  leadership:     n => `<span>${n}</span> here. What's the strategic challenge on your mind?`,
+  board:          n => `<span>${n}</span> speaking. What's on the agenda?`,
+};
+
 function switchAgent(id) {
   currentAgent = id;
   // Update active state via re-render if dynamic list exists
@@ -2358,11 +2373,10 @@ function switchAgent(id) {
 
   // Update heading
   const customName = agentOverrides[id] && agentOverrides[id].name;
-  const headingName = customName
-    ? customName
-    : `your ${SIDEBAR_NAMES[id] ? SIDEBAR_NAMES[id].toLowerCase() : agent.label.toLowerCase()} agent`;
+  const headingName = customName || SIDEBAR_NAMES[id] || agent.label;
+  const greetingFn = AGENT_GREETINGS[id];
   document.getElementById('welcomeHeading').innerHTML =
-    `I'm <span>${headingName}</span>, what can I help you with?`;
+    greetingFn ? greetingFn(headingName) : `I'm <span>${headingName}</span>, what can I help you with?`;
 
   // Update tasks drawer
   renderTasksDrawer(id);
