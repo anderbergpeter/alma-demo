@@ -820,6 +820,90 @@
       font-size: 10px; font-weight: 700; color: white; flex-shrink: 0;
     }
 
+    /* ─── SEARCH PAGE ─── */
+    .search-page {
+      display: none; flex-direction: column;
+      width: 100%; height: 100%; overflow-y: auto;
+    }
+    .search-page.show { display: flex; }
+    .search-page-inner {
+      max-width: 760px; width: 100%;
+      margin: 0 auto; padding: 56px 40px 0;
+      display: flex; flex-direction: column;
+      flex: 1;
+    }
+    .search-page-title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 28px; font-weight: 700; color: #fff;
+      margin-bottom: 28px;
+    }
+    .search-page-title-icon {
+      font-size: 26px; opacity: 0.7;
+    }
+    .search-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 50px; padding: 12px 18px;
+      margin-bottom: 28px; transition: border-color 0.2s;
+    }
+    .search-input-wrap:focus-within { border-color: rgba(194,109,230,0.4); }
+    .search-input-plus {
+      color: var(--text-muted); font-size: 18px; flex-shrink: 0; cursor: pointer;
+      transition: color 0.15s;
+    }
+    .search-input-plus:hover { color: #fff; }
+    .search-input-field {
+      flex: 1; background: none; border: none; outline: none;
+      font-size: 15px; color: #fff; font-family: inherit;
+    }
+    .search-input-field::placeholder { color: var(--text-muted); }
+    .search-input-icons { display: flex; gap: 8px; align-items: center; }
+    .search-input-icon-btn {
+      background: rgba(255,255,255,0.08); border: none;
+      border-radius: 50%; width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-secondary); transition: all 0.15s;
+    }
+    .search-input-icon-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+    .search-tabs {
+      display: flex; gap: 4px; margin-bottom: 20px;
+    }
+    .search-tab {
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid transparent;
+      color: var(--text-secondary); transition: all 0.15s;
+    }
+    .search-tab.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff; border-color: rgba(255,255,255,0.2);
+    }
+    .search-results { flex: 1; }
+    .search-result-item {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 14px 4px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      cursor: pointer; transition: background 0.15s; border-radius: 4px;
+    }
+    .search-result-item:hover { background: rgba(255,255,255,0.04); padding-left: 10px; }
+    .search-result-body { flex: 1; min-width: 0; padding-right: 20px; }
+    .search-result-title {
+      font-size: 14px; font-weight: 600; color: #fff;
+      margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .search-result-snippet {
+      font-size: 12px; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .search-result-date {
+      font-size: 12px; color: var(--text-muted); flex-shrink: 0;
+    }
+    .search-footer {
+      text-align: center; padding: 24px 0 20px;
+      font-size: 11px; color: rgba(255,255,255,0.25);
+    }
+
     /* ─── LEARNING PAGE ─── */
     .learning-page {
       display: none; flex-direction: column;
@@ -1181,7 +1265,7 @@
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
     New chat
   </div>
-  <div class="sidebar-action">
+  <div class="sidebar-action" id="searchSidebarBtn" onclick="openSearch()">
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     Search
   </div>
@@ -1304,6 +1388,34 @@
     <!-- Chat history for current agent -->
     <div class="agent-history" id="agentHistory"></div>
 
+  </div>
+
+  <!-- Search page -->
+  <div class="search-page" id="searchPage">
+    <div class="search-page-inner">
+      <div class="search-page-title">
+        <span class="search-page-title-icon">🗂️</span>
+        <span id="searchPageTitle">ALMA</span>
+      </div>
+      <div class="search-input-wrap">
+        <span class="search-input-plus">+</span>
+        <input class="search-input-field" id="searchField" placeholder="New chat…" onkeydown="if(event.key==='Enter'&&this.value){sendPrompt(this.value);closeSearch();}">
+        <div class="search-input-icons">
+          <button class="search-input-icon-btn" title="Voice">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+          <button class="search-input-icon-btn" title="Search">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="search-tabs">
+        <div class="search-tab active" onclick="setSearchTab(this,'chats')">Chats</div>
+        <div class="search-tab" onclick="setSearchTab(this,'sources')">Sources</div>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+      <div class="search-footer">ALMA can make mistakes. All data stays in your cloud — full audit trail enabled.</div>
+    </div>
   </div>
 
   <!-- Learning page -->
@@ -2159,8 +2271,10 @@ function switchAgent(id) {
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('centerArea').style.display = 'flex';
   document.getElementById('learningPage').classList.remove('show');
+  document.getElementById('searchPage').classList.remove('show');
   document.querySelector('.input-area').style.display = '';
   document.getElementById('learningSidebarBtn').classList.remove('active');
+  document.getElementById('searchSidebarBtn').classList.remove('active');
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
 
@@ -2531,6 +2645,53 @@ switchAgent('personal');
 // Open drawer by default
 document.getElementById('tasksDrawer').classList.add('open');
 document.querySelector('.main').style.paddingRight = '280px';
+
+/* ─── SEARCH PAGE ─── */
+function openSearch() {
+  document.getElementById('centerArea').style.display = 'none';
+  document.getElementById('chatMessages').classList.remove('active');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.querySelector('.input-area').style.display = 'none';
+  document.getElementById('learningPage').classList.remove('show');
+  document.getElementById('searchPage').classList.add('show');
+  document.getElementById('searchSidebarBtn').classList.add('active');
+  document.querySelectorAll('.agent-item, .custom-agent-item').forEach(el => el.classList.remove('active'));
+
+  const id = currentAgent || 'personal';
+  const customName = agentOverrides[id] && agentOverrides[id].name;
+  const label = customName || SIDEBAR_NAMES[id] || agents[id].label;
+  document.getElementById('searchPageTitle').textContent = label;
+  document.getElementById('searchField').placeholder = `New chat in ${label}…`;
+
+  const history = AGENT_HISTORY[id] || [];
+  const results = document.getElementById('searchResults');
+  results.innerHTML = history.length
+    ? history.map(h => `
+        <div class="search-result-item" onclick="sendPrompt('${h.title.replace(/'/g,"\\'")}');closeSearch()">
+          <div class="search-result-body">
+            <div class="search-result-title">${h.title}</div>
+            <div class="search-result-snippet">Click to continue this conversation</div>
+          </div>
+          <div class="search-result-date">${h.date}</div>
+        </div>`).join('')
+    : `<div style="padding:40px 0;text-align:center;color:var(--text-muted);font-size:13px">No recent chats</div>`;
+}
+
+function closeSearch() {
+  document.getElementById('searchPage').classList.remove('show');
+  document.querySelector('.input-area').style.display = '';
+  document.getElementById('searchSidebarBtn').classList.remove('active');
+  switchAgent(currentAgent || 'personal');
+}
+
+function setSearchTab(el, tab) {
+  document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if (tab === 'sources') {
+    document.getElementById('searchResults').innerHTML =
+      `<div style="padding:40px 0;text-align:center;color:var(--text-muted);font-size:13px">No sources uploaded yet</div>`;
+  } else { openSearch(); }
+}
 
 /* ─── LEARNING PAGE ─── */
 function openLearning() {
