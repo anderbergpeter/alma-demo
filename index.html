@@ -2105,7 +2105,7 @@ function switchAgent(id) {
   // "Add new" card
   const addCard = document.createElement('div');
   addCard.className = 'use-case-card add-card';
-  addCard.innerHTML = `<div class="add-card-plus">+</div><div>Add use case</div>`;
+  addCard.innerHTML = `<div class="add-card-plus">+</div><div>Add task</div>`;
   addCard.onclick = () => openUCAdd(id);
   grid.appendChild(addCard);
 
@@ -2186,7 +2186,7 @@ function sendMessage() {
     } else {
       const agent = agents[currentAgent];
       addMsg('alma', `<p>I'm analyzing that now using data from your connected systems. Here's what I found based on available data — would you like me to go deeper on any specific aspect?</p>
-<p style="color:var(--text-muted);font-size:13px">💡 Try one of the suggested use cases for <strong>${agent.label}</strong> to see a full demo response.</p>`, `✦ ${agent.label}`);
+<p style="color:var(--text-muted);font-size:13px">💡 Try one of the suggested tasks for <strong>${agent.label}</strong> to see a full demo response.</p>`, `✦ ${agent.label}`);
     }
   }, 1400);
 }
@@ -2266,7 +2266,7 @@ function openUCEdit(agentId, idx) {
   ucEditIndex = idx;
   const uc = agents[agentId].useCases[idx];
   ucEditIcon = uc.icon;
-  document.getElementById('ucEditTitle').textContent = 'Edit use case';
+  document.getElementById('ucEditTitle').textContent = 'Edit task';
   document.getElementById('ucEditName').value = uc.title;
   document.getElementById('ucEditDesc').value = uc.desc;
   document.getElementById('ucEditPrompt').value = uc.prompt;
@@ -2278,7 +2278,7 @@ function openUCAdd(agentId) {
   ucEditAgentId = agentId;
   ucEditIndex = null;
   ucEditIcon = '💡';
-  document.getElementById('ucEditTitle').textContent = 'New use case';
+  document.getElementById('ucEditTitle').textContent = 'New task';
   document.getElementById('ucEditName').value = '';
   document.getElementById('ucEditDesc').value = '';
   document.getElementById('ucEditPrompt').value = '';
