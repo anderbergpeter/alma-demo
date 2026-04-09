@@ -1360,6 +1360,10 @@
     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
     <span class="nav-label">Learning ALMA</span>
   </div>
+  <div class="sidebar-action" id="myWorkspaceBtn" onclick="switchAgent('personal')">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span class="nav-label">My Workspace</span>
+  </div>
 
   <div class="section-label">Enterprise AI Colleagues</div>
   <div id="agentList"></div>
@@ -2387,6 +2391,8 @@ function switchAgent(id) {
   document.getElementById('searchPage').classList.remove('show');
   document.getElementById('learningSidebarBtn').classList.remove('active');
   document.getElementById('searchSidebarBtn').classList.remove('active');
+  const wsBtn = document.getElementById('myWorkspaceBtn');
+  if (wsBtn) wsBtn.classList.toggle('active', id === 'personal');
   const isHome = id === 'personal';
   document.getElementById('onboardingVideo').style.display = isHome ? '' : 'none';
   document.getElementById('centerArea').classList.toggle('has-video', isHome);
@@ -2645,7 +2651,7 @@ document.getElementById('ucEditOverlay').addEventListener('click', function(e) {
 });
 
 /* ─── DYNAMIC AGENT SIDEBAR ─── */
-let agentOrder = ['personal','finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board'];
+let agentOrder = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board'];
 const agentOverrides = {}; // { id: { name, icon } }
 
 const ICON_OPTIONS = ['✦','📊','⚙️','🚀','📣','🌿','📋','🎯','👥','🧭','📐','💼','🏦','🎨','🔬','📈','💡','🤝','🌍','⚡','🏆','🔧','📱','💻','🛡️','🌐','🔑','📝','💰','🧠','👔','🏢'];
