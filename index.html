@@ -2657,7 +2657,7 @@ const DEFAULT_ICONS = {
 };
 
 const SIDEBAR_NAMES = {
-  personal:'Personal', finance:'Finance', operations:'Operations',
+  personal:'My Workspace', finance:'Finance', operations:'Operations',
   commercial:'Sales', marketing:'Marketing', sustainability:'Sustainability',
   legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board'
 };
@@ -2747,7 +2747,7 @@ document.getElementById('agentEditOverlay').addEventListener('click', function(e
 
 // Default agent names
 Object.assign(agentOverrides, {
-  personal:      { name: 'James', icon: null },
+  personal:      { name: null, icon: null },
   finance:       { name: 'Penny', icon: null },
   operations:    { name: 'Chester', icon: null },
   commercial:    { name: 'Harvey', icon: null },
