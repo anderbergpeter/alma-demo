@@ -289,6 +289,22 @@
       overflow: hidden;
     }
     .tasks-drawer.open { width: 280px; }
+    .drawer-search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      margin: 8px 8px 4px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 10px;
+      transition: border-color 0.15s; flex-shrink: 0;
+    }
+    .drawer-search-wrap:focus-within { border-color: rgba(194,109,230,0.35); }
+    .drawer-search-icon { color: var(--text-muted); flex-shrink: 0; }
+    .drawer-search-input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text-primary); font-size: 12px; font-family: inherit;
+    }
+    .drawer-search-input::placeholder { color: var(--text-muted); }
+    .tasks-drawer:not(.open) .drawer-search-wrap { display: none; }
     .tasks-drawer-header {
       display: flex; align-items: center;
       padding: 10px 8px;
@@ -1667,6 +1683,10 @@
     </button>
     <span class="tasks-drawer-title" id="tasksDrawerLabel">Tasks</span>
   </div>
+  <div class="drawer-search-wrap">
+    <svg class="drawer-search-icon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="drawer-search-input" id="drawerSearchInput" placeholder="Search tasks…" oninput="filterDrawerTasks(this.value)">
+  </div>
   <div class="tasks-drawer-body" id="tasksDrawerBody"></div>
 </aside>
 
@@ -2391,6 +2411,8 @@ function switchAgent(id) {
 
   // Update tasks drawer
   renderTasksDrawer(id);
+  const si = document.getElementById('drawerSearchInput');
+  if (si) { si.value = ''; filterDrawerTasks(''); }
 
   // Clear center grid (tasks are in drawer only)
   document.getElementById('useCaseGrid').innerHTML = '';
@@ -2855,6 +2877,15 @@ function toggleSidebar() {
   const opening = sidebar.classList.contains('collapsed');
   sidebar.classList.toggle('collapsed');
   document.getElementById('sidebarToggleBtn').title = opening ? 'Close sidebar' : 'Open sidebar';
+}
+
+function filterDrawerTasks(q) {
+  const term = q.toLowerCase();
+  document.querySelectorAll('.drawer-task-item').forEach(el => {
+    const text = (el.dataset.tipTitle + ' ' + el.dataset.tipDesc).toLowerCase();
+    el.style.display = text.includes(term) ? '' : 'none';
+  });
+  document.querySelectorAll('.drawer-task-divider').forEach(d => d.style.display = term ? 'none' : '');
 }
 
 function toggleDrawerExpand() {
