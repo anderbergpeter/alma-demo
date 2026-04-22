@@ -293,36 +293,17 @@
     border-radius: 12px;
     padding: 14px 16px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
   }
   .value-prompt-row {
     display: flex;
     align-items: center;
     gap: 14px;
     flex-wrap: wrap;
+    width: 100%;
   }
-  .value-prompt-hint {
-    font-size: 11px;
-    color: var(--text-muted);
-    padding-top: 9px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .value-prompt-hint strong {
-    color: var(--text-secondary);
-    font-weight: 600;
-  }
-  .value-prompt-hint .hint-dot {
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: rgba(194,109,230,0.15);
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 9px;
-  }
-  .value-prompt-card.answered .value-prompt-hint { display: none; }
   .value-prompt-icon {
     width: 30px; height: 30px;
     border-radius: 8px;
@@ -572,10 +553,6 @@
           </div>
           <button class="value-skip" onclick="skipPrompt('vp1')">Skip</button>
         </div>
-        <div class="value-prompt-hint">
-          <span class="hint-dot">💡</span>
-          Finance peers with your role typically report <strong>1–2h saved</strong> for variance analyses like this · <span style="color: rgba(255,255,255,0.3); margin: 0 4px;">·</span> based on 142 responses in your org
-        </div>
       </div>
     </div>
 
@@ -683,10 +660,6 @@
           </div>
           <button class="value-skip" onclick="skipPrompt('vp2')">Skip</button>
         </div>
-        <div class="value-prompt-hint">
-          <span class="hint-dot">💡</span>
-          Finance peers with your role typically report <strong>2–4h saved</strong> for AR risk sweeps across 50+ accounts · <span style="color: rgba(255,255,255,0.3); margin: 0 4px;">·</span> based on 87 responses in your org
-        </div>
       </div>
     </div>
 
@@ -715,4 +688,35 @@
   document.querySelectorAll('.value-choices').forEach(group => {
     group.querySelectorAll('.time-chip').forEach(chip => {
       chip.addEventListener('click', () => {
-      
+        const promptId = 'vp' + group.dataset.prompt;
+        const minutes = parseInt(chip.dataset.min, 10);
+        const label = chip.textContent.trim();
+        recorded[promptId] = minutes;
+        collapsePrompt(promptId, label);
+        updateSessionTotal();
+      });
+    });
+  });
+
+  function collapsePrompt(id, label) {
+    const card = document.getElementById(id);
+    const text = card.querySelector('.value-prompt-text');
+    card.classList.add('answered');
+    card.querySelector('.value-prompt-icon').textContent = '✓';
+    text.innerHTML = `
+      <div class="value-prompt-title">Registered — ${label} saved · thanks, Peter</div>
+      <div class="value-prompt-sub">This will appear in your monthly value report and end-of-quarter Wrapped.</div>
+    `;
+  }
+
+  function skipPrompt(id) {
+    const card = document.getElementById(id);
+    card.style.opacity = '0.4';
+    card.style.pointerEvents = 'none';
+    card.querySelector('.value-prompt-title').textContent = 'Skipped — I\'ll ask again next time.';
+    card.querySelector('.value-prompt-sub').textContent = '';
+  }
+
+  function updateSessionTotal() {
+    const total = Object.values(recorded).reduce((s, m) => s + m, 0);
+    if (total === 0)
