@@ -3005,7 +3005,7 @@ const DEFAULT_ICONS = {
 const SIDEBAR_NAMES = {
   personal:'My Assistant', finance:'Finance', operations:'Operations',
   commercial:'Sales', marketing:'Marketing', sustainability:'Sustainability',
-  legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board', service:'Service', evelyn:'Value Intelligence'
+  legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board', service:'Service', evelyn:'ROI'
 };
 
 function agentDisplayName(id) {
@@ -3021,13 +3021,6 @@ function renderAgentSidebar() {
   const list = document.getElementById('agentList');
   list.innerHTML = '';
   agentOrder.forEach(id => {
-    if (id === 'evelyn') {
-      const sep = document.createElement('div');
-      sep.className = 'section-label evelyn-sidebar-sep';
-      sep.style.cssText = 'margin-top:12px;padding-top:10px;border-top:1px solid var(--border)';
-      sep.textContent = 'VALUE TRACKING';
-      list.appendChild(sep);
-    }
     const div = document.createElement('div');
     div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
     div.id = 'agent-' + id;
