@@ -1428,8 +1428,8 @@
     display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
   }
   .calibration-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-  .calibration-desc  { font-size: 11px; color: var(--text-muted); margin: 4px 0 10px 40px; }
-  .calibration-options { display: flex; flex-wrap: wrap; gap: 6px; margin-left: 40px; }
+  .calibration-desc  { font-size: 11px; color: var(--text-muted); margin: 4px 0 10px 0; }
+  .calibration-options { display: flex; flex-wrap: wrap; gap: 6px; }
   .cal-opt {
     border: 1px solid var(--border); background: #12153a;
     border-radius: 16px; padding: 4px 13px; font-size: 12px;
@@ -2762,12 +2762,15 @@ function addCalibrationCard(desc) {
         </div>
         <div class="calibration-desc">${desc}</div>
         <div class="calibration-options">
-          <span class="cal-opt" onclick="selectCalOpt(this)">Less than 15 min</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">Under 15 min</span>
           <span class="cal-opt" onclick="selectCalOpt(this)">15-30 min</span>
           <span class="cal-opt" onclick="selectCalOpt(this)">30-60 min</span>
           <span class="cal-opt" onclick="selectCalOpt(this)">1-2h</span>
           <span class="cal-opt" onclick="selectCalOpt(this)">2-4h</span>
-          <span class="cal-opt" onclick="selectCalOpt(this)">More than 4h</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">4-8h</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">1 day</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">2-3 days</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">A week or more</span>
           <span class="cal-opt skip" onclick="skipCalibration(this)">Skip</span>
         </div>
       </div>
