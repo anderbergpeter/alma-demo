@@ -1313,6 +1313,132 @@
       padding: 8px 20px; font-size: 13px; font-weight: 600;
       color: #0d0f1a; cursor: pointer;
     }
+  /* ─── EVELYN VALUE INTELLIGENCE ─── */
+  .evelyn-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin: 22px 0 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .evelyn-section-label span { flex: 1; height: 1px; background: var(--border); }
+  .evelyn-note {
+    background: #0e1130; border: 1px solid #252b5a;
+    border-left: 3px solid #2665E2; border-radius: 8px;
+    padding: 16px 20px; margin: 4px 0 14px; font-style: italic;
+    font-size: 13.5px; line-height: 1.75; color: var(--text-secondary);
+  }
+  .evelyn-note-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    color: #2665E2; text-transform: uppercase; margin-bottom: 10px;
+    font-style: normal; display: block;
+  }
+  .evelyn-note strong { color: var(--text-primary); font-style: normal; }
+  .evelyn-note em { color: #f87171; }
+  .evelyn-note-sig { margin-top: 12px; color: #2665E2; font-style: normal; font-size: 13px; display: block; }
+  .value-bar-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 5px 0; font-size: 13px;
+  }
+  .value-bar-label { width: 170px; flex-shrink: 0; color: var(--text-secondary); }
+  .value-bar-track { flex: 1; height: 6px; background: #1a1f42; border-radius: 3px; overflow: hidden; }
+  .value-bar-fill { height: 100%; background: linear-gradient(90deg,#2665E2,#818cf8); border-radius: 3px; }
+  .value-bar-pct { width: 38px; text-align: right; color: var(--text-muted); font-size: 11px; }
+  .value-bar-hrs { width: 48px; text-align: right; color: var(--text-primary); font-size: 12px; font-weight: 600; }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 4px 0 14px; }
+  .team-card {
+    background: #0e1130; border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .adoption-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    border-radius: 4px; padding: 2px 7px; margin-bottom: 6px;
+  }
+  .adoption-badge.high { background: rgba(74,222,128,.15); color: #4ade80; }
+  .adoption-badge.mid  { background: rgba(251,191,36,.15);  color: #fbbf24; }
+  .adoption-badge.low  { background: rgba(248,113,113,.15); color: #f87171; }
+  .team-card-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .team-card-hrs  { font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 4px 0 2px; }
+  .team-card-hrs small { font-size: 12px; font-weight: 400; color: var(--text-muted); }
+  .team-card-delta { font-size: 11px; color: var(--text-muted); }
+  .team-card-delta.pos  { color: #4ade80; }
+  .team-card-delta.neg  { color: #f87171; }
+  .team-card-delta.warn { color: #fbbf24; }
+  .team-card-bar { height: 3px; background: #1a1f42; border-radius: 2px; overflow: hidden; margin-top: 8px; }
+  .team-card-bar-fill { height: 100%; border-radius: 2px; }
+  .moment-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .moment-item:last-child { border-bottom: none; }
+  .moment-date { font-size: 11px; color: var(--text-muted); width: 44px; flex-shrink: 0; padding-top: 2px; }
+  .moment-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+  .moment-text strong { color: var(--text-primary); }
+  .moment-badge {
+    font-size: 11px; font-weight: 600; border-radius: 4px; padding: 2px 8px;
+    white-space: nowrap; flex-shrink: 0;
+    background: rgba(74,222,128,.15); color: #4ade80;
+  }
+  .moment-badge.recur { background: rgba(129,140,248,.15); color: #818cf8; }
+  .watch-alert {
+    border-left: 3px solid; border-radius: 0 8px 8px 0;
+    background: #0e1130; padding: 10px 14px; margin: 6px 0; font-size: 13px; line-height: 1.55;
+  }
+  .watch-alert.warn { border-color: #fbbf24; }
+  .watch-alert.risk { border-color: #f87171; }
+  .watch-alert.opp  { border-color: #818cf8; }
+  .watch-alert-title { font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+  .watch-alert-body  { color: var(--text-secondary); }
+  .watch-alert-link  { color: #818cf8; font-size: 12px; cursor: pointer; margin-top: 4px; display: block; }
+  .action-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .action-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--border); background: #0e1130;
+    border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 500;
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+  }
+  .action-chip:hover { background: #1a1f44; border-color: #3a4070; color: var(--text-primary); }
+  .how-calc { margin-top: 16px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .how-calc-toggle {
+    padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text-muted);
+    cursor: pointer; user-select: none; display: flex; align-items: center; gap: 6px;
+  }
+  .how-calc-toggle::before { content: '▶'; font-size: 9px; transition: transform 0.2s; }
+  .how-calc.open .how-calc-toggle::before { transform: rotate(90deg); }
+  .how-calc-body {
+    display: none; padding: 10px 14px; font-size: 12px; color: var(--text-muted);
+    border-top: 1px solid var(--border); line-height: 1.7;
+  }
+  .how-calc.open .how-calc-body { display: block; }
+  .evelyn-live-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: #4ade80; font-weight: 600;
+    background: rgba(74,222,128,.1); border-radius: 10px; padding: 2px 8px;
+    margin-left: 8px; vertical-align: middle;
+  }
+  .evelyn-live-dot {
+    width: 6px; height: 6px; background: #4ade80;
+    border-radius: 50%; animation: evelynPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes evelynPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+  /* ─── CALIBRATION CARD ─── */
+  .calibration-card {
+    background: linear-gradient(135deg,#131740 0%,#0f132e 100%);
+    border: 1px solid #2a2f6a; border-radius: 10px; padding: 14px 16px; margin-top: 6px;
+  }
+  .calibration-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .calibration-card-icon {
+    width: 30px; height: 30px; border-radius: 7px; background: #2665E2;
+    display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+  }
+  .calibration-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .calibration-desc  { font-size: 11px; color: var(--text-muted); margin: 4px 0 10px 40px; }
+  .calibration-options { display: flex; flex-wrap: wrap; gap: 6px; margin-left: 40px; }
+  .cal-opt {
+    border: 1px solid var(--border); background: #12153a;
+    border-radius: 16px; padding: 4px 13px; font-size: 12px;
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+  }
+  .cal-opt:hover  { background: #2665E2; border-color: #2665E2; color: #fff; }
+  .cal-opt.selected { background: #2665E2; border-color: #2665E2; color: #fff; }
+  .cal-opt.skip   { color: var(--text-muted); border-color: transparent; background: transparent; }
+  .cal-opt.skip:hover { color: var(--text-secondary); background: #12153a; border-color: var(--border); }
   </style>
 </head>
 <body>
@@ -1997,6 +2123,34 @@ const agents = {
       { icon: '🔭', title: 'Strategic Initiative Tracker', desc: 'Progress on board-approved strategic initiatives', prompt: 'What is the status of our board-approved strategic initiatives?' },
       { icon: '⚠️', title: 'Board Risk Register', desc: 'Top risks and mitigations for board review', prompt: 'Give me an updated risk register summary for the board' },
     ]
+  },
+  service: {
+    label: 'Service',
+    subtitle: 'Case management, SLA tracking, customer satisfaction and knowledge base automation — connected to your service desk.',
+    useCases: [
+      { icon: '🎫', title: 'Open Ticket Overview', desc: 'All active cases by priority and age', prompt: 'Give me an overview of all open service tickets by priority and age' },
+      { icon: '⏱️', title: 'SLA Status Report', desc: 'Which cases are at risk of breaching SLA?', prompt: 'Which service tickets are at risk of breaching their SLA?' },
+      { icon: '📈', title: 'Customer Satisfaction Score', desc: 'CSAT trends and low-scoring interactions', prompt: 'Show me the current CSAT score and recent low-scoring cases' },
+      { icon: '🔺', title: 'Escalation Analysis', desc: 'Cases that need escalation or senior review', prompt: 'Which cases should be escalated based on complexity and customer impact?' },
+      { icon: '✉️', title: 'Draft Customer Response', desc: 'Generate a professional reply to a complaint', prompt: 'Draft a response to the latest customer complaint in the queue' },
+      { icon: '📚', title: 'Knowledge Base Article', desc: 'Auto-generate an article from a resolved case', prompt: 'Generate a knowledge base article from the top recurring issue this month' },
+      { icon: '📊', title: 'Backlog Prioritization', desc: 'Rank open cases by urgency and business impact', prompt: 'Prioritize the current case backlog by urgency and customer value' },
+      { icon: '🔁', title: 'Recurring Issue Detector', desc: 'Patterns in repeated complaints or failures', prompt: 'What are the most recurring issues reported by customers this quarter?' },
+    ]
+  },
+  evelyn: {
+    label: 'Value Intelligence',
+    subtitle: 'Continuously tracks, calibrates and surfaces ALMA\'s real ROI across your organization — connected to all AI Colleague activity.',
+    useCases: [
+      { icon: '💰', title: 'Value this month', desc: 'Hours saved, realized value and ROI so far', prompt: 'Show me ALMA\'s value impact this month' },
+      { icon: '👥', title: 'By team breakdown', desc: 'Hours saved per user across all departments', prompt: 'Show me value by team this month' },
+      { icon: '📊', title: 'Task type breakdown', desc: 'Where value is coming from by task category', prompt: 'Break down value by task type across the org' },
+      { icon: '📄', title: 'Monthly CFO report', desc: 'Export a CFO-ready value summary with methodology', prompt: 'Generate the monthly CFO value report for April' },
+      { icon: '🔭', title: 'What I\'m watching', desc: 'Signals, risks and untapped opportunities', prompt: 'What signals and risks are you watching right now?' },
+      { icon: '📅', title: 'Compare periods', desc: 'This month vs last month or any custom range', prompt: 'Compare this month\'s value to March' },
+      { icon: '⚙️', title: 'Calibration methodology', desc: 'How we sample and calculate time saved', prompt: 'How do you calculate the value numbers?' },
+      { icon: '📣', title: 'Stakeholder update draft', desc: 'Value summary formatted for leadership or board', prompt: 'Draft a stakeholder update on ALMA\'s impact this month' },
+    ]
   }
 };
 
@@ -2242,6 +2396,7 @@ const demoAnswers = {
 
   'Show me the cash flow forecast for Q2': {
     badge: '📊 Finance Intelligence',
+    calibration: 'Normally: pulling ERP, credit feeds, payment history and DSO reports across 50 accounts.',
     html: `<p>Here's the <strong>Q2 2026 cash flow forecast</strong> based on ERP data, outstanding invoices, and historical payment patterns:</p>
 <div class="kpi-row">
   <div class="kpi"><div class="label">Net Cash Flow (Q2)</div><div class="value pos">+4.2M</div><div class="delta pos">+12% vs Q1</div></div>
@@ -2275,6 +2430,7 @@ const demoAnswers = {
   },
   'Show me our CO2 emissions by site for Q1': {
     badge: '🌿 Sustainability & ESG',
+    calibration: 'Normally: collecting site energy reports, converting to CO2 equivalent and comparing against targets across 5 sites.',
     html: `<p>Here's the <strong>Q1 2026 CO₂ and energy summary</strong> across all production sites:</p>
 <div class="kpi-row">
   <div class="kpi"><div class="label">Total CO₂ (Scope 1+2)</div><div class="value">2,450t</div><div class="delta neg">+3% vs target</div></div>
@@ -2357,6 +2513,126 @@ const demoAnswers = {
 </tbody></table>
 <p>Erik meets all mandatory requirements and exceeds experience thresholds. Should I generate a full comparison report or prepare a submission package?</p>
 <span class="source-pill">🔗 CV database · Tender requirements · Skills matrix</span>`
+  },
+
+  'Show me ALMA\'s value impact this month': {
+    badge: '💎 Value Intelligence',
+    html: `<p><strong>April 2026</strong> <span class="evelyn-live-badge"><span class="evelyn-live-dot"></span>Live · updated 2 min ago</span></p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Hours Saved · MTD</div><div class="value pos">847h</div><div class="delta pos">+22% vs March pace</div></div>
+  <div class="kpi"><div class="label">Realized Value · MTD</div><div class="value pos">203K SEK</div><div class="delta">Conservative · 40% time-to-cash</div></div>
+  <div class="kpi"><div class="label">Forecast · End of Month</div><div class="value">1,140h · 274K</div><div class="delta pos">On track to beat target</div></div>
+  <div class="kpi"><div class="label">ROI · This Month</div><div class="value pos">4.2×</div><div class="delta">vs monthly ALMA cost</div></div>
+</div>
+
+<div class="evelyn-section-label">April so far — in my own words<span></span></div>
+<div class="evelyn-note">
+  <span class="evelyn-note-tag">A note from ALMA</span>
+  I've been especially useful to <strong>Finance</strong> and <strong>Marketing</strong> this month. Anna's two-day vendor contract review was a highlight — it would have taken her two weeks without me. I'd flag that one to leadership; it's the kind of story that moves perception.
+  <br><br>
+  I've been <em>struggling with Sales</em>. Their usage dropped 30% this week, and I think I know why — the missing CRM integration means I can't pull live pipeline data, so my answers land flat. Fix that and I can 2x their output.
+  <br><br>
+  There are three things I couldn't help with well this month: real-time inventory queries (need WMS access), multi-language customer sentiment (need broader language models), and personalized training plans for HR (need role data). Worth a conversation with IT.
+  <br><br>
+  Next month I'm aiming to get IT and HR above 20h saved per user — they're the biggest untapped pockets in your org.
+  <span class="evelyn-note-sig">— ALMA</span>
+</div>
+
+<div class="evelyn-section-label">Where value is coming from · task-typed, calibrated<span></span></div>
+<div class="value-bar-row"><div class="value-bar-label">Document drafting</div><div class="value-bar-track"><div class="value-bar-fill" style="width:34%"></div></div><div class="value-bar-pct">34%</div><div class="value-bar-hrs">288h</div></div>
+<div class="value-bar-row"><div class="value-bar-label">Data analysis</div><div class="value-bar-track"><div class="value-bar-fill" style="width:22%"></div></div><div class="value-bar-pct">22%</div><div class="value-bar-hrs">186h</div></div>
+<div class="value-bar-row"><div class="value-bar-label">Customer responses</div><div class="value-bar-track"><div class="value-bar-fill" style="width:18%"></div></div><div class="value-bar-pct">18%</div><div class="value-bar-hrs">152h</div></div>
+<div class="value-bar-row"><div class="value-bar-label">Meeting prep</div><div class="value-bar-track"><div class="value-bar-fill" style="width:11%"></div></div><div class="value-bar-pct">11%</div><div class="value-bar-hrs">94h</div></div>
+<div class="value-bar-row"><div class="value-bar-label">Decision support</div><div class="value-bar-track"><div class="value-bar-fill" style="width:9%"></div></div><div class="value-bar-pct">9%</div><div class="value-bar-hrs">76h</div></div>
+<div class="value-bar-row"><div class="value-bar-label">Other</div><div class="value-bar-track"><div class="value-bar-fill" style="width:6%"></div></div><div class="value-bar-pct">6%</div><div class="value-bar-hrs">51h</div></div>
+
+<div class="evelyn-section-label">By team · hours saved per user MTD<span></span></div>
+<div class="team-grid">
+  <div class="team-card"><div class="adoption-badge high">96% adoption</div><div class="team-card-name">Finance</div><div class="team-card-hrs">34h<small>/user</small></div><div class="team-card-delta pos">+18% vs March</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:96%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge high">89%</div><div class="team-card-name">Marketing</div><div class="team-card-hrs">28h<small>/user</small></div><div class="team-card-delta pos">+12%</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:89%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge high">84%</div><div class="team-card-name">Operations</div><div class="team-card-hrs">22h<small>/user</small></div><div class="team-card-delta pos">+6%</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:84%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge mid">71%</div><div class="team-card-name">Sales</div><div class="team-card-hrs">19h<small>/user</small></div><div class="team-card-delta neg">-30% this week</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:71%;background:#fbbf24"></div></div></div>
+  <div class="team-card"><div class="adoption-badge mid">48%</div><div class="team-card-name">HR</div><div class="team-card-hrs">14h<small>/user</small></div><div class="team-card-delta">flat</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:48%;background:#fbbf24"></div></div></div>
+  <div class="team-card"><div class="adoption-badge low">33%</div><div class="team-card-name">IT</div><div class="team-card-hrs">8h<small>/user</small></div><div class="team-card-delta warn">untapped</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:33%;background:#f87171"></div></div></div>
+</div>
+
+<div class="evelyn-section-label">This month's moments worth remembering<span></span></div>
+<div class="moment-item"><div class="moment-date">Apr 14</div><div class="moment-text"><strong>Anna · Finance</strong> reviewed 47 vendor contracts in 2 days — historically a 2-week job. She escalated three pricing anomalies that saved an estimated 180K SEK in renegotiation.</div><div class="moment-badge">+65h saved</div></div>
+<div class="moment-item"><div class="moment-date">Apr 17</div><div class="moment-text"><strong>Marcus · Sales</strong> generated 14 personalized proposals in one day — previous record was 2 per week. Two have already converted.</div><div class="moment-badge">+24h saved</div></div>
+<div class="moment-item"><div class="moment-date">Apr 20</div><div class="moment-text"><strong>Maria · Operations</strong> automated the monthly manufacturing KPI rollup across 4 sites. Now a recurring 6h/month task runs in 8 minutes.</div><div class="moment-badge recur">72h/year recurring</div></div>
+
+<div class="evelyn-section-label">What I'm watching<span></span></div>
+<div class="watch-alert warn"><div class="watch-alert-title">Sales usage dropped 30% this week.</div><div class="watch-alert-body">Three power users stopped querying me mid-week — likely blocked by the pending CRM integration. If it continues 2 more weeks, it's -180K SEK in value per month.</div><span class="watch-alert-link">Prioritize CRM sync with IT</span></div>
+<div class="watch-alert opp"><div class="watch-alert-title">IT and HR are your biggest untapped pools.</div><div class="watch-alert-body">If IT matched Operations' usage, the org would capture an additional ~85h / 20K SEK per month. Three targeted onboarding sessions usually unlock this pattern.</div><span class="watch-alert-link">Schedule IT onboarding</span></div>
+<div class="watch-alert risk"><div class="watch-alert-title">17 power users drive 43% of total value.</div><div class="watch-alert-body">If two of them left tomorrow, monthly value would drop an estimated 8-12%. Worth a retention touchpoint with their managers.</div><span class="watch-alert-link">Flag to People team</span></div>
+
+<div class="action-chips">
+  <span class="action-chip" onclick="sendPrompt('Generate the monthly CFO value report for April')">📄 Generate monthly CFO report</span>
+  <span class="action-chip" onclick="sendPrompt('Draft a stakeholder update on ALMA\'s impact this month')">📧 Draft stakeholder email</span>
+  <span class="action-chip" onclick="sendPrompt('Compare this month\'s value to March')">📅 Compare periods</span>
+  <span class="action-chip" onclick="sendPrompt('What signals and risks are you watching right now?')">🔭 Deep dive: What I\'m watching</span>
+</div>
+
+<div class="how-calc" onclick="this.classList.toggle('open')">
+  <div class="how-calc-toggle">How I calculate this</div>
+  <div class="how-calc-body">
+    <strong>Task-typing:</strong> Every interaction is classified into 17+ task categories (document drafting, data analysis, meeting prep, etc.).<br>
+    <strong>Calibrated self-report:</strong> After ~5% of tasks, users see a one-click prompt: "How long would this have taken manually?" Their answers calibrate the time-saved estimate for their role and task type — no industry benchmarks.<br>
+    <strong>Time-to-cash discount:</strong> Hours saved are converted to SEK using a blended hourly rate, then multiplied by 0.40 (40%) to produce a conservative realized-value figure a CFO can defend.<br>
+    <strong>Methodology is one click away</strong> in every export. Numbers are traceable to source.
+  </div>
+</div>
+<span class="source-pill">🔗 All AI Colleague activity logs · Calibration responses · Blended hourly rate: 850 SEK/h</span>`
+  },
+
+  'Show me value by team this month': {
+    badge: '💎 Value Intelligence',
+    html: `<p>Here's the <strong>by-team value breakdown</strong> for April 2026 — 24 days in:</p>
+<div class="team-grid">
+  <div class="team-card"><div class="adoption-badge high">96% adoption</div><div class="team-card-name">Finance</div><div class="team-card-hrs">34h<small>/user</small></div><div class="team-card-delta pos">+18% vs March</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:96%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge high">89%</div><div class="team-card-name">Marketing</div><div class="team-card-hrs">28h<small>/user</small></div><div class="team-card-delta pos">+12%</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:89%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge high">84%</div><div class="team-card-name">Operations</div><div class="team-card-hrs">22h<small>/user</small></div><div class="team-card-delta pos">+6%</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:84%;background:#4ade80"></div></div></div>
+  <div class="team-card"><div class="adoption-badge mid">71%</div><div class="team-card-name">Sales</div><div class="team-card-hrs">19h<small>/user</small></div><div class="team-card-delta neg">-30% this week</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:71%;background:#fbbf24"></div></div></div>
+  <div class="team-card"><div class="adoption-badge mid">48%</div><div class="team-card-name">HR</div><div class="team-card-hrs">14h<small>/user</small></div><div class="team-card-delta">flat</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:48%;background:#fbbf24"></div></div></div>
+  <div class="team-card"><div class="adoption-badge low">33%</div><div class="team-card-name">IT</div><div class="team-card-hrs">8h<small>/user</small></div><div class="team-card-delta warn">untapped</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:33%;background:#f87171"></div></div></div>
+</div>
+<p>Finance leads at 34h/user — driven by Penny's cash flow, invoice, and anomaly detection tasks. Sales is showing a dip worth investigating. Should I pull the individual-level breakdown for Sales (anonymized)?</p>
+<span class="source-pill">🔗 All AI Colleague activity logs · Calibration responses · Org structure</span>`
+  },
+
+  'How do you calculate the value numbers?': {
+    badge: '💎 Value Intelligence',
+    html: `<p>Here's the full <strong>methodology</strong> behind every number Evelyn shows:</p>
+<table><thead><tr><th>Step</th><th>What happens</th><th>Why</th></tr></thead><tbody>
+<tr><td>1. Task-typing</td><td>Every ALMA interaction is auto-classified into one of 17+ task categories</td><td>Enables fair comparison across roles</td></tr>
+<tr><td>2. Calibration sampling</td><td>After roughly 5% of tasks, users see a 1-click prompt: "How long would this have taken manually?"</td><td>Real data from your org — not industry benchmarks</td></tr>
+<tr><td>3. Time saved estimate</td><td>Calibration responses build a per-role, per-task-type time-saved model</td><td>Accurate and continuously improving</td></tr>
+<tr><td>4. Hourly rate</td><td>Hours saved × blended rate (850 SEK/h, configurable)</td><td>Gross value before discount</td></tr>
+<tr><td>5. Time-to-cash discount</td><td>Gross value × 40% = realized value</td><td>Conservative — CFO-defensible</td></tr>
+</tbody></table>
+<div class="evelyn-note">
+  <span class="evelyn-note-tag">Why 40%?</span>
+  Not all saved hours convert directly to revenue or cost reduction. People use freed time for other things. The 40% discount is deliberately conservative — it means every number I show can survive a finance review. You can adjust the discount rate in settings if your CFO prefers a different assumption.
+  <span class="evelyn-note-sig">— Evelyn</span>
+</div>
+<p>No vanity metrics. Logins, sessions, and token counts are explicitly excluded — they measure activity, not value.</p>
+<span class="source-pill">🔗 Activity logs · Calibration responses · Configurable rate: 850 SEK/h · Discount: 40%</span>`
+  },
+
+  'Draft a stakeholder update on ALMA\'s impact this month': {
+    badge: '💎 Value Intelligence',
+    html: `<p>Here's a <strong>draft stakeholder update</strong> for April — ready to forward to leadership or board:</p>
+<div class="evelyn-note">
+  <span class="evelyn-note-tag">Draft · April 2026 ALMA Value Update</span>
+  <strong>ALMA has saved 847 hours this month</strong> — the equivalent of 5 full-time weeks of skilled knowledge work across Finance, Marketing, Operations, Sales, and HR.<br><br>
+  Realized value (conservatively calculated at a 40% time-to-cash conversion) is <strong>203,000 SEK</strong>, against a monthly ALMA cost that puts us at a <strong>4.2x ROI</strong> — paid for by the 6th of the month. Everything since is surplus.<br><br>
+  Highlights this month: Anna in Finance reviewed 47 vendor contracts in 2 days and surfaced 180K SEK in savings. Marcus in Sales generated 14 proposals in one day. Maria in Operations automated a 6-hour monthly process down to 8 minutes.<br><br>
+  The biggest opportunity ahead is IT and HR, currently at 33% and 48% adoption. Targeted onboarding sessions for these teams could add ~85h/month to the total.<br><br>
+  Methodology and source data available on request.
+  <span class="evelyn-note-sig">— ALMA, April 24 2026</span>
+</div>
+<p>Adjust tone or add/remove sections before sending. Want a PDF version or a 3-slide deck for the board?</p>
+<span class="source-pill">🔗 Evelyn activity logs · Calibration data · 40% time-to-cash model</span>`
   }
 };
 
@@ -2375,6 +2651,8 @@ const AGENT_GREETINGS = {
   hr:             n => `How can I support your team today?`,
   leadership:     n => `What's the strategic challenge on your mind?`,
   board:          n => `What's on the agenda?`,
+  service:        n => `What does the queue look like today?`,
+  evelyn:         n => `Here's where your ALMA investment stands today.`,
 };
 
 function switchAgent(id) {
@@ -2471,6 +2749,47 @@ function sendPrompt(text) {
   sendMessage();
 }
 
+function addCalibrationCard(desc) {
+  const el = document.createElement('div');
+  el.className = 'msg';
+  el.innerHTML = `
+    <div class="msg-avatar alma">A</div>
+    <div class="msg-body">
+      <div class="calibration-card">
+        <div class="calibration-card-header">
+          <div class="calibration-card-icon">⏱️</div>
+          <div class="calibration-title">Quick calibration — how long would this have taken manually?</div>
+        </div>
+        <div class="calibration-desc">${desc}</div>
+        <div class="calibration-options">
+          <span class="cal-opt" onclick="selectCalOpt(this)">Less than 15 min</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">15-30 min</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">30-60 min</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">1-2h</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">2-4h</span>
+          <span class="cal-opt" onclick="selectCalOpt(this)">More than 4h</span>
+          <span class="cal-opt skip" onclick="skipCalibration(this)">Skip</span>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('chatMessages').appendChild(el);
+  document.getElementById('chatMessages').scrollTop = 9999;
+}
+
+function selectCalOpt(el) {
+  el.closest('.calibration-options').querySelectorAll('.cal-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  setTimeout(() => {
+    const card = el.closest('.calibration-card');
+    if (card) card.innerHTML = '<p style="color:var(--text-muted);font-size:12px;margin:0">Thank you — this helps calibrate the value calculation for your team.</p>';
+  }, 700);
+}
+
+function skipCalibration(el) {
+  const card = el.closest('.calibration-card');
+  if (card) card.style.display = 'none';
+}
+
 function sendMessage() {
   const inp = document.getElementById('chatInput');
   const text = inp.value.trim();
@@ -2503,6 +2822,9 @@ function sendMessage() {
 
     if (answer) {
       addMsg('alma', answer.html, answer.badge);
+      if (answer.calibration) {
+        setTimeout(() => addCalibrationCard(answer.calibration), 600);
+      }
     } else {
       const agent = agents[currentAgent];
       addMsg('alma', `<p>I'm analyzing that now using data from your connected systems. Here's what I found based on available data — would you like me to go deeper on any specific aspect?</p>
@@ -2566,6 +2888,17 @@ const AGENT_HISTORY = {
     { title: 'Board pack draft — April meeting', date: 'Today' },
     { title: 'Investor KPI dashboard Q1', date: 'Apr 3' },
     { title: 'Equity structure overview', date: 'Mar 25' },
+  ],
+  service: [
+    { title: 'SLA breach risk — open tickets week 17', date: 'Today' },
+    { title: 'CSAT drop — enterprise segment analysis', date: 'Yesterday' },
+    { title: 'Backlog prioritization April', date: 'Apr 5' },
+  ],
+  evelyn: [
+    { title: 'Monthly value report — April 2026', date: 'Today' },
+    { title: 'Value vs March — what changed?', date: 'Apr 20' },
+    { title: 'CFO export — Q1 ROI summary', date: 'Apr 3' },
+    { title: 'Sales adoption drop — root cause', date: 'Mar 31' },
   ]
 };
 
@@ -2658,7 +2991,7 @@ document.getElementById('ucEditOverlay').addEventListener('click', function(e) {
 });
 
 /* ─── DYNAMIC AGENT SIDEBAR ─── */
-let agentOrder = ['personal','finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board'];
+let agentOrder = ['personal','finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
 const agentOverrides = {}; // { id: { name, icon } }
 
 const ICON_OPTIONS = ['✦','📊','⚙️','🚀','📣','🌿','📋','🎯','👥','🧭','📐','💼','🏦','🎨','🔬','📈','💡','🤝','🌍','⚡','🏆','🔧','📱','💻','🛡️','🌐','🔑','📝','💰','🧠','👔','🏢'];
@@ -2666,13 +2999,13 @@ const ICON_OPTIONS = ['✦','📊','⚙️','🚀','📣','🌿','📋','🎯','
 const DEFAULT_ICONS = {
   personal:'✦', finance:'📊', operations:'⚙️', commercial:'🚀',
   marketing:'📣', sustainability:'🌿', legal:'📋', matching:'🎯',
-  hr:'👥', leadership:'🧭', board:'📐'
+  hr:'👥', leadership:'🧭', board:'📐', service:'🎧', evelyn:'💎'
 };
 
 const SIDEBAR_NAMES = {
   personal:'My Assistant', finance:'Finance', operations:'Operations',
   commercial:'Sales', marketing:'Marketing', sustainability:'Sustainability',
-  legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board'
+  legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board', service:'Service', evelyn:'Value Intelligence'
 };
 
 function agentDisplayName(id) {
@@ -2688,6 +3021,13 @@ function renderAgentSidebar() {
   const list = document.getElementById('agentList');
   list.innerHTML = '';
   agentOrder.forEach(id => {
+    if (id === 'evelyn') {
+      const sep = document.createElement('div');
+      sep.className = 'section-label evelyn-sidebar-sep';
+      sep.style.cssText = 'margin-top:12px;padding-top:10px;border-top:1px solid var(--border)';
+      sep.textContent = 'VALUE TRACKING';
+      list.appendChild(sep);
+    }
     const div = document.createElement('div');
     div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
     div.id = 'agent-' + id;
@@ -2771,6 +3111,8 @@ Object.assign(agentOverrides, {
   hr:            { name: 'Grace', icon: null },
   leadership:    { name: 'Winston', icon: null },
   board:         { name: 'Charles', icon: null },
+  service:       { name: 'Sofia', icon: null },
+  evelyn:        { name: 'Evelyn', icon: null },
 });
 
 // Init
