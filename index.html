@@ -1422,13 +1422,8 @@
     background: linear-gradient(135deg,#131740 0%,#0f132e 100%);
     border: 1px solid #2a2f6a; border-radius: 10px; padding: 14px 16px; margin-top: 6px;
   }
-  .calibration-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .calibration-card-icon {
-    width: 30px; height: 30px; border-radius: 7px; background: #2665E2;
-    display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
-  }
-  .calibration-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-  .calibration-desc  { font-size: 11px; color: var(--text-muted); margin: 4px 0 10px 0; }
+  .calibration-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .calibration-desc  { font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0; }
   .calibration-options { display: flex; flex-wrap: wrap; gap: 6px; }
   .cal-opt {
     border: 1px solid var(--border); background: #12153a;
@@ -2756,10 +2751,7 @@ function addCalibrationCard(desc) {
     <div class="msg-avatar alma">A</div>
     <div class="msg-body">
       <div class="calibration-card">
-        <div class="calibration-card-header">
-          <div class="calibration-card-icon">⏱️</div>
-          <div class="calibration-title">Quick calibration — how long would this have taken manually?</div>
-        </div>
+        <div class="calibration-title">⏱️ Quick calibration — how long would this have taken manually?</div>
         <div class="calibration-desc">${desc}</div>
         <div class="calibration-options">
           <span class="cal-opt" onclick="selectCalOpt(this)">Under 15 min</span>
