@@ -893,6 +893,79 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
+    /* ─── COMPANY SECTION HEADER ─── */
+    .company-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px 6px;
+    }
+    .company-section-header .section-label { padding: 0; }
+    .browse-colleagues-btn {
+      background: none; border: 1px solid var(--border); border-radius: 10px;
+      padding: 2px 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--text-muted); cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .browse-colleagues-btn:hover { color: var(--text-primary); border-color: #3a4070; background: rgba(255,255,255,0.04); }
+    .sidebar.collapsed .company-section-header .browse-colleagues-btn { display: none; }
+
+    /* ─── GALLERY MODAL ─── */
+    .gallery-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+    }
+    .gallery-overlay.show { display: flex; }
+    .gallery-modal {
+      background: #10122a; border: 1px solid var(--border);
+      border-radius: 16px; width: 740px; max-width: 92vw; max-height: 82vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.55);
+      animation: galleryIn 0.2s ease;
+    }
+    @keyframes galleryIn { from { opacity:0; transform:scale(.97) translateY(8px) } to { opacity:1; transform:none } }
+    .gallery-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 24px 28px 18px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .gallery-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+    .gallery-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .gallery-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 20px; padding: 0; line-height: 1;
+    }
+    .gallery-close:hover { color: var(--text-primary); }
+    .gallery-body { overflow-y: auto; flex: 1; padding: 20px 28px 28px; }
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .gallery-card {
+      background: #13163a; border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+      cursor: pointer; transition: all 0.15s; user-select: none;
+    }
+    .gallery-card:hover { border-color: #3a4070; background: #1a1f48; }
+    .gallery-card.gc-active { border-color: #2665E2; background: rgba(38,101,226,0.08); }
+    .gallery-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .gallery-card-icon { font-size: 22px; }
+    .gallery-pill {
+      font-size: 10px; font-weight: 700; border-radius: 20px; padding: 3px 10px;
+      letter-spacing: 0.04em;
+    }
+    .gallery-pill.active { background: rgba(38,101,226,0.2); color: #6b9fff; }
+    .gallery-pill.inactive { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .gallery-card-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .gallery-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
+    .gallery-footer {
+      padding: 14px 28px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .gallery-footer-count { font-size: 12px; color: var(--text-muted); }
+    .gallery-done-btn {
+      background: #2665E2; border: none; color: #fff;
+      border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .gallery-done-btn:hover { background: #1d55c8; }
+
     /* ─── CUSTOM AGENTS SECTION ─── */
     .custom-section-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -1498,7 +1571,10 @@
     <span class="nav-label">Learning ALMA</span>
   </div>
 
-  <div class="section-label">Company AI Colleagues</div>
+  <div class="company-section-header">
+    <div class="section-label">Company AI Colleagues</div>
+    <button class="browse-colleagues-btn" onclick="openGallery()">Browse</button>
+  </div>
   <div id="agentList"></div>
 
   <div class="custom-section-header">
@@ -3016,6 +3092,8 @@ function renderAgentSidebar() {
   const list = document.getElementById('agentList');
   list.innerHTML = '';
   agentOrder.forEach(id => {
+    if (id === 'personal') return; // shown in top nav always
+    if (!activeAgents.has(id)) return;
     const div = document.createElement('div');
     div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
     div.id = 'agent-' + id;
@@ -3427,6 +3505,85 @@ function switchCustomAgent(id, name, desc) {
       <div class="uc-desc">Pull a summary from connected data sources</div>
     </div>`;
 }
+
+
+/* ─── GALLERY ─── */
+const GALLERY_AGENT_IDS = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
+const activeAgents = new Set(['finance','operations','commercial','hr','evelyn']);
+
+function openGallery() {
+  renderGallery();
+  document.getElementById('galleryOverlay').classList.add('show');
+}
+
+function closeGallery() {
+  document.getElementById('galleryOverlay').classList.remove('show');
+  renderAgentSidebar();
+}
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+  GALLERY_AGENT_IDS.forEach(id => {
+    const agent = agents[id];
+    if (!agent) return;
+    const isActive = activeAgents.has(id);
+    const icon = agentDisplayIcon(id);
+    const name = agentDisplayName(id);
+    // Short desc: first clause before " — " or first 80 chars
+    const rawDesc = agent.subtitle || agent.label;
+    const shortDesc = rawDesc.split(' — ')[0].split(' — ')[0];
+
+    const card = document.createElement('div');
+    card.className = 'gallery-card' + (isActive ? ' gc-active' : '');
+    card.innerHTML = `
+      <div class="gallery-card-top">
+        <div class="gallery-card-icon">${icon}</div>
+        <span class="gallery-pill ${isActive ? 'active' : 'inactive'}">${isActive ? '✓ Active' : '+ Add'}</span>
+      </div>
+      <div class="gallery-card-name">${name}</div>
+      <div class="gallery-card-desc">${shortDesc}</div>`;
+    card.onclick = () => toggleGalleryAgent(id);
+    grid.appendChild(card);
+  });
+  updateGalleryCount();
+}
+
+function toggleGalleryAgent(id) {
+  if (activeAgents.has(id)) {
+    activeAgents.delete(id);
+    if (currentAgent === id) switchAgent('personal');
+  } else {
+    activeAgents.add(id);
+  }
+  renderGallery();
+}
+
+function updateGalleryCount() {
+  const count = activeAgents.size;
+  document.getElementById('galleryCount').textContent = `${count} colleague${count !== 1 ? 's' : ''} active`;
+}
 </script>
+
+<!-- Gallery modal -->
+<div id="galleryOverlay" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
+  <div class="gallery-modal">
+    <div class="gallery-header">
+      <div>
+        <div class="gallery-title">Company AI Colleagues</div>
+        <div class="gallery-subtitle">Click a colleague to activate or deactivate them in your sidebar</div>
+      </div>
+      <button class="gallery-close" onclick="closeGallery()">✕</button>
+    </div>
+    <div class="gallery-body">
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+    <div class="gallery-footer">
+      <span class="gallery-footer-count" id="galleryCount"></span>
+      <button class="gallery-done-btn" onclick="closeGallery()">Done</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
