@@ -954,6 +954,41 @@
     .gallery-pill.inactive { background: rgba(255,255,255,0.06); color: var(--text-muted); }
     .gallery-card-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
     .gallery-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
+    /* Gallery tabs */
+    .gallery-tabs {
+      display: flex; gap: 0; padding: 0 28px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .gallery-tab {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      padding: 12px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+      color: var(--text-muted); margin-bottom: -1px; transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .gallery-tab:hover { color: var(--text-primary); }
+    .gallery-tab.active { color: var(--text-primary); border-bottom-color: #2665E2; }
+    .gallery-tab-count {
+      background: rgba(255,255,255,0.08); border-radius: 10px;
+      padding: 1px 7px; font-size: 10px; font-weight: 700; color: var(--text-muted);
+    }
+    .gallery-tab.active .gallery-tab-count { background: rgba(38,101,226,0.2); color: #6b9fff; }
+
+    /* Custom tab create card */
+    .gallery-create-card {
+      background: rgba(38,101,226,0.07); border: 1px dashed #2665E2;
+      border-radius: 12px; padding: 16px 18px; cursor: pointer;
+      transition: all 0.15s; display: flex; flex-direction: column; gap: 6px;
+    }
+    .gallery-create-card:hover { background: rgba(38,101,226,0.13); }
+    .gallery-create-icon { font-size: 22px; }
+    .gallery-create-name { font-size: 14px; font-weight: 600; color: #6b9fff; }
+    .gallery-create-desc { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
+
+    .gallery-empty {
+      grid-column: 1/-1; text-align: center;
+      padding: 40px 0; color: var(--text-muted); font-size: 13px;
+    }
+
     .gallery-footer {
       padding: 14px 28px; border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
@@ -3511,8 +3546,11 @@ function switchCustomAgent(id, name, desc) {
 
 
 /* ─── GALLERY ─── */
+let galleryTab = 'company';
 
 function openGallery() {
+  galleryTab = 'company';
+  updateGalleryTabs();
   renderGallery();
   document.getElementById('galleryOverlay').classList.add('show');
 }
@@ -3522,31 +3560,76 @@ function closeGallery() {
   renderAgentSidebar();
 }
 
+function switchGalleryTab(tab) {
+  galleryTab = tab;
+  updateGalleryTabs();
+  renderGallery();
+}
+
+function updateGalleryTabs() {
+  document.getElementById('tabCompany').classList.toggle('active', galleryTab === 'company');
+  document.getElementById('tabCustom').classList.toggle('active', galleryTab === 'custom');
+  document.getElementById('tabCustomCount').textContent = customAgents.length;
+}
+
 function renderGallery() {
   const grid = document.getElementById('galleryGrid');
   grid.innerHTML = '';
-  GALLERY_AGENT_IDS.forEach(id => {
-    const agent = agents[id];
-    if (!agent) return;
-    const isActive = activeAgents.has(id);
-    const icon = agentDisplayIcon(id);
-    const name = agentDisplayName(id);
-    // Short desc: first clause before " — " or first 80 chars
-    const rawDesc = agent.subtitle || agent.label;
-    const shortDesc = rawDesc.split(' — ')[0].split(' — ')[0];
 
-    const card = document.createElement('div');
-    card.className = 'gallery-card' + (isActive ? ' gc-active' : '');
-    card.innerHTML = `
-      <div class="gallery-card-top">
-        <div class="gallery-card-icon">${icon}</div>
-        <span class="gallery-pill ${isActive ? 'active' : 'inactive'}">${isActive ? '✓ Active' : '+ Add'}</span>
-      </div>
-      <div class="gallery-card-name">${name}</div>
-      <div class="gallery-card-desc">${shortDesc}</div>`;
-    card.onclick = () => toggleGalleryAgent(id);
-    grid.appendChild(card);
-  });
+  if (galleryTab === 'company') {
+    GALLERY_AGENT_IDS.forEach(id => {
+      const agent = agents[id];
+      if (!agent) return;
+      const isActive = activeAgents.has(id);
+      const icon = agentDisplayIcon(id);
+      const name = agentDisplayName(id);
+      const shortDesc = (agent.subtitle || agent.label).split(' — ')[0];
+      const card = document.createElement('div');
+      card.className = 'gallery-card' + (isActive ? ' gc-active' : '');
+      card.innerHTML = `
+        <div class="gallery-card-top">
+          <div class="gallery-card-icon">${icon}</div>
+          <span class="gallery-pill ${isActive ? 'active' : 'inactive'}">${isActive ? '✓ Active' : '+ Add'}</span>
+        </div>
+        <div class="gallery-card-name">${name}</div>
+        <div class="gallery-card-desc">${shortDesc}</div>`;
+      card.onclick = () => { toggleGalleryAgent(id); };
+      grid.appendChild(card);
+    });
+
+  } else {
+    // Create new card — always first
+    const createCard = document.createElement('div');
+    createCard.className = 'gallery-create-card';
+    createCard.innerHTML = `
+      <div class="gallery-create-icon">＋</div>
+      <div class="gallery-create-name">Create new colleague</div>
+      <div class="gallery-create-desc">Build a custom AI Colleague for your team — define its name, focus area and tasks.</div>`;
+    createCard.onclick = () => { closeGallery(); openAgentBuilder(); };
+    grid.appendChild(createCard);
+
+    if (customAgents.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'gallery-empty';
+      empty.textContent = 'No custom colleagues yet. Create one to get started.';
+      grid.appendChild(empty);
+    } else {
+      customAgents.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card gc-active';
+        card.innerHTML = `
+          <div class="gallery-card-top">
+            <div class="gallery-card-icon">${a.name[0].toUpperCase()}</div>
+            <span class="gallery-pill active">✓ Active</span>
+          </div>
+          <div class="gallery-card-name">${a.name}</div>
+          <div class="gallery-card-desc">${a.desc || 'Custom AI Colleague'}</div>`;
+        card.onclick = () => { closeGallery(); switchCustomAgent(a.id, a.name, a.desc); };
+        grid.appendChild(card);
+      });
+    }
+  }
+
   updateGalleryCount();
 }
 
@@ -3561,8 +3644,12 @@ function toggleGalleryAgent(id) {
 }
 
 function updateGalleryCount() {
-  const count = activeAgents.size;
-  document.getElementById('galleryCount').textContent = `${count} colleague${count !== 1 ? 's' : ''} active`;
+  const active = activeAgents.size;
+  const custom = customAgents.length;
+  const total = active + custom;
+  document.getElementById('galleryCount').textContent =
+    `${total} colleague${total !== 1 ? 's' : ''} active`;
+  document.getElementById('tabCustomCount').textContent = custom;
 }
 </script>
 
@@ -3570,11 +3657,16 @@ function updateGalleryCount() {
 <div id="galleryOverlay" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
   <div class="gallery-modal">
     <div class="gallery-header">
-      <div>
-        <div class="gallery-title">Company AI Colleagues</div>
-        <div class="gallery-subtitle">Click a colleague to activate or deactivate them in your sidebar</div>
-      </div>
+      <div class="gallery-title">Browse AI Colleagues</div>
       <button class="gallery-close" onclick="closeGallery()">✕</button>
+    </div>
+    <div class="gallery-tabs">
+      <button class="gallery-tab active" id="tabCompany" onclick="switchGalleryTab('company')">
+        Company <span class="gallery-tab-count" id="tabCompanyCount">12</span>
+      </button>
+      <button class="gallery-tab" id="tabCustom" onclick="switchGalleryTab('custom')">
+        My Custom <span class="gallery-tab-count" id="tabCustomCount">0</span>
+      </button>
     </div>
     <div class="gallery-body">
       <div class="gallery-grid" id="galleryGrid"></div>
