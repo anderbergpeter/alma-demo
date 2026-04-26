@@ -3092,8 +3092,7 @@ function renderAgentSidebar() {
   const list = document.getElementById('agentList');
   list.innerHTML = '';
   agentOrder.forEach(id => {
-    if (id === 'personal') return; // shown in top nav always
-    if (!activeAgents.has(id)) return;
+    if (id !== 'personal' && !activeAgents.has(id)) return;
     const div = document.createElement('div');
     div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
     div.id = 'agent-' + id;
@@ -3180,6 +3179,10 @@ Object.assign(agentOverrides, {
   service:       { name: 'Sofia', icon: null },
   evelyn:        { name: 'Evelyn', icon: null },
 });
+
+// Gallery state — must be defined before init
+const GALLERY_AGENT_IDS = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
+const activeAgents = new Set(['finance','evelyn']);
 
 // Init
 renderAgentSidebar();
@@ -3508,8 +3511,6 @@ function switchCustomAgent(id, name, desc) {
 
 
 /* ─── GALLERY ─── */
-const GALLERY_AGENT_IDS = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
-const activeAgents = new Set(['finance','operations','commercial','hr','evelyn']);
 
 function openGallery() {
   renderGallery();
