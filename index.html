@@ -916,7 +916,8 @@
     .gallery-overlay.show { display: flex; }
     .gallery-modal {
       background: #10122a; border: 1px solid var(--border);
-      border-radius: 16px; width: 740px; max-width: 92vw; max-height: 82vh;
+      border-radius: 16px; width: 740px; max-width: 92vw;
+      height: 640px; max-height: 88vh;
       display: flex; flex-direction: column;
       box-shadow: 0 28px 70px rgba(0,0,0,0.55);
       animation: galleryIn 0.2s ease;
@@ -983,6 +984,13 @@
     .gallery-create-icon { font-size: 22px; }
     .gallery-create-name { font-size: 14px; font-weight: 600; color: #6b9fff; }
     .gallery-create-desc { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
+
+    .gallery-author-badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      border-radius: 10px; padding: 2px 8px; letter-spacing: 0.03em;
+    }
+    .gallery-author-badge.mine { background: rgba(194,109,230,0.18); color: #c26de6; }
+    .gallery-author-badge.colleague { background: rgba(255,255,255,0.07); color: var(--text-muted); }
 
     .gallery-empty {
       grid-column: 1/-1; text-align: center;
@@ -3400,7 +3408,11 @@ document.addEventListener('click', function(e) {
 });
 
 /* ─── AGENT BUILDER ─── */
-const customAgents = [];
+const customAgents = [
+  { id: 'custom_own_1',  name: 'Tender Writer',    desc: 'Drafts and formats tender responses based on our templates and past proposals.', isOwn: true },
+  { id: 'custom_col_1', name: 'Meeting Notes',     desc: 'Summarizes meeting recordings and distributes action items to participants.', author: 'Anna K.' },
+  { id: 'custom_col_2', name: 'Competitor Watch',  desc: 'Tracks competitor pricing, product updates and news mentions on a weekly basis.', author: 'Marcus H.' },
+];
 
 function openAgentBuilder() {
   document.getElementById('agentBuilderOverlay').classList.add('show');
@@ -3615,6 +3627,9 @@ function renderGallery() {
       grid.appendChild(empty);
     } else {
       customAgents.forEach(a => {
+        const authorBadge = a.isOwn
+          ? `<span class="gallery-author-badge mine">Mine</span>`
+          : `<span class="gallery-author-badge colleague">${a.author}</span>`;
         const card = document.createElement('div');
         card.className = 'gallery-card gc-active';
         card.innerHTML = `
@@ -3623,7 +3638,8 @@ function renderGallery() {
             <span class="gallery-pill active">✓ Active</span>
           </div>
           <div class="gallery-card-name">${a.name}</div>
-          <div class="gallery-card-desc">${a.desc || 'Custom AI Colleague'}</div>`;
+          <div class="gallery-card-desc">${a.desc || 'Custom AI Colleague'}</div>
+          <div style="margin-top:8px">${authorBadge}</div>`;
         card.onclick = () => { closeGallery(); switchCustomAgent(a.id, a.name, a.desc); };
         grid.appendChild(card);
       });
@@ -3665,7 +3681,7 @@ function updateGalleryCount() {
         Company <span class="gallery-tab-count" id="tabCompanyCount">12</span>
       </button>
       <button class="gallery-tab" id="tabCustom" onclick="switchGalleryTab('custom')">
-        My Custom <span class="gallery-tab-count" id="tabCustomCount">0</span>
+        Custom <span class="gallery-tab-count" id="tabCustomCount">0</span>
       </button>
     </div>
     <div class="gallery-body">
