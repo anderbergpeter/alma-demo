@@ -1631,7 +1631,7 @@
 
   <div class="custom-section-header">
     <div class="section-label">My AI Colleagues</div>
-    <button class="new-agent-btn" onclick="openAgentBuilder()" title="Create new AI Colleague">+</button>
+    <button class="new-agent-btn" onclick="openGalleryCustom()" title="Browse and create AI Colleagues">+</button>
   </div>
   <div id="customAgentList"></div>
 
@@ -3571,6 +3571,15 @@ let galleryTab = 'company';
 
 function openGallery() {
   galleryTab = 'company';
+  updateGalleryTabs();
+  renderGallery();
+  document.getElementById('galleryOverlay').classList.add('show');
+}
+
+function openGalleryCustom() {
+  galleryTab = 'custom';
+  const si = document.getElementById('gallerySearchInput');
+  if (si) si.value = '';
   updateGalleryTabs();
   renderGallery();
   document.getElementById('galleryOverlay').classList.add('show');
