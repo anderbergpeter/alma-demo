@@ -1542,6 +1542,96 @@
   }
   @keyframes evelynPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
+  /* ─── PRICING CALCULATOR ─── */
+  .pricing-calc { background: #0e1130; border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin-top: 4px; }
+  .pricing-calc h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0 0 6px; }
+  .pricing-calc .pc-intro { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+  .pc-field { margin-bottom: 16px; }
+  .pc-field > label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; letter-spacing: 0.02em; }
+  .pc-field small { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .pc-input {
+    width: 100%; padding: 8px 12px; font-size: 13px;
+    background: #1a1f44; border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text-primary); outline: none; box-sizing: border-box;
+  }
+  .pc-input:focus { border-color: #2665E2; }
+  .pc-checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; }
+  .pc-checkbox-grid label, .pc-radios label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text-secondary); cursor: pointer;
+    padding: 4px 0;
+  }
+  .pc-radios { display: flex; flex-direction: column; gap: 4px; }
+  .pc-checkbox-grid input, .pc-radios input { accent-color: #2665E2; }
+  .pc-btn-primary {
+    background: #2665E2; border: none; color: #fff;
+    border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s; margin-top: 6px;
+  }
+  .pc-btn-primary:hover { background: #1d55c8; }
+  .pc-btn-secondary {
+    background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
+    border-radius: 8px; padding: 9px 20px; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s; margin-right: 8px;
+  }
+  .pc-btn-secondary:hover { border-color: #3a4070; color: var(--text-primary); }
+
+  /* Result */
+  .pc-result-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 16px 0 18px; }
+  .pc-result-card { background: #12153a; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .pc-result-card.highlight { border-color: #2665E2; background: rgba(38,101,226,0.06); }
+  .pc-result-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+  .pc-result-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+  .pc-result-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .pc-breakdown { background: #12153a; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .pc-breakdown-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; color: var(--text-secondary); }
+  .pc-breakdown-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; font-weight: 700; color: var(--text-primary); }
+  .pc-breakdown-row span:last-child { font-variant-numeric: tabular-nums; }
+
+  /* Agreement preview */
+  .pc-agreement {
+    background: #fafbff; color: #0e1130; border-radius: 12px;
+    padding: 32px 36px; margin: 16px 0; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    font-family: 'Times New Roman', Georgia, serif; line-height: 1.55;
+  }
+  .pc-agreement-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #2665E2; padding-bottom: 12px; margin-bottom: 18px; }
+  .pc-agreement-logo { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.06em; color: #2665E2; }
+  .pc-agreement-meta { font-size: 11px; color: #555; text-align: right; font-family: -apple-system, sans-serif; }
+  .pc-agreement h2 { font-size: 22px; margin: 0 0 6px; color: #0e1130; }
+  .pc-agreement h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2665E2; margin: 16px 0 6px; font-family: -apple-system, sans-serif; }
+  .pc-agreement p { font-size: 13px; margin: 6px 0; }
+  .pc-agreement table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; font-family: -apple-system, sans-serif; }
+  .pc-agreement table td, .pc-agreement table th { padding: 7px 10px; border-bottom: 1px solid #e3e6f0; text-align: left; }
+  .pc-agreement table th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #2665E2; font-weight: 700; }
+  .pc-agreement table td:last-child, .pc-agreement table th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  .pc-agreement-total-row { font-weight: 700; border-top: 2px solid #0e1130 !important; }
+  .pc-agreement-sig { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e3e6f0; font-size: 12px; font-family: -apple-system, sans-serif; }
+  .pc-agreement-sig-line { border-bottom: 1px solid #999; height: 30px; margin-bottom: 6px; }
+  .pc-agreement-footnote { font-size: 10px; color: #666; margin-top: 18px; font-style: italic; font-family: -apple-system, sans-serif; }
+
+  /* Email send section */
+  .pc-email-row {
+    display: flex; gap: 8px; align-items: center; margin-top: 14px;
+    background: #12153a; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .pc-email-row input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text-primary); font-size: 13px;
+  }
+  .pc-email-row input::placeholder { color: var(--text-muted); }
+  .pc-send-btn {
+    background: #c26de6; border: none; color: #fff;
+    border-radius: 6px; padding: 7px 16px; font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .pc-send-btn:hover { background: #a958c9; }
+  .pc-sent-confirm {
+    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3);
+    border-radius: 10px; padding: 14px 18px; margin-top: 14px; font-size: 13px;
+    color: #4ade80; display: flex; align-items: center; gap: 10px;
+  }
+
   /* ─── CALIBRATION CARD ─── */
   .calibration-card {
     background: linear-gradient(135deg,#131740 0%,#0f132e 100%);
@@ -2273,6 +2363,7 @@ const agents = {
       { icon: '📅', title: 'Compare periods', desc: 'This month vs last month or any custom range', prompt: 'Compare this month\'s value to March' },
       { icon: '⚙️', title: 'Calibration methodology', desc: 'How we sample and calculate time saved', prompt: 'How do you calculate the value numbers?' },
       { icon: '📣', title: 'Stakeholder update draft', desc: 'Value summary formatted for leadership or board', prompt: 'Draft a stakeholder update on ALMA\'s impact this month' },
+      { icon: '🧮', title: 'Live pricing calculator', desc: 'Quote a client live in the meeting and email a proposal', prompt: 'Calculate ALMA pricing for a client' },
     ]
   }
 };
@@ -2943,6 +3034,12 @@ function sendMessage() {
       }
     }
 
+    // Special: pricing calculator
+    if (text.toLowerCase().includes('pricing') && text.toLowerCase().includes('client')) {
+      renderPricingCalculator();
+      return;
+    }
+
     if (answer) {
       addMsg('alma', answer.html, answer.badge);
       if (answer.calibration) {
@@ -3565,6 +3662,250 @@ function switchCustomAgent(id, name, desc) {
     </div>`;
 }
 
+
+/* ─── ALMA PRICING CALCULATOR ─── */
+const BLUEPRINT_OPTIONS = [
+  { id: 'finance',        name: 'Penny',    domain: 'Finance' },
+  { id: 'operations',     name: 'Chester',  domain: 'Operations' },
+  { id: 'commercial',     name: 'Harvey',   domain: 'Sales' },
+  { id: 'marketing',      name: 'Madison',  domain: 'Marketing' },
+  { id: 'sustainability', name: 'Ivy',      domain: 'Sustainability' },
+  { id: 'legal',          name: 'Atticus',  domain: 'Legal' },
+  { id: 'hr',             name: 'Grace',    domain: 'HR' },
+  { id: 'service',        name: 'Sofia',    domain: 'Service' },
+];
+
+function renderPricingCalculator() {
+  const html = `
+    <div class="pricing-calc">
+      <h3>Live ALMA pricing — let's quote this client</h3>
+      <p class="pc-intro">A few questions and I'll generate a CFO-ready proposal you can send right from this chat.</p>
+
+      <div class="pc-field">
+        <label>Number of employees / users</label>
+        <input class="pc-input" type="number" id="pcEmployees" value="500" min="50" step="50">
+        <small>Up to 500 users: €7,500/month platform floor. Above 500: €15/user/month.</small>
+      </div>
+
+      <div class="pc-field">
+        <label>Blueprint AI Colleagues — pick the ones the client wants</label>
+        <div class="pc-checkbox-grid" id="pcBlueprintList">
+          ${BLUEPRINT_OPTIONS.map((bp, i) =>
+            `<label><input type="checkbox" class="pc-blueprint-cb" value="${bp.id}" data-name="${bp.name}" data-domain="${bp.domain}" ${i===0?'checked':''}> ${bp.name} <span style="color:var(--text-muted);font-size:12px;">— ${bp.domain}</span></label>`
+          ).join('')}
+        </div>
+        <small>€2,500/month each. First Blueprint's build is included in Activation; additional Blueprints carry a one-time build fee outside ARR.</small>
+      </div>
+
+      <div class="pc-field">
+        <label>Shared Custom AI Colleagues (built by employees, in the gallery)</label>
+        <input class="pc-input" type="number" id="pcShared" value="5" min="0" max="50">
+        <small>€100/month each. Up to 5 included in Activation.</small>
+      </div>
+
+      <div class="pc-field">
+        <label>AI Capability Program (ACP) tier</label>
+        <div class="pc-radios">
+          <label><input type="radio" name="pcAcp" value="essentials" checked> Essentials — bundled in platform floor (no extra cost)</label>
+          <label><input type="radio" name="pcAcp" value="growth"> Growth — +€15,000/month (monthly sprints, dedicated part-time engineer)</label>
+          <label><input type="radio" name="pcAcp" value="enterprise"> Enterprise — +€35,000/month (full-time team, quarterly C-suite alignment)</label>
+        </div>
+      </div>
+
+      <div class="pc-field">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="pcActivation" checked> Include ALMA Activation (€40,000 one-time, split €20K start + €20K handover)
+        </label>
+      </div>
+
+      <button class="pc-btn-primary" onclick="calculatePricing()">Calculate pricing →</button>
+    </div>`;
+  addMsg('alma', html, '🧮 Pricing Calculator · Evelyn');
+}
+
+function calculatePricing() {
+  const employees = Math.max(parseInt(document.getElementById('pcEmployees').value) || 0, 1);
+  const blueprintEls = Array.from(document.querySelectorAll('.pc-blueprint-cb:checked'));
+  const blueprints = blueprintEls.map(el => ({ id: el.value, name: el.dataset.name, domain: el.dataset.domain }));
+  const shared = Math.max(parseInt(document.getElementById('pcShared').value) || 0, 0);
+  const acp = document.querySelector('input[name="pcAcp"]:checked').value;
+  const includeActivation = document.getElementById('pcActivation').checked;
+
+  // Algorithm
+  const platformFloor = employees <= 500 ? 7500 : employees * 15;
+  const blueprintMonthly = blueprints.length * 2500;
+  const sharedMonthly = shared * 100;
+  let acpMonthly = 0, acpLabel = 'Essentials (bundled)';
+  if (acp === 'growth')     { acpMonthly = 15000; acpLabel = 'Growth'; }
+  if (acp === 'enterprise') { acpMonthly = 35000; acpLabel = 'Enterprise'; }
+  const monthlyRecurring = platformFloor + blueprintMonthly + sharedMonthly + acpMonthly;
+  const activationFee = includeActivation ? 40000 : 0;
+  // Year 1: Activation + 10 months recurring (handover at month 2)
+  const year1 = activationFee + (monthlyRecurring * 10);
+  const year2 = monthlyRecurring * 12;
+  const year3 = monthlyRecurring * 12;
+  const threeYearTotal = year1 + year2 + year3;
+  // Copilot comparison: €30/user × 12 months
+  const copilotYear = employees * 30 * 12;
+  const savingsVsCopilot = (copilotYear - (monthlyRecurring * 12));
+
+  // Stash for the agreement step
+  window._pricingResult = {
+    employees, blueprints, shared, acp, acpLabel, includeActivation,
+    platformFloor, blueprintMonthly, sharedMonthly, acpMonthly,
+    monthlyRecurring, activationFee, year1, year2, year3, threeYearTotal,
+    copilotYear, savingsVsCopilot
+  };
+
+  const fmt = n => '€' + n.toLocaleString('en-US');
+  const blueprintLines = blueprints.length
+    ? blueprints.map(b => `<div class="pc-breakdown-row"><span>· ${b.name} (${b.domain})</span><span>€2,500/mo</span></div>`).join('')
+    : `<div class="pc-breakdown-row" style="color:var(--text-muted)"><span>No Blueprint Colleagues selected</span><span>€0</span></div>`;
+
+  const html = `
+    <div class="pricing-calc">
+      <h3>Pricing for ${employees.toLocaleString('en-US')} users · ${blueprints.length} Blueprint${blueprints.length===1?'':'s'} · ${shared} Shared Custom</h3>
+
+      <div class="pc-result-summary">
+        <div class="pc-result-card"><div class="pc-result-label">Monthly Recurring</div><div class="pc-result-value">${fmt(monthlyRecurring)}</div><div class="pc-result-sub">from handover (day 60)</div></div>
+        <div class="pc-result-card highlight"><div class="pc-result-label">Year 1 Total</div><div class="pc-result-value">${fmt(year1)}</div><div class="pc-result-sub">Activation + 10 months</div></div>
+        <div class="pc-result-card"><div class="pc-result-label">3-Year Total</div><div class="pc-result-value">${fmt(threeYearTotal)}</div><div class="pc-result-sub">Y1 + Y2 + Y3 recurring</div></div>
+      </div>
+
+      <div class="pc-breakdown">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Monthly recurring breakdown</div>
+        <div class="pc-breakdown-row"><span>Platform floor (James + Evelyn, ${employees.toLocaleString('en-US')} users)</span><span>${fmt(platformFloor)}</span></div>
+        ${blueprintLines}
+        <div class="pc-breakdown-row"><span>Shared Custom AI Colleagues (${shared} × €100)</span><span>${fmt(sharedMonthly)}</span></div>
+        ${acpMonthly > 0 ? `<div class="pc-breakdown-row"><span>ACP ${acpLabel}</span><span>${fmt(acpMonthly)}</span></div>` : `<div class="pc-breakdown-row" style="color:var(--text-muted)"><span>ACP Essentials</span><span>bundled</span></div>`}
+        <div class="pc-breakdown-row total"><span>Total monthly recurring</span><span>${fmt(monthlyRecurring)}</span></div>
+      </div>
+
+      <div class="pc-breakdown">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Annual view</div>
+        <div class="pc-breakdown-row"><span>Year 1 ${includeActivation ? '(Activation €40,000 + 10 months recurring)' : '(12 months recurring, no Activation)'}</span><span>${fmt(year1)}</span></div>
+        <div class="pc-breakdown-row"><span>Year 2 (12 months recurring)</span><span>${fmt(year2)}</span></div>
+        <div class="pc-breakdown-row"><span>Year 3 (12 months recurring)</span><span>${fmt(year3)}</span></div>
+        <div class="pc-breakdown-row total"><span>3-year total commitment</span><span>${fmt(threeYearTotal)}</span></div>
+      </div>
+
+      ${employees >= 250 ? `<div class="watch-alert opp" style="margin-top:14px"><div class="watch-alert-title">Versus Microsoft Copilot at this scale</div><div class="watch-alert-body">Copilot at €30/user × ${employees.toLocaleString('en-US')} users = ${fmt(copilotYear)}/year. ALMA = ${fmt(monthlyRecurring*12)}/year. Savings: <strong>${fmt(savingsVsCopilot)}/year</strong> — and Copilot has no Evelyn equivalent at any user count.</div></div>` : ''}
+
+      <div style="margin-top:18px;display:flex;gap:8px">
+        <button class="pc-btn-secondary" onclick="renderPricingCalculator()">← Adjust inputs</button>
+        <button class="pc-btn-primary" onclick="generateAgreement()">Generate proposal →</button>
+      </div>
+    </div>`;
+  addMsg('alma', html, '🧮 Pricing Calculator · Evelyn');
+}
+
+function generateAgreement() {
+  const r = window._pricingResult;
+  if (!r) return;
+  const fmt = n => '€' + n.toLocaleString('en-US');
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const propId = 'ALMA-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(Math.random()*900+100);
+
+  const blueprintRows = r.blueprints.map(b =>
+    `<tr><td>${b.name} (${b.domain}) — Blueprint AI Colleague</td><td>€2,500 / month</td></tr>`
+  ).join('');
+
+  const html = `
+    <p style="color:var(--text-muted);font-size:13px">Here's the proposal — review it, then enter the client's email to send.</p>
+    <div class="pc-agreement">
+      <div class="pc-agreement-header">
+        <div>
+          <div class="pc-agreement-logo">REEINVENT · ALMA</div>
+          <div style="font-family:-apple-system,sans-serif;font-size:12px;color:#666;margin-top:3px">AI Workforce Platform</div>
+        </div>
+        <div class="pc-agreement-meta">
+          <div><strong>Proposal ID:</strong> ${propId}</div>
+          <div><strong>Date:</strong> ${today}</div>
+          <div><strong>Valid until:</strong> 30 days from issue</div>
+        </div>
+      </div>
+
+      <h2>Subscription Proposal — ALMA Platform</h2>
+      <p>This proposal sets out the commercial terms for licensing the ALMA platform, including James (personal AI assistant for every employee), Evelyn (Value Intelligence with monthly CFO-verifiable Value Report), and the AI Colleagues selected below, for a workforce of <strong>${r.employees.toLocaleString('en-US')} users</strong>.</p>
+
+      <h4>Configuration</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Recurring</th></tr></thead>
+        <tbody>
+          <tr><td>Platform floor — James + Evelyn (${r.employees.toLocaleString('en-US')} users)</td><td>${fmt(r.platformFloor)} / month</td></tr>
+          ${blueprintRows}
+          ${r.shared > 0 ? `<tr><td>Shared Custom AI Colleagues (${r.shared} × €100, available in Internal Gallery)</td><td>${fmt(r.sharedMonthly)} / month</td></tr>` : ''}
+          ${r.acpMonthly > 0 ? `<tr><td>AI Capability Program — ${r.acpLabel}</td><td>${fmt(r.acpMonthly)} / month</td></tr>` : `<tr><td>AI Capability Program — Essentials</td><td>bundled</td></tr>`}
+          <tr class="pc-agreement-total-row"><td>Total monthly recurring (from handover)</td><td>${fmt(r.monthlyRecurring)} / month</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Annual commitment</h4>
+      <table>
+        <tbody>
+          ${r.includeActivation ? `<tr><td>ALMA Activation (one-time, split €20,000 start + €20,000 handover)</td><td>€40,000</td></tr>` : ''}
+          <tr><td>Year 1 total</td><td>${fmt(r.year1)}</td></tr>
+          <tr><td>Year 2 total</td><td>${fmt(r.year2)}</td></tr>
+          <tr><td>Year 3 total</td><td>${fmt(r.year3)}</td></tr>
+          <tr class="pc-agreement-total-row"><td>3-year total commitment</td><td>${fmt(r.threeYearTotal)}</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Terms</h4>
+      <p style="font-size:12px">12-month minimum commitment from handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin). Up to 5 Shared Custom AI Colleagues are included in Activation; additional Blueprints carry a separate one-time build fee outside ARR.</p>
+
+      <div class="pc-agreement-sig">
+        <div>
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:0.08em">Client signature</div>
+          <div class="pc-agreement-sig-line"></div>
+          <div>Name, title, date</div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:0.08em">Reeinvent</div>
+          <div class="pc-agreement-sig-line"></div>
+          <div>Peter Anderberg, Founder</div>
+        </div>
+      </div>
+
+      <div class="pc-agreement-footnote">This proposal is generated live from Evelyn's pricing engine. Numbers are CFO-defensible and traceable to the published ALMA pricing model. Reeinvent AB · Sweden.</div>
+    </div>
+
+    <div class="pc-email-row">
+      <span style="color:var(--text-muted);font-size:13px">📧 To:</span>
+      <input type="email" id="pcEmailInput" placeholder="cfo@client-company.com" autocomplete="off">
+      <button class="pc-send-btn" onclick="sendProposal()">Send proposal</button>
+    </div>
+    <p style="color:var(--text-muted);font-size:11px;margin-top:8px;line-height:1.6">The proposal will be sent as a PDF attachment with a personalised cover note. The client receives it instantly and can sign electronically via the embedded link.</p>`;
+  addMsg('alma', html, '📄 Proposal · ALMA');
+}
+
+function sendProposal() {
+  const input = document.getElementById('pcEmailInput');
+  const email = (input?.value || '').trim();
+  if (!email || !email.includes('@')) {
+    input.style.borderColor = '#f87171';
+    input.focus();
+    return;
+  }
+  const r = window._pricingResult;
+  const fmt = n => '€' + n.toLocaleString('en-US');
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Replace the email row with confirmation
+  const row = input.closest('.pc-email-row');
+  const next = row.nextElementSibling;
+  row.outerHTML = `
+    <div class="pc-sent-confirm">
+      <span style="font-size:18px">✓</span>
+      <div>
+        <strong>Proposal sent to ${email}</strong><br>
+        <span style="color:var(--text-secondary);font-size:12px">Subject: ALMA Proposal — ${r.employees.toLocaleString('en-US')} users · ${fmt(r.monthlyRecurring)}/month from handover · ${today}<br>
+        Attachments: ALMA_Proposal.pdf · ALMA_Methodology.pdf<br>
+        Sent via Gmail on your behalf. The client will see a tracked-open notification when they read it.</span>
+      </div>
+    </div>`;
+  if (next && next.tagName === 'P') next.remove();
+}
 
 /* ─── GALLERY ─── */
 let galleryTab = 'company';
