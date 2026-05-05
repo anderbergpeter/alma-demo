@@ -4901,10 +4901,10 @@ let companyColleagues = COMPANY_COLLEAGUE_SEED.map(c => ({ ...c }));
 let activeCompanyColleagueId = null; // null = creating new
 
 let creatorTab = 'identity';
-const CREATOR_TABS = ['identity','prompt','tools','skills','data','model','access','advanced','overrides'];
+const CREATOR_TABS = ['identity','prompt','tools','skills','data','workflows','model','access','advanced','overrides'];
 const CREATOR_TAB_LABELS = {
-  identity: 'Identity', prompt: 'Prompt', tools: 'Tools & MCPs', skills: 'Skills',
-  data: 'Data', model: 'Model', access: 'Access', advanced: 'Advanced', overrides: 'User Overrides'
+  identity: 'Identity', prompt: 'Prompt', tools: 'Tools', skills: 'Skills',
+  data: 'Data', workflows: 'Workflows', model: 'Model', access: 'Access', advanced: 'Advanced', overrides: 'User Overrides'
 };
 
 function openColleagueCreatorAdmin() {
@@ -7760,13 +7760,14 @@ function updateGalleryCount() {
     <div class="admin-creator-tabs">
       <button class="admin-creator-tab active" data-tab="identity" onclick="switchCreatorTab('identity')">1. Identity</button>
       <button class="admin-creator-tab" data-tab="prompt" onclick="switchCreatorTab('prompt')">2. Prompt</button>
-      <button class="admin-creator-tab" data-tab="tools" onclick="switchCreatorTab('tools')">3. Tools &amp; MCPs</button>
+      <button class="admin-creator-tab" data-tab="tools" onclick="switchCreatorTab('tools')">3. Tools</button>
       <button class="admin-creator-tab" data-tab="skills" onclick="switchCreatorTab('skills')">4. Skills</button>
       <button class="admin-creator-tab" data-tab="data" onclick="switchCreatorTab('data')">5. Data</button>
-      <button class="admin-creator-tab" data-tab="model" onclick="switchCreatorTab('model')">6. Model</button>
-      <button class="admin-creator-tab" data-tab="access" onclick="switchCreatorTab('access')">7. Access</button>
-      <button class="admin-creator-tab" data-tab="advanced" onclick="switchCreatorTab('advanced')">8. Advanced</button>
-      <button class="admin-creator-tab" data-tab="overrides" onclick="switchCreatorTab('overrides')">9. User Overrides</button>
+      <button class="admin-creator-tab" data-tab="workflows" onclick="switchCreatorTab('workflows')">6. Workflows</button>
+      <button class="admin-creator-tab" data-tab="model" onclick="switchCreatorTab('model')">7. Model</button>
+      <button class="admin-creator-tab" data-tab="access" onclick="switchCreatorTab('access')">8. Access</button>
+      <button class="admin-creator-tab" data-tab="advanced" onclick="switchCreatorTab('advanced')">9. Advanced</button>
+      <button class="admin-creator-tab" data-tab="overrides" onclick="switchCreatorTab('overrides')">10. User Overrides</button>
     </div>
     </div>
 
@@ -7857,26 +7858,11 @@ function updateGalleryCount() {
         </div>
       </section>
 
-      <!-- 3. TOOLS & MCPs -->
+      <!-- 3. TOOLS -->
       <section class="admin-creator-section" data-section="tools">
         <div class="form-section-title" style="margin-bottom:10px">Built-in tools</div>
+        <div class="admin-helper" style="margin-bottom:10px">Atomic capabilities the LLM can call directly.</div>
         <div id="adminToolsList"></div>
-
-        <div class="form-section-title" style="margin: 22px 0 10px">Enterprise MCPs</div>
-        <div class="admin-helper" style="margin-bottom:10px">Vendor-provided MCP servers vetted by your IT team.</div>
-        <div id="adminMcpList"></div>
-
-        <div class="form-section-title" style="margin: 22px 0 10px">Custom MCPs</div>
-        <div class="admin-helper" style="margin-bottom:10px">Internal MCP servers built or hosted by your organization.</div>
-        <div id="adminCustomMcpList"></div>
-
-        <div class="form-section-title" style="margin: 22px 0 10px">Workflows</div>
-        <div class="admin-helper" style="margin-bottom:10px">
-          Multi-step pipelines that chain tools and LLM calls. Workflows are registered as
-          tools for the LLM, but listed separately so admins can distinguish them from
-          atomic tools. Configure a workflow's steps in its full editor.
-        </div>
-        <div id="adminWorkflowList"></div>
       </section>
 
       <!-- 4. SKILLS -->
@@ -7911,6 +7897,14 @@ function updateGalleryCount() {
         <div class="admin-helper" style="margin-bottom:10px">Routed via internal sub-agents — the LLM only generates the query; the runtime validates and executes it (like the analytics agent).</div>
         <div id="adminDbList"></div>
 
+        <div class="form-section-title" style="margin: 22px 0 10px">Enterprise MCPs</div>
+        <div class="admin-helper" style="margin-bottom:10px">Vendor-provided MCP servers vetted by your IT team — typically expose external systems (CRM, wiki, ticketing) as data + actions for the LLM.</div>
+        <div id="adminMcpList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Custom MCPs</div>
+        <div class="admin-helper" style="margin-bottom:10px">Internal MCP servers built or hosted by your organization, exposing in-house data and APIs.</div>
+        <div id="adminCustomMcpList"></div>
+
         <div class="form-section-title" style="margin: 22px 0 10px">Source priority</div>
         <div class="admin-helper" style="margin-bottom:10px">
           Drag to reorder. The list order = priority. Sources not in the list are excluded
@@ -7918,6 +7912,18 @@ function updateGalleryCount() {
         </div>
         <div class="priority-list" id="adminPriorityList"></div>
         <div class="priority-pool" id="adminPriorityPool"></div>
+      </section>
+
+      <!-- 6. WORKFLOWS -->
+      <section class="admin-creator-section" data-section="workflows">
+        <div class="admin-helper" style="margin-bottom:14px">
+          Workflows orchestrate tools, skills and data sources into multi-step pipelines.
+          They are registered as tools for the LLM, but listed here separately because they
+          tie everything else together. Build them <strong>last</strong> — once your tools,
+          skills and data are configured, you can compose them into workflows.
+        </div>
+        <div class="form-section-title" style="margin-bottom:10px">Workflows</div>
+        <div id="adminWorkflowList"></div>
       </section>
 
       <!-- 6. MODEL -->
@@ -8080,7 +8086,7 @@ function updateGalleryCount() {
 
     <div class="admin-creator-footer">
       <div class="admin-foot-left">
-        <span class="admin-step-indicator" id="adminStepIndicator">Step 1 of 9 — Identity</span>
+        <span class="admin-step-indicator" id="adminStepIndicator">Step 1 of 10 — Identity</span>
       </div>
       <div class="footer-right">
         <button class="btn-cancel" onclick="closeColleagueCreatorAdmin()">Cancel</button>
