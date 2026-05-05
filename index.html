@@ -1310,6 +1310,130 @@
     }
     .feature-row-add:hover { background: rgba(38,101,226,0.13); }
 
+    /* ─── COLLEAGUE CREATOR — list + form layout ─── */
+    .creator-layout {
+      flex: 1; display: flex;
+      min-height: 0;
+    }
+    .creator-sidebar {
+      width: 280px; flex-shrink: 0;
+      background: #10122a;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .creator-sidebar-header {
+      padding: 16px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .creator-sidebar-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .creator-new-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; width: 100%; padding: 10px 12px;
+      background: rgba(38,101,226,0.12);
+      border: 1px solid rgba(38,101,226,0.4);
+      border-radius: 10px; cursor: pointer;
+      color: #6b9fff; font-size: 13px; font-weight: 600;
+      transition: background 0.15s;
+    }
+    .creator-new-btn:hover { background: rgba(38,101,226,0.2); }
+    .creator-list {
+      flex: 1; overflow-y: auto;
+      padding: 8px 8px 16px;
+    }
+    .creator-list-empty {
+      padding: 24px 16px; text-align: center;
+      font-size: 12px; color: var(--text-muted);
+    }
+    .creator-list-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px;
+      border-radius: 8px; cursor: pointer;
+      color: var(--text-secondary);
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .creator-list-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+    .creator-list-item.active {
+      background: rgba(38,101,226,0.15);
+      color: var(--text-primary);
+    }
+    .creator-list-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .creator-list-info { flex: 1; min-width: 0; }
+    .creator-list-name {
+      font-size: 13px; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .creator-list-meta {
+      font-size: 10px; color: var(--text-muted);
+      margin-top: 2px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .creator-list-actions {
+      display: flex; gap: 2px;
+      opacity: 0; transition: opacity 0.15s;
+    }
+    .creator-list-item:hover .creator-list-actions,
+    .creator-list-item.active .creator-list-actions { opacity: 1; }
+    .creator-list-action {
+      background: none; border: none;
+      color: var(--text-muted);
+      cursor: pointer; padding: 4px;
+      border-radius: 4px;
+      display: flex; align-items: center;
+      transition: all 0.15s;
+    }
+    .creator-list-action:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); }
+    .creator-list-action.danger:hover { color: #ff8a8a; background: rgba(232,93,93,0.12); }
+    .creator-list-section {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 12px 10px 6px;
+    }
+    .creator-list-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #34d399;
+    }
+    .creator-list-status-dot.draft { background: #f59e0b; }
+
+    .creator-main {
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Confirm dialog */
+    .confirm-overlay {
+      display: none; position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+    }
+    .confirm-overlay.show { display: flex; }
+    .confirm-modal {
+      background: #131830; border: 1px solid var(--border);
+      border-radius: 12px; width: 380px; max-width: 92vw;
+      padding: 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .confirm-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .confirm-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+    .confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .btn-confirm-danger {
+      background: #b73d3d; border: none; color: white;
+      border-radius: 8px; padding: 8px 16px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-confirm-danger:hover { background: #d04646; }
+
     /* ─── ITEM FULL-EDIT PAGE ─── */
     .full-edit-layout {
       display: grid;
@@ -4047,6 +4171,26 @@ function setAdminList(key, arr) {
   else if (key === 'subs') ADMIN_SUBAGENTS = arr;
 }
 
+/* Company colleagues — admin-side state, seeded from the runtime agents.
+   Each entry holds the form values shown in the Colleague Creator form. */
+const COMPANY_COLLEAGUE_SEED = [
+  { id:'personal',       name:'My Assistant',  icon:'✦',  role:'Assistant', tone:'Professional', desc:'Personal assistant — calendar, email, HR systems and documents.', status:'live',  builtin:true },
+  { id:'finance',        name:'Finance',       icon:'📊', role:'Analyst',   tone:'Professional', desc:'Cash flow, AR tracking, anomaly detection, group reporting and cost leakage — connected to your ERP.', status:'live' },
+  { id:'operations',     name:'Operations',    icon:'⚙️', role:'Operator',  tone:'Professional', desc:'Maintenance prediction, production monitoring, inventory and supply chain risk — connected to your MES and TMS.', status:'live' },
+  { id:'commercial',     name:'Sales',         icon:'🚀', role:'Specialist',tone:'Professional', desc:'Prospecting, pricing intelligence, key account expansion and churn prediction — connected to your CRM.', status:'live' },
+  { id:'marketing',      name:'Marketing',     icon:'📣', role:'Specialist',tone:'Friendly',     desc:'Content creation, campaign performance, social media and brand — connected to your marketing stack.', status:'live' },
+  { id:'sustainability', name:'Sustainability',icon:'🌿', role:'Reviewer',  tone:'Professional', desc:'ESG reporting, carbon accounting, supplier risk and regulatory updates.', status:'live' },
+  { id:'legal',          name:'Legal',         icon:'📋', role:'Reviewer',  tone:'Professional', desc:'Contract review, clause comparison, risk identification.', status:'live' },
+  { id:'matching',       name:'Procurement',   icon:'🎯', role:'Specialist',tone:'Concise',      desc:'Supplier matching, procurement workflows and vendor risk.', status:'live' },
+  { id:'hr',             name:'HR',            icon:'👥', role:'Assistant', tone:'Friendly',     desc:'Policy questions, onboarding, leave balances and employee support.', status:'live' },
+  { id:'leadership',     name:'Leadership',    icon:'🧭', role:'Analyst',   tone:'Executive',    desc:'Cross-functional KPIs and decision support for the leadership team.', status:'live' },
+  { id:'board',          name:'Board',         icon:'📐', role:'Analyst',   tone:'Executive',    desc:'Board pack preparation, briefings and strategic analysis.', status:'live' },
+  { id:'service',        name:'Service',       icon:'🎧', role:'Assistant', tone:'Supportive',   desc:'Customer service triage, suggested replies and ticket routing.', status:'live' },
+  { id:'evelyn',         name:'ALMA ROI',      icon:'💎', role:'Analyst',   tone:'Executive',    desc:'Calculate ROI for ALMA-powered transformations.', status:'live' },
+];
+let companyColleagues = COMPANY_COLLEAGUE_SEED.map(c => ({ ...c }));
+let activeCompanyColleagueId = null; // null = creating new
+
 let creatorTab = 'identity';
 const CREATOR_TABS = ['identity','prompt','tools','skills','data','model','access','advanced','overrides'];
 const CREATOR_TAB_LABELS = {
@@ -4062,6 +4206,137 @@ function openColleagueCreatorAdmin() {
   renderAdminLists();
   bindIconPicker();
   bindAccessChips();
+  renderCompanyColleagueList();
+  // If nothing selected yet, default to "new" mode
+  if (activeCompanyColleagueId == null) {
+    newCompanyColleague();
+  } else {
+    loadCompanyColleague(activeCompanyColleagueId);
+  }
+}
+
+/* ─── Company colleague list (left sidebar inside Colleague Creator) ─── */
+function renderCompanyColleagueList() {
+  const list = document.getElementById('creatorColleagueList');
+  if (!list) return;
+  if (companyColleagues.length === 0) {
+    list.innerHTML = `<div class="creator-list-empty">No colleagues yet. Click "+ New colleague" to create one.</div>`;
+    return;
+  }
+  const liveOnes  = companyColleagues.filter(c => c.status !== 'draft');
+  const draftOnes = companyColleagues.filter(c => c.status === 'draft');
+  const renderOne = (c) => {
+    const isActive = activeCompanyColleagueId === c.id;
+    const dotClass = c.status === 'draft' ? 'draft' : '';
+    return `<div class="creator-list-item ${isActive ? 'active' : ''}"
+              onclick="loadCompanyColleague('${c.id}')">
+      <div class="creator-list-icon">${c.icon || '🤖'}</div>
+      <div class="creator-list-info">
+        <div class="creator-list-name">${escapeHtml(c.name)}</div>
+        <div class="creator-list-meta">
+          <span class="creator-list-status-dot ${dotClass}"></span>
+          ${c.status === 'draft' ? 'Draft' : 'Live'} · ${escapeHtml(c.role || 'Assistant')}
+        </div>
+      </div>
+      <div class="creator-list-actions">
+        <button class="creator-list-action" title="Edit"
+          onclick="event.stopPropagation();loadCompanyColleague('${c.id}')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        </button>
+        <button class="creator-list-action danger" title="Delete"
+          onclick="event.stopPropagation();confirmDeleteColleague('${c.id}')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  };
+  let html = '';
+  if (liveOnes.length)  html += `<div class="creator-list-section">Live</div>` + liveOnes.map(renderOne).join('');
+  if (draftOnes.length) html += `<div class="creator-list-section">Drafts</div>` + draftOnes.map(renderOne).join('');
+  list.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function newCompanyColleague() {
+  activeCompanyColleagueId = null;
+  // Reset form fields
+  document.getElementById('adminAgentName').value = '';
+  document.getElementById('adminAgentRole').value = 'Assistant';
+  document.getElementById('adminAgentTone').value = 'Professional';
+  document.getElementById('adminAgentLang').value = 'English';
+  document.getElementById('adminAgentDesc').value = '';
+  document.getElementById('adminSystemPrompt').value = '';
+  document.getElementById('adminDisallowed').value = '';
+  document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach((b,i) => b.classList.toggle('selected', i === 0));
+  document.getElementById('creatorMainTitle').textContent = 'Create Company Colleague';
+  document.getElementById('adminDeployBtn').textContent = 'Deploy colleague';
+  creatorTab = 'identity';
+  applyCreatorTab();
+  renderCompanyColleagueList();
+}
+
+function loadCompanyColleague(id) {
+  const c = companyColleagues.find(x => x.id === id);
+  if (!c) return;
+  activeCompanyColleagueId = id;
+  document.getElementById('adminAgentName').value = c.name || '';
+  document.getElementById('adminAgentRole').value = c.role || 'Assistant';
+  document.getElementById('adminAgentTone').value = c.tone || 'Professional';
+  document.getElementById('adminAgentLang').value = c.language || 'English';
+  document.getElementById('adminAgentDesc').value = c.desc || '';
+  document.getElementById('adminSystemPrompt').value = c.systemPrompt || '';
+  document.getElementById('adminDisallowed').value = c.disallowed || '';
+  // Icon
+  document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.icon === c.icon);
+  });
+  // If colleague's icon isn't in the picker, select first as fallback
+  if (!document.querySelector('#adminIconPicker .icon-picker-btn.selected')) {
+    document.querySelector('#adminIconPicker .icon-picker-btn')?.classList.add('selected');
+  }
+  document.getElementById('creatorMainTitle').textContent = 'Edit — ' + c.name;
+  document.getElementById('adminDeployBtn').textContent = 'Save changes';
+  creatorTab = 'identity';
+  applyCreatorTab();
+  renderCompanyColleagueList();
+}
+
+function confirmDeleteColleague(id) {
+  const c = companyColleagues.find(x => x.id === id);
+  if (!c) return;
+  openConfirmDialog({
+    title: 'Delete colleague?',
+    desc: `"${c.name}" will be removed from the company. This can't be undone in the demo.`,
+    onConfirm: () => {
+      companyColleagues = companyColleagues.filter(x => x.id !== id);
+      if (activeCompanyColleagueId === id) {
+        if (companyColleagues.length) loadCompanyColleague(companyColleagues[0].id);
+        else newCompanyColleague();
+      }
+      renderCompanyColleagueList();
+    }
+  });
+}
+
+/* Confirm dialog */
+let _confirmHandler = null;
+function openConfirmDialog({title, desc, onConfirm}) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmDesc').textContent = desc;
+  _confirmHandler = onConfirm;
+  const btn = document.getElementById('confirmDangerBtn');
+  btn.onclick = () => {
+    if (_confirmHandler) _confirmHandler();
+    closeConfirmDialog();
+  };
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function closeConfirmDialog() {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  _confirmHandler = null;
 }
 function closeColleagueCreatorAdmin() {
   document.getElementById('adminCreatorOverlay').classList.remove('show');
@@ -4940,8 +5215,35 @@ function deployAdminColleague() {
     return;
   }
   const icon = document.querySelector('#adminIconPicker .icon-picker-btn.selected')?.dataset.icon || '🤖';
-  alert(`Company colleague "${name}" deployed.\n\nIcon: ${icon}\nVisible to selected groups.\n\n(In a real deploy this would publish the colleague to all matching users.)`);
-  closeColleagueCreatorAdmin();
+  const draft = {
+    name,
+    desc,
+    icon,
+    role:         document.getElementById('adminAgentRole').value,
+    tone:         document.getElementById('adminAgentTone').value,
+    language:     document.getElementById('adminAgentLang').value,
+    systemPrompt: document.getElementById('adminSystemPrompt').value,
+    disallowed:   document.getElementById('adminDisallowed').value,
+  };
+
+  if (activeCompanyColleagueId) {
+    // Update existing
+    const idx = companyColleagues.findIndex(c => c.id === activeCompanyColleagueId);
+    if (idx >= 0) companyColleagues[idx] = { ...companyColleagues[idx], ...draft };
+  } else {
+    // Create new
+    const newId = 'cc_' + Date.now();
+    companyColleagues.push({ id: newId, status: 'live', ...draft });
+    activeCompanyColleagueId = newId;
+  }
+  renderCompanyColleagueList();
+  document.getElementById('creatorMainTitle').textContent = 'Edit — ' + name;
+  document.getElementById('adminDeployBtn').textContent = 'Save changes';
+  // Brief acknowledgement
+  const btn = document.getElementById('adminDeployBtn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Saved';
+  setTimeout(() => { btn.textContent = orig; }, 1400);
 }
 
 /* ─── CONNECTIONS ─── */
@@ -5659,11 +5961,24 @@ function updateGalleryCount() {
     </div>
     <button class="admin-page-close" onclick="closeColleagueCreatorAdmin()" title="Close admin">✕</button>
   </div>
-  <div class="admin-creator">
+  <div class="creator-layout">
+    <!-- Left: list of existing colleagues -->
+    <aside class="creator-sidebar">
+      <div class="creator-sidebar-header">
+        <div class="creator-sidebar-title">Company Colleagues</div>
+        <button class="creator-new-btn" onclick="newCompanyColleague()">
+          <span style="font-size:14px">＋</span> New colleague
+        </button>
+      </div>
+      <div class="creator-list" id="creatorColleagueList"></div>
+    </aside>
+
+    <!-- Right: editor for the selected colleague -->
+    <div class="creator-main admin-creator">
     <div class="admin-page-inner tight">
       <div class="admin-creator-header">
         <div class="admin-creator-title-wrap">
-          <div class="admin-creator-title">Create Company Colleague</div>
+          <div class="admin-creator-title" id="creatorMainTitle">Create Company Colleague</div>
         </div>
       </div>
     </div>
@@ -5975,8 +6290,21 @@ function updateGalleryCount() {
         <button class="btn-cancel" onclick="closeColleagueCreatorAdmin()">Cancel</button>
         <button class="btn-cancel" id="adminPrevBtn" onclick="prevCreatorTab()">Back</button>
         <button class="btn-create ready" id="adminNextBtn" onclick="nextCreatorTab()">Next</button>
-        <button class="btn-deploy" onclick="deployAdminColleague()">Deploy colleague</button>
+        <button class="btn-deploy" id="adminDeployBtn" onclick="deployAdminColleague()">Deploy colleague</button>
       </div>
+    </div>
+    </div><!-- /.creator-main -->
+  </div><!-- /.creator-layout -->
+</div>
+
+<!-- Confirm delete dialog -->
+<div id="confirmOverlay" class="confirm-overlay" onclick="if(event.target===this)closeConfirmDialog()">
+  <div class="confirm-modal">
+    <div class="confirm-title" id="confirmTitle">Delete?</div>
+    <div class="confirm-desc" id="confirmDesc"></div>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirmDialog()">Cancel</button>
+      <button class="btn-confirm-danger" id="confirmDangerBtn">Delete</button>
     </div>
   </div>
 </div>
