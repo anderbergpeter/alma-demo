@@ -1434,6 +1434,79 @@
     }
     .btn-confirm-danger:hover { background: #d04646; }
 
+    /* ─── HELP BANNER ─── */
+    .help-banner {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(38,101,226,0.08), rgba(194,109,230,0.08));
+      border: 1px solid rgba(38,101,226,0.25);
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+    .help-banner-icon {
+      font-size: 18px; margin-top: 2px; flex-shrink: 0;
+    }
+    .help-banner-title {
+      font-size: 13px; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .help-banner-body {
+      font-size: 12px; color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .help-banner-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 0; margin-left: auto; font-size: 14px;
+    }
+
+    /* ─── VISUAL / JSON tab toggle (segmented control) ─── */
+    .seg-control {
+      display: inline-flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 3px;
+    }
+    .seg-control button {
+      background: none; border: none;
+      color: var(--text-muted);
+      padding: 5px 14px;
+      font-size: 12px; font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer; transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .seg-control button:hover { color: var(--text-primary); }
+    .seg-control button.active {
+      background: rgba(38,101,226,0.18);
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* JSON code editor */
+    .json-editor {
+      background: #0a0d1f;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+      width: 100%;
+      min-height: 360px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px; line-height: 1.55;
+      color: #c0c8e4;
+      outline: none;
+      resize: vertical;
+      tab-size: 2;
+    }
+    .json-editor:focus { border-color: rgba(194,109,230,0.4); }
+    .json-error {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(232,93,93,0.1);
+      border: 1px solid rgba(232,93,93,0.3);
+      border-radius: 8px;
+      font-size: 11px; color: #ff8a8a;
+    }
+
     /* ─── DATABASE schema browser ─── */
     .db-type-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
@@ -5894,26 +5967,76 @@ function fullEditSectionHtml(listKey, section, d) {
 
   if (section === 'connection') {
     const isDb = listKey === 'dbs';
-    const dbTypePicker = isDb ? `
-      <div class="form-group full">
-        <div class="form-label">Database type</div>
-        <div class="db-type-grid">
-          ${DB_TYPES.map(t => `
-            <button class="db-type-btn ${d.dbType===t.id?'selected':''}"
-              onclick="selectDbType('${t.id}')">
-              <span class="icon">${t.icon}</span>
-              <span class="label">${t.label}</span>
-            </button>
-          `).join('')}
+
+    if (isDb) {
+      const defaultPort = ({ postgres:5432, mysql:3306, mssql:1433, oracle:1521, mongo:27017 })[d.dbType] || '';
+      return wrap(`
+        ${!d.schemaIntrospected ? `
+          <div class="help-banner">
+            <span class="help-banner-icon">🔌</span>
+            <div>
+              <div class="help-banner-title">Add new data source</div>
+              <div class="help-banner-body">Fill in the connection details below. Once verified, click "Discover schema" — the system fetches the table structure for enrichment.</div>
+            </div>
+          </div>` : ''}
+        <div class="form-group full" style="margin-bottom:14px">
+          <div class="form-label">Database type</div>
+          <div class="db-type-grid">
+            ${DB_TYPES.map(t => `
+              <button class="db-type-btn ${d.dbType===t.id?'selected':''}"
+                onclick="selectDbType('${t.id}')">
+                <span class="icon">${t.icon}</span>
+                <span class="label">${t.label}</span>
+              </button>
+            `).join('')}
+          </div>
         </div>
-      </div>` : '';
+        <div class="admin-section-grid">
+          <div class="form-group full">
+            <div class="form-label">Host / Endpoint</div>
+            <input class="form-input" id="fe_host" value="${escapeHtml(d.host||'')}" placeholder="db.nordtech.internal">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Port</div>
+            <input class="form-input" id="fe_port" type="number" value="${d.port||defaultPort||''}" placeholder="${defaultPort||'5432'}">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Database name</div>
+            <input class="form-input" id="fe_dbname" value="${escapeHtml(d.dbname||'')}" placeholder="e.g. ecommerce_core">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Username</div>
+            <input class="form-input" id="fe_user" value="${escapeHtml(d.user||'')}" placeholder="alma_service_role">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Password</div>
+            <input class="form-input" id="fe_password" type="password" value="${escapeHtml(d.password||'')}" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Auth method</div>
+            <select class="form-select" id="fe_auth">
+              <option value="basic" ${(d.auth||'basic')==='basic'?'selected':''}>Basic auth (user / password)</option>
+              <option value="iam"   ${d.auth==='iam'?'selected':''}>IAM role</option>
+              <option value="oauth" ${d.auth==='oauth'?'selected':''}>OAuth 2.0</option>
+              <option value="apikey"${d.auth==='apikey'?'selected':''}>API key</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Credentials secret (optional)</div>
+            <input class="form-input" id="fe_secret" value="${escapeHtml(d.secret||'')}" placeholder="e.g. PROD_DB_PASSWORD">
+          </div>
+          <div class="form-group full" style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-cancel" onclick="testDbConnection(this)">⚡ Test connection</button>
+            <button class="btn-deploy" onclick="introspectDbSchema(this)" style="margin-left:auto">🔍 Discover schema</button>
+          </div>
+        </div>`);
+    }
 
     return wrap(`
       <div class="admin-section-grid">
-        ${dbTypePicker}
         <div class="form-group full">
-          <div class="form-label">${isDb ? 'Connection string' : 'Endpoint URL'}</div>
-          <input class="form-input" id="fe_endpoint" value="${escapeHtml(d.endpoint||'')}" placeholder="${isDb ? 'postgres://host:5432/db' : 'https://api.example.com/v1'}">
+          <div class="form-label">Endpoint URL</div>
+          <input class="form-input" id="fe_endpoint" value="${escapeHtml(d.endpoint||'')}" placeholder="https://api.example.com/v1">
         </div>
         <div class="form-group">
           <div class="form-label">Auth method</div>
@@ -5921,7 +6044,6 @@ function fullEditSectionHtml(listKey, section, d) {
             <option value="oauth" ${d.auth==='oauth'?'selected':''}>OAuth 2.0</option>
             <option value="apikey" ${d.auth==='apikey'?'selected':''}>API key</option>
             <option value="basic" ${d.auth==='basic'?'selected':''}>Basic auth</option>
-            ${isDb ? `<option value="iam" ${d.auth==='iam'?'selected':''}>IAM role</option>` : ''}
           </select>
         </div>
         <div class="form-group">
@@ -5936,9 +6058,8 @@ function fullEditSectionHtml(listKey, section, d) {
               <option value="disconnected" ${d.status==='disconnected'?'selected':''}>Disconnected</option>
             </select>
           </div>` : ''}
-        <div class="form-group full" style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="form-group full">
           <button class="btn-cancel" onclick="testDbConnection(this)">⚡ Test connection</button>
-          ${isDb ? `<button class="btn-cancel" onclick="introspectDbSchema(this)">🔍 Discover schema</button>` : ''}
         </div>
       </div>`);
   }
@@ -6214,6 +6335,8 @@ function fullEditSectionHtml(listKey, section, d) {
 }
 
 /* ─── Database schema browser ─── */
+let schemaViewMode = 'visual'; // 'visual' | 'json'
+
 function renderSchemaSection(d) {
   const introspected = d.schemaIntrospected;
   const tables = d.schema || [];
@@ -6234,6 +6357,75 @@ function renderSchemaSection(d) {
       </div>`;
   }
 
+  // Help banner explaining schema enrichment
+  const helpBanner = `
+    <div class="help-banner">
+      <span class="help-banner-icon">📘</span>
+      <div>
+        <div class="help-banner-title">How does schema enrichment work?</div>
+        <div class="help-banner-body">
+          Add semantic descriptions (AI descriptions) for tables and columns. These hints help the
+          AI agent understand what the data means and write correct SQL queries. You can also
+          <a class="label-action-link" style="display:inline" onclick="downloadSchemaJson()">download the JSON</a>,
+          enrich it offline (e.g. paste into ChatGPT), and
+          <a class="label-action-link" style="display:inline" onclick="document.getElementById('schemaJsonUpload').click()">upload it back</a>.
+        </div>
+      </div>
+    </div>`;
+
+  // Toolbar with view toggle + import/export
+  const exposed = tables.filter(t => t.exposed).length;
+  const toolbar = `
+    <div class="schema-toolbar">
+      <div class="schema-toolbar-info">
+        <strong>Schema ready.</strong>
+        <span class="schema-tables-count">${tables.length} table${tables.length===1?'':'s'} · ${exposed} exposed to LLM</span>
+      </div>
+      <div class="seg-control">
+        <button class="${schemaViewMode==='visual'?'active':''}" onclick="setSchemaViewMode('visual')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          Visual UI
+        </button>
+        <button class="${schemaViewMode==='json'?'active':''}" onclick="setSchemaViewMode('json')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Raw JSON
+        </button>
+      </div>
+      <button class="btn-cancel" onclick="downloadSchemaJson()" title="Download JSON">⬇ Download JSON</button>
+      <button class="btn-cancel" onclick="document.getElementById('schemaJsonUpload').click()" title="Upload JSON">⬆ Upload JSON</button>
+      <input type="file" id="schemaJsonUpload" accept="application/json" style="display:none" onchange="uploadSchemaJson(this)">
+      <span class="schema-status">● Introspected</span>
+    </div>`;
+
+  // JSON view
+  if (schemaViewMode === 'json') {
+    const json = JSON.stringify({
+      database_name: d.dbname || d.name?.toLowerCase().replace(/[^a-z0-9]+/g,'_') || 'database',
+      database_type: d.dbType || 'postgres',
+      tables: tables.map(t => ({
+        name: t.name,
+        ai_description: t.desc || '',
+        row_count: t.rows || 0,
+        exposed: t.exposed !== false,
+        columns: (t.columns||[]).map(c => ({
+          name: c.name,
+          type: c.type,
+          ai_description: c.description || '',
+          pk: !!c.pk,
+          pii: !!c.pii,
+        }))
+      }))
+    }, null, 2);
+    return helpBanner + toolbar + `
+      <textarea class="json-editor" id="fe_schemaJsonEditor" spellcheck="false"
+        oninput="onSchemaJsonEdit(this)">${escapeHtml(json)}</textarea>
+      <div id="fe_schemaJsonError"></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:8px">
+        Edit the JSON directly. Click <strong>Visual UI</strong> to apply your changes back to the visual editor.
+      </div>`;
+  }
+
+  // Visual view (existing rich browser)
   const tablesHtml = tables.map((t, i) => `
     <div class="schema-table ${t.expanded ? 'expanded' : ''}" data-table="${escapeHtml(t.name)}">
       <div class="schema-table-head" onclick="toggleSchemaTable(${i})">
@@ -6254,14 +6446,14 @@ function renderSchemaSection(d) {
 
         <div class="schema-section-label">Columns</div>
         <div class="col-grid head">
-          <div>Name</div><div>Type</div><div>Description</div><div>PII</div><div></div>
+          <div>Column</div><div>Type</div><div>AI description / synonym</div><div>PII</div><div></div>
         </div>
         ${(t.columns||[]).map((c, j) => `
           <div class="col-grid">
             <div class="col-name">${escapeHtml(c.name)}${c.pk ? '<span class="col-pk">PK</span>':''}</div>
             <div class="col-type">${escapeHtml(c.type)}</div>
             <input value="${escapeHtml(c.description||'')}"
-              placeholder="Description shown to the LLM"
+              placeholder="e.g. Used to filter on country, ISO-3166 alpha-2"
               oninput="updateSchemaColDesc(${i},${j},this.value);setFullEditStatus('dirty','Unsaved changes')">
             <div class="pii-toggle ${c.pii?'on':''}"
               onclick="toggleSchemaColPii(${i},${j},this)">${c.pii ? 'PII' : '—'}</div>
@@ -6282,20 +6474,114 @@ function renderSchemaSection(d) {
       </div>
     </div>`).join('');
 
-  const exposed = tables.filter(t => t.exposed).length;
-  return `
-    <div class="schema-toolbar">
-      <div class="schema-toolbar-info">
-        <strong>Schema ready.</strong>
-        <span class="schema-tables-count">${tables.length} table${tables.length===1?'':'s'} · ${exposed} exposed to LLM</span>
-      </div>
-      <span class="schema-status">● Introspected</span>
+  return helpBanner + toolbar + `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
       <button class="ai-help-btn" onclick="aiEnrichAllTables(this)">✨ Auto-enrich all</button>
       <button class="btn-cancel" onclick="reIntrospectSchema(this)">🔄 Re-introspect</button>
     </div>
     ${tablesHtml}
     <button class="conn-add-btn" style="margin-top:10px" onclick="addSchemaTable()">＋ Add table manually</button>`;
 }
+
+function setSchemaViewMode(mode) {
+  schemaViewMode = mode;
+  rerenderSchemaSection();
+}
+
+function downloadSchemaJson() {
+  if (!fullEditContext) return;
+  const d = fullEditContext.draft;
+  const payload = {
+    database_name: d.dbname || d.name?.toLowerCase().replace(/[^a-z0-9]+/g,'_') || 'database',
+    database_type: d.dbType || 'postgres',
+    tables: (d.schema||[]).map(t => ({
+      name: t.name,
+      ai_description: t.desc || '',
+      row_count: t.rows || 0,
+      exposed: t.exposed !== false,
+      columns: (t.columns||[]).map(c => ({
+        name: c.name, type: c.type,
+        ai_description: c.description || '',
+        pk: !!c.pk, pii: !!c.pii,
+      }))
+    }))
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `${payload.database_name}-schema.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function uploadSchemaJson(input) {
+  const file = input.files && input.files[0];
+  if (!file || !fullEditContext) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      applySchemaJson(e.target.result);
+    } catch (err) {
+      alert('Invalid JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function applySchemaJson(text) {
+  const obj = JSON.parse(text);
+  if (!fullEditContext) return;
+  const d = fullEditContext.draft;
+  if (obj.database_name) d.dbname = obj.database_name;
+  if (obj.database_type) d.dbType = obj.database_type;
+  if (Array.isArray(obj.tables)) {
+    d.schema = obj.tables.map(t => ({
+      name: t.name,
+      desc: t.ai_description || t.description || '',
+      rows: t.row_count || 0,
+      exposed: t.exposed !== false,
+      expanded: false,
+      columns: (t.columns||[]).map(c => ({
+        name: c.name,
+        type: c.type,
+        description: c.ai_description || c.description || '',
+        pk: !!c.pk,
+        pii: !!c.pii,
+      })),
+      sample: t.sample || []
+    }));
+    d.schemaIntrospected = true;
+  }
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderSchemaSection();
+}
+
+function onSchemaJsonEdit(textarea) {
+  // Validate live but don't auto-apply — user clicks Visual UI to commit
+  const errEl = document.getElementById('fe_schemaJsonError');
+  try {
+    JSON.parse(textarea.value);
+    errEl.innerHTML = '';
+  } catch (err) {
+    errEl.innerHTML = `<div class="json-error">⚠ ${escapeHtml(err.message)}</div>`;
+  }
+  setFullEditStatus('dirty','Unsaved changes');
+}
+
+// Hook into setSchemaViewMode: when switching from JSON → Visual, parse and apply the JSON
+const _origSetMode = setSchemaViewMode;
+setSchemaViewMode = function(mode) {
+  if (schemaViewMode === 'json' && mode === 'visual') {
+    const ed = document.getElementById('fe_schemaJsonEditor');
+    if (ed) {
+      try { applySchemaJson(ed.value); } catch (e) {
+        if (!confirm('JSON has errors — discard your edits and switch to visual?')) return;
+      }
+    }
+  }
+  _origSetMode(mode);
+};
 
 function rerenderSchemaSection() {
   if (!fullEditContext) return;
