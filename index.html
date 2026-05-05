@@ -268,6 +268,33 @@
     .user-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
     .user-org { font-size: 10px; color: var(--text-muted); }
 
+    /* ─── PROFILE DROPDOWN (above user-row) ─── */
+    .profile-menu {
+      display: none; position: absolute;
+      bottom: 64px; left: 10px;
+      background: #131830;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 6px;
+      width: 220px;
+      z-index: 250;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .profile-menu.show { display: block; }
+    .profile-menu-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: var(--text-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+    .profile-menu-item:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+    .profile-menu-item svg { flex-shrink: 0; opacity: 0.8; }
+    .profile-menu-divider {
+      height: 1px; background: rgba(255,255,255,0.06);
+      margin: 4px 6px;
+    }
+    .sidebar.collapsed .profile-menu { left: 64px; bottom: 18px; }
+
     /* ─── MAIN ─── */
     .main {
       flex: 1;
@@ -1018,6 +1045,230 @@
     }
     .gallery-done-btn:hover { background: #1d55c8; }
 
+    /* ─── ADMIN HUB ─── */
+    .admin-modal {
+      background: #10122a; border: 1px solid var(--border);
+      border-radius: 16px; width: 720px; max-width: 92vw;
+      display: flex; flex-direction: column;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.55);
+      animation: galleryIn 0.2s ease;
+    }
+    .admin-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 24px 28px 18px; border-bottom: 1px solid var(--border);
+    }
+    .admin-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+    .admin-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .admin-body { padding: 24px 28px 28px; }
+    .admin-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .admin-card {
+      background: #13163a; border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px; cursor: pointer;
+      transition: all 0.15s; display: flex; flex-direction: column; gap: 10px;
+    }
+    .admin-card:hover { border-color: #3a4070; background: #1a1f48; transform: translateY(-2px); }
+    .admin-card-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--alma-purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .admin-card-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .admin-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ─── ADMIN COLLEAGUE CREATOR ─── */
+    .admin-creator {
+      background: #0e1530;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      width: 95vw; max-width: 1100px;
+      height: 88vh; max-height: 760px;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .admin-creator-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .admin-creator-title-wrap { display: flex; align-items: center; gap: 12px; }
+    .admin-creator-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .admin-creator-pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 3px 8px; border-radius: 12px;
+      background: rgba(194,109,230,0.15); color: var(--alma-purple);
+      text-transform: uppercase;
+    }
+    .admin-creator-tabs {
+      display: flex; gap: 0; padding: 0 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;
+      overflow-x: auto;
+    }
+    .admin-creator-tab {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      padding: 12px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+      color: var(--text-muted); margin-bottom: -1px; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .admin-creator-tab:hover { color: var(--text-primary); }
+    .admin-creator-tab.active { color: var(--text-primary); border-bottom-color: #2665E2; }
+    .admin-creator-body {
+      flex: 1; overflow-y: auto; padding: 22px 28px;
+    }
+    .admin-creator-section { display: none; }
+    .admin-creator-section.active { display: block; }
+    .admin-section-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .admin-section-grid .form-group.full { grid-column: 1 / -1; }
+    .admin-helper {
+      font-size: 11px; color: var(--text-muted); line-height: 1.5;
+      margin-top: 4px;
+    }
+    .admin-creator-footer {
+      padding: 14px 24px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .admin-foot-left { display: flex; align-items: center; gap: 10px; }
+    .admin-step-indicator { font-size: 12px; color: var(--text-muted); }
+
+    /* Icon picker */
+    .icon-picker { display: flex; gap: 6px; flex-wrap: wrap; }
+    .icon-picker-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .icon-picker-btn:hover { background: rgba(255,255,255,0.08); }
+    .icon-picker-btn.selected {
+      border-color: var(--blue);
+      background: rgba(38,101,226,0.15);
+    }
+
+    /* Pill chips */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px; padding: 5px 12px;
+      font-size: 12px; color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+      user-select: none;
+    }
+    .chip:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+    .chip.selected {
+      background: rgba(38,101,226,0.15);
+      border-color: var(--blue); color: #6b9fff;
+    }
+
+    /* Range slider */
+    .range-row {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .range-row input[type=range] {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.1); outline: none;
+    }
+    .range-row input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--blue); cursor: pointer;
+    }
+    .range-row input[type=range]::-moz-range-thumb {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--blue); cursor: pointer; border: none;
+    }
+    .range-value {
+      min-width: 40px; text-align: center;
+      font-size: 12px; font-weight: 600; color: var(--text-primary);
+      background: rgba(255,255,255,0.06); border-radius: 6px;
+      padding: 3px 8px;
+    }
+
+    /* Form select */
+    .form-select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 10px 14px;
+      color: var(--text-primary); font-size: 13px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+      width: 100%; cursor: pointer;
+    }
+    .form-select:focus { border-color: rgba(194,109,230,0.5); }
+
+    /* Tool/skill row with toggle */
+    .feature-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+    .feature-row-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .feature-row-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .feature-row-text { min-width: 0; }
+    .feature-row-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .feature-row-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Badge for "admin lock" */
+    .lock-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 10px;
+      background: rgba(232,93,93,0.12); color: #ff8a8a;
+      margin-left: 6px;
+    }
+
+    /* Connections page */
+    .conn-list { display: flex; flex-direction: column; gap: 8px; }
+    .conn-card {
+      background: #13163a; border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .conn-card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: linear-gradient(135deg, #2665E2, #C26DE6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .conn-card-info { flex: 1; min-width: 0; }
+    .conn-card-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .conn-card-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+    .conn-card-meta {
+      font-size: 10px; color: var(--text-muted); margin-top: 6px;
+      display: flex; gap: 10px;
+    }
+    .conn-card-status {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 12px;
+    }
+    .conn-card-status.connected { background: rgba(52,211,153,0.15); color: #34d399; }
+    .conn-card-status.disconnected { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .conn-add-btn {
+      background: rgba(38,101,226,0.07); border: 1px dashed #2665E2;
+      border-radius: 12px; padding: 14px 18px;
+      color: #6b9fff; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .conn-add-btn:hover { background: rgba(38,101,226,0.13); }
+
     /* ─── CUSTOM AGENTS SECTION ─── */
     .custom-section-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -1725,8 +1976,29 @@
   </div>
   <div id="customAgentList"></div>
 
-  <div class="sidebar-footer">
-    <div class="user-row">
+  <div class="sidebar-footer" style="position:relative">
+    <!-- Profile dropdown (opens upward) -->
+    <div class="profile-menu" id="profileMenu">
+      <div class="profile-menu-item" onclick="openAdminHub()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1l3 6 6 .9-4.5 4.4 1 6.7L12 16l-5.5 3 1-6.7L3 7.9 9 7l3-6z"/></svg>
+        Admin
+      </div>
+      <div class="profile-menu-divider"></div>
+      <div class="profile-menu-item" onclick="closeProfileMenu()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        My profile
+      </div>
+      <div class="profile-menu-item" onclick="closeProfileMenu()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        Settings
+      </div>
+      <div class="profile-menu-item" onclick="closeProfileMenu()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </div>
+    </div>
+
+    <div class="user-row" id="userRow" onclick="toggleProfileMenu(event)">
       <div class="avatar">PA</div>
       <div class="user-info">
         <div class="user-name">Peter Anderberg</div>
@@ -3511,7 +3783,250 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('#modelSelectorBtn') && !e.target.closest('#modelDropdown')) {
     document.getElementById('modelDropdown').classList.remove('show');
   }
+  if (!e.target.closest('#userRow') && !e.target.closest('#profileMenu')) {
+    document.getElementById('profileMenu').classList.remove('show');
+  }
 });
+
+/* ─── PROFILE MENU ─── */
+function toggleProfileMenu(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('profileMenu').classList.toggle('show');
+}
+function closeProfileMenu() {
+  document.getElementById('profileMenu').classList.remove('show');
+}
+
+/* ─── ADMIN HUB ─── */
+function openAdminHub() {
+  closeProfileMenu();
+  document.getElementById('adminHubOverlay').classList.add('show');
+}
+function closeAdminHub() {
+  document.getElementById('adminHubOverlay').classList.remove('show');
+}
+
+/* ─── ADMIN COLLEAGUE CREATOR ─── */
+const ADMIN_TOOLS = [
+  { id: 'web',     icon: '🌐', name: 'Web search',           desc: 'Browse the public web for current information' },
+  { id: 'doc',     icon: '📄', name: 'Document reader',      desc: 'Read uploaded files and documents' },
+  { id: 'code',    icon: '💻', name: 'Code interpreter',     desc: 'Run code in a sandboxed environment' },
+  { id: 'image',   icon: '🖼️', name: 'Image generation',     desc: 'Generate images from text prompts' },
+  { id: 'email',   icon: '📧', name: 'Email (draft)',        desc: 'Compose drafts; sending requires confirmation' },
+  { id: 'cal',     icon: '📅', name: 'Calendar',             desc: 'Read calendar; events created with confirmation' },
+  { id: 'data',    icon: '📊', name: 'Data analysis',        desc: 'Run analysis over structured data' },
+  { id: 'think',   icon: '◎',  name: 'Think deeper',         desc: 'Allow extended reasoning steps before responding' },
+];
+const ADMIN_MCPS = [
+  { id: 'jira',     icon: '📋', name: 'Jira',         desc: 'Read tickets and write comments' },
+  { id: 'confl',    icon: '📚', name: 'Confluence',   desc: 'Search internal wiki spaces' },
+  { id: 'sf',       icon: '☁️', name: 'Salesforce',   desc: 'Read CRM accounts and opportunities' },
+  { id: 'slack',    icon: '💬', name: 'Slack',        desc: 'Read channels and post messages' },
+  { id: 'gh',       icon: '🐙', name: 'GitHub',       desc: 'Read repos, issues and pull requests' },
+  { id: 'sn',       icon: '🛟', name: 'ServiceNow',   desc: 'Read tickets and incidents' },
+];
+const ADMIN_SKILLS = [
+  { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation' },
+  { id: 'hire',       icon: '🧑‍🎓', name: 'Conduct-hire-interview',     desc: 'Run a structured interview for a new hire' },
+  { id: 'rfp',        icon: '📑', name: 'Tender-response-drafter',     desc: 'Draft RFP/tender responses from templates' },
+  { id: 'meeting',    icon: '📝', name: 'Meeting-notes-summarizer',    desc: 'Summarize transcripts and extract action items' },
+  { id: 'risk',       icon: '⚠️', name: 'Contract-risk-review',         desc: 'Identify risky clauses against your playbook' },
+];
+const ADMIN_RAG = [
+  { id: 'policy',  icon: '📘', name: 'Company Policies',         desc: 'HR, IT and travel policies' },
+  { id: 'legal',   icon: '⚖️', name: 'Legal Playbook',           desc: 'Approved clauses and contract templates' },
+  { id: 'product', icon: '🎯', name: 'Product Documentation',     desc: 'Internal product specs and roadmaps' },
+  { id: 'support', icon: '📞', name: 'Help Center articles',     desc: 'Customer-facing knowledge base' },
+];
+const ADMIN_DBS = [
+  { id: 'erp',     icon: '🏢', name: 'ERP (SAP S/4)',          desc: 'Finance and supply chain master data' },
+  { id: 'crm',     icon: '☁️', name: 'CRM (Salesforce)',       desc: 'Accounts, opportunities, contacts' },
+  { id: 'econ',    icon: '💹', name: 'Economics database',     desc: 'Group financials and forecasts' },
+  { id: 'hr',      icon: '🧑‍💼', name: 'HR system (Workday)',   desc: 'Employees, leave balances, org chart' },
+  { id: 'mes',     icon: '🏗️', name: 'MES production data',    desc: 'Production lines, OEE and quality data' },
+];
+const ADMIN_SUBAGENTS = [
+  { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'LLM produces SQL; runtime validates & executes safely' },
+  { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files from connected sources' },
+  { id: 'webresearch', icon: '🔎', name: 'Web research', desc: 'Multi-step web search and synthesis with citations' },
+];
+
+let creatorTab = 'identity';
+const CREATOR_TABS = ['identity','prompt','tools','skills','data','model','access','advanced','overrides'];
+const CREATOR_TAB_LABELS = {
+  identity: 'Identity', prompt: 'Prompt', tools: 'Tools & MCPs', skills: 'Skills',
+  data: 'Data', model: 'Model', access: 'Access', advanced: 'Advanced', overrides: 'User Overrides'
+};
+
+function openColleagueCreatorAdmin() {
+  closeAdminHub();
+  document.getElementById('adminCreatorOverlay').classList.add('show');
+  creatorTab = 'identity';
+  applyCreatorTab();
+  renderAdminLists();
+  bindIconPicker();
+  bindAccessChips();
+}
+function closeColleagueCreatorAdmin() {
+  document.getElementById('adminCreatorOverlay').classList.remove('show');
+}
+function backToAdminHub() {
+  closeColleagueCreatorAdmin();
+  openAdminHub();
+}
+
+function switchCreatorTab(tab) {
+  creatorTab = tab;
+  applyCreatorTab();
+}
+function applyCreatorTab() {
+  document.querySelectorAll('.admin-creator-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === creatorTab);
+  });
+  document.querySelectorAll('.admin-creator-section').forEach(s => {
+    s.classList.toggle('active', s.dataset.section === creatorTab);
+  });
+  const idx = CREATOR_TABS.indexOf(creatorTab);
+  document.getElementById('adminStepIndicator').textContent =
+    `Step ${idx + 1} of ${CREATOR_TABS.length} — ${CREATOR_TAB_LABELS[creatorTab]}`;
+  document.getElementById('adminPrevBtn').style.display = idx === 0 ? 'none' : 'inline-block';
+  document.getElementById('adminNextBtn').style.display = idx === CREATOR_TABS.length - 1 ? 'none' : 'inline-block';
+}
+function nextCreatorTab() {
+  const idx = CREATOR_TABS.indexOf(creatorTab);
+  if (idx < CREATOR_TABS.length - 1) { creatorTab = CREATOR_TABS[idx + 1]; applyCreatorTab(); }
+}
+function prevCreatorTab() {
+  const idx = CREATOR_TABS.indexOf(creatorTab);
+  if (idx > 0) { creatorTab = CREATOR_TABS[idx - 1]; applyCreatorTab(); }
+}
+
+function bindIconPicker() {
+  document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+  });
+}
+function bindAccessChips() {
+  document.querySelectorAll('#adminAccessChips .chip').forEach(chip => {
+    chip.onclick = () => chip.classList.toggle('selected');
+  });
+}
+
+function featureRowHtml(item, defaultOn) {
+  return `<div class="feature-row">
+    <div class="feature-row-info">
+      <div class="feature-row-icon">${item.icon}</div>
+      <div class="feature-row-text">
+        <div class="feature-row-name">${item.name}</div>
+        <div class="feature-row-desc">${item.desc}</div>
+      </div>
+    </div>
+    <button class="toggle-switch ${defaultOn ? 'on' : ''}" onclick="this.classList.toggle('on')"></button>
+  </div>`;
+}
+
+function renderAdminLists() {
+  document.getElementById('adminToolsList').innerHTML =
+    ADMIN_TOOLS.map((t, i) => featureRowHtml(t, i < 4)).join('');
+  document.getElementById('adminMcpList').innerHTML =
+    ADMIN_MCPS.map((m, i) => featureRowHtml(m, i < 2)).join('');
+  document.getElementById('adminSkillsList').innerHTML =
+    ADMIN_SKILLS.map((s, i) => featureRowHtml(s, i === 0)).join('');
+  document.getElementById('adminRagList').innerHTML =
+    ADMIN_RAG.map((r, i) => featureRowHtml(r, i < 2)).join('');
+  document.getElementById('adminDbList').innerHTML =
+    ADMIN_DBS.map((d, i) => featureRowHtml(d, false)).join('');
+  document.getElementById('adminSubagentsList').innerHTML =
+    ADMIN_SUBAGENTS.map((a, i) => featureRowHtml(a, i === 0)).join('');
+}
+
+const PROMPT_TEMPLATES = {
+  legal: `You are a legal contract reviewer at Reeinvent. Your responsibilities:
+- Identify risky clauses (liability caps, indemnification, governing law, termination).
+- Compare clauses against the approved Legal Playbook.
+- Summarize obligations and recommend follow-up questions.
+
+Hard rules:
+- Do not provide final legal advice or approve contracts.
+- Always cite the playbook source for each recommendation.
+- Escalate to the legal team if confidence is low or clauses fall outside the playbook.`,
+  finance: `You are a finance analyst at Reeinvent. You help with cash-flow forecasting, AR tracking, anomaly detection and group reporting.
+
+- Always ground numbers in ERP data.
+- Flag unusual transactions clearly with a confidence rating.
+- Never share customer-level financials with users outside finance.`,
+  hr: `You are an HR helper. You answer policy questions for employees based only on the approved HR knowledge base.
+
+- Identify the employee's country to apply the right policy.
+- Cite the source policy for every answer.
+- Add a disclaimer when the topic involves employment law and escalate to HR if unsure.`,
+  support: `You are a support triage agent. Classify incoming tickets, suggest reply drafts and route to the right queue.
+
+- Draft replies only — never send email automatically.
+- Identify priority and category before drafting.
+- If the customer is enterprise tier, flag for human review.`,
+  blank: ``
+};
+function loadPromptTemplate(key) {
+  document.getElementById('adminSystemPrompt').value = PROMPT_TEMPLATES[key] || '';
+}
+
+function deployAdminColleague() {
+  const name = document.getElementById('adminAgentName').value.trim();
+  const desc = document.getElementById('adminAgentDesc').value.trim();
+  if (!name || !desc) {
+    alert('Please fill in at least a name and description (Identity tab).');
+    creatorTab = 'identity';
+    applyCreatorTab();
+    return;
+  }
+  const icon = document.querySelector('#adminIconPicker .icon-picker-btn.selected')?.dataset.icon || '🤖';
+  alert(`Company colleague "${name}" deployed.\n\nIcon: ${icon}\nVisible to selected groups.\n\n(In a real deploy this would publish the colleague to all matching users.)`);
+  closeColleagueCreatorAdmin();
+}
+
+/* ─── CONNECTIONS ─── */
+const CONNECTIONS = [
+  { icon: '☁️', name: 'Salesforce CRM',  desc: 'Accounts, opportunities, contacts',         meta: 'Sales, Leadership',           status: 'connected' },
+  { icon: '🏢', name: 'SAP S/4 HANA',     desc: 'Finance, supply chain, master data',         meta: 'Finance, Operations',         status: 'connected' },
+  { icon: '💹', name: 'Economics DB',     desc: 'Group financial reporting database',         meta: 'Finance, Leadership',         status: 'connected' },
+  { icon: '🧑‍💼', name: 'Workday HR',     desc: 'Employees, leave balances, org chart',       meta: 'HR, Leadership',              status: 'connected' },
+  { icon: '📋', name: 'Jira',             desc: 'Issues, sprints, project boards',            meta: 'Engineering, Product',         status: 'connected' },
+  { icon: '📚', name: 'Confluence',       desc: 'Internal wiki and documentation',            meta: 'All employees',                status: 'connected' },
+  { icon: '🐙', name: 'GitHub Enterprise',desc: 'Source code and pull requests',              meta: 'Engineering',                 status: 'disconnected' },
+  { icon: '🛟', name: 'ServiceNow',       desc: 'IT incidents and service requests',          meta: 'IT, Support',                 status: 'disconnected' },
+];
+function openConnections() {
+  closeAdminHub();
+  document.getElementById('connectionsOverlay').classList.add('show');
+  renderConnections();
+}
+function closeConnections() {
+  document.getElementById('connectionsOverlay').classList.remove('show');
+}
+function backToAdminHubFromConnections() {
+  closeConnections();
+  openAdminHub();
+}
+function renderConnections() {
+  document.getElementById('connList').innerHTML = CONNECTIONS.map(c => `
+    <div class="conn-card">
+      <div class="conn-card-icon">${c.icon}</div>
+      <div class="conn-card-info">
+        <div class="conn-card-name">${c.name}</div>
+        <div class="conn-card-desc">${c.desc}</div>
+        <div class="conn-card-meta">
+          <span>👥 ${c.meta}</span>
+          ${c.status === 'connected' ? '<span>🔄 Synced 5 min ago</span>' : '<span>Not connected</span>'}
+        </div>
+      </div>
+      <div class="conn-card-status ${c.status}">${c.status === 'connected' ? '● Connected' : 'Disconnected'}</div>
+    </div>
+  `).join('');
+}
 
 /* ─── AGENT BUILDER ─── */
 const customAgents = [
@@ -4039,6 +4554,372 @@ function updateGalleryCount() {
   document.getElementById('tabCustomCount').textContent = custom;
 }
 </script>
+
+<!-- ─── ADMIN HUB MODAL ─── -->
+<div id="adminHubOverlay" class="gallery-overlay" onclick="if(event.target===this)closeAdminHub()">
+  <div class="admin-modal">
+    <div class="admin-header">
+      <div>
+        <div class="admin-title">Admin</div>
+        <div class="admin-subtitle">Configure colleagues and external connections for your organization.</div>
+      </div>
+      <button class="gallery-close" onclick="closeAdminHub()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-cards">
+        <div class="admin-card" onclick="openColleagueCreatorAdmin()">
+          <div class="admin-card-icon">🧑‍💼</div>
+          <div class="admin-card-name">Colleague Creator Admin Panel</div>
+          <div class="admin-card-desc">Create and configure new company AI Colleagues — identity, prompts, tools, MCPs, skills, data sources, model bounds and access control.</div>
+        </div>
+        <div class="admin-card" onclick="openConnections()">
+          <div class="admin-card-icon">🔌</div>
+          <div class="admin-card-name">Connections</div>
+          <div class="admin-card-desc">Connect external data sources and customer databases. Configure access by groups and users.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ADMIN COLLEAGUE CREATOR MODAL ─── -->
+<div id="adminCreatorOverlay" class="gallery-overlay" onclick="if(event.target===this)closeColleagueCreatorAdmin()">
+  <div class="admin-creator">
+    <div class="admin-creator-header">
+      <div class="admin-creator-title-wrap">
+        <button class="gallery-close" onclick="backToAdminHub()" title="Back to admin">‹</button>
+        <div class="admin-creator-title">Create Company Colleague</div>
+        <span class="admin-creator-pill">Admin</span>
+      </div>
+      <button class="gallery-close" onclick="closeColleagueCreatorAdmin()">✕</button>
+    </div>
+
+    <div class="admin-creator-tabs">
+      <button class="admin-creator-tab active" data-tab="identity" onclick="switchCreatorTab('identity')">1. Identity</button>
+      <button class="admin-creator-tab" data-tab="prompt" onclick="switchCreatorTab('prompt')">2. Prompt</button>
+      <button class="admin-creator-tab" data-tab="tools" onclick="switchCreatorTab('tools')">3. Tools &amp; MCPs</button>
+      <button class="admin-creator-tab" data-tab="skills" onclick="switchCreatorTab('skills')">4. Skills</button>
+      <button class="admin-creator-tab" data-tab="data" onclick="switchCreatorTab('data')">5. Data</button>
+      <button class="admin-creator-tab" data-tab="model" onclick="switchCreatorTab('model')">6. Model</button>
+      <button class="admin-creator-tab" data-tab="access" onclick="switchCreatorTab('access')">7. Access</button>
+      <button class="admin-creator-tab" data-tab="advanced" onclick="switchCreatorTab('advanced')">8. Advanced</button>
+      <button class="admin-creator-tab" data-tab="overrides" onclick="switchCreatorTab('overrides')">9. User Overrides</button>
+    </div>
+
+    <div class="admin-creator-body">
+
+      <!-- 1. IDENTITY -->
+      <section class="admin-creator-section active" data-section="identity">
+        <div class="admin-section-grid">
+          <div class="form-group">
+            <div class="form-label">Assistant name <span class="req">*</span></div>
+            <input class="form-input" id="adminAgentName" placeholder="e.g. Legal Contract Reviewer">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Role / Domain</div>
+            <select class="form-select" id="adminAgentRole">
+              <option>Assistant</option>
+              <option>Analyst</option>
+              <option>Reviewer</option>
+              <option>Researcher</option>
+              <option>Tutor</option>
+              <option>Planner</option>
+              <option>Operator</option>
+              <option>Specialist</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <div class="form-label">Short description <span class="req">*</span></div>
+            <textarea class="form-textarea" id="adminAgentDesc" maxlength="200"
+              placeholder="A short explanation of what this colleague does"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Tone</div>
+            <select class="form-select" id="adminAgentTone">
+              <option>Professional</option>
+              <option>Friendly</option>
+              <option>Concise</option>
+              <option>Technical</option>
+              <option>Executive</option>
+              <option>Supportive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Default language</div>
+            <select class="form-select" id="adminAgentLang">
+              <option>English</option>
+              <option>Swedish</option>
+              <option>Auto-detect</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <div class="form-label">Icon</div>
+            <div class="icon-picker" id="adminIconPicker">
+              <button class="icon-picker-btn selected" data-icon="🤖">🤖</button>
+              <button class="icon-picker-btn" data-icon="⚖️">⚖️</button>
+              <button class="icon-picker-btn" data-icon="📊">📊</button>
+              <button class="icon-picker-btn" data-icon="💼">💼</button>
+              <button class="icon-picker-btn" data-icon="🧑‍💼">🧑‍💼</button>
+              <button class="icon-picker-btn" data-icon="🔬">🔬</button>
+              <button class="icon-picker-btn" data-icon="📚">📚</button>
+              <button class="icon-picker-btn" data-icon="🛡️">🛡️</button>
+              <button class="icon-picker-btn" data-icon="🌱">🌱</button>
+              <button class="icon-picker-btn" data-icon="🏗️">🏗️</button>
+              <button class="icon-picker-btn" data-icon="📞">📞</button>
+              <button class="icon-picker-btn" data-icon="🎯">🎯</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PROMPT -->
+      <section class="admin-creator-section" data-section="prompt">
+        <div class="form-group">
+          <div class="form-label">System prompt <span class="req">*</span></div>
+          <textarea class="form-textarea tall" id="adminSystemPrompt" maxlength="8000"
+            placeholder="You are a [role] working at [company]. Your responsibility is to..." style="height:200px"></textarea>
+          <div class="admin-helper">Defines the colleague's perspective, behavior rules and reasoning style. Pick a starting template:</div>
+          <div class="chip-row" style="margin-top:8px">
+            <div class="chip" onclick="loadPromptTemplate('legal')">⚖️ Legal reviewer</div>
+            <div class="chip" onclick="loadPromptTemplate('finance')">💰 Finance analyst</div>
+            <div class="chip" onclick="loadPromptTemplate('hr')">🧑‍💼 HR helper</div>
+            <div class="chip" onclick="loadPromptTemplate('support')">📞 Support triage</div>
+            <div class="chip" onclick="loadPromptTemplate('blank')">＋ Start blank</div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:18px">
+          <div class="form-label">Disallowed tasks</div>
+          <textarea class="form-textarea" id="adminDisallowed"
+            placeholder="What this colleague should refuse to do (e.g. give binding legal advice, approve contracts)"></textarea>
+        </div>
+      </section>
+
+      <!-- 3. TOOLS & MCPs -->
+      <section class="admin-creator-section" data-section="tools">
+        <div class="form-section-title" style="margin-bottom:10px">Built-in tools</div>
+        <div id="adminToolsList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Enterprise MCPs</div>
+        <div id="adminMcpList"></div>
+      </section>
+
+      <!-- 4. SKILLS -->
+      <section class="admin-creator-section" data-section="skills">
+        <div class="form-section-title" style="margin-bottom:10px">Available skills</div>
+        <div class="admin-helper" style="margin-bottom:12px">Skills follow the standards spec — reusable procedural workflows the colleague can invoke (e.g. "interview-for-presentation").</div>
+        <div id="adminSkillsList"></div>
+        <button class="conn-add-btn" style="margin-top:12px" onclick="alert('Skill upload coming soon — drop a folder following the skills spec.')">＋ Upload skill</button>
+      </section>
+
+      <!-- 5. DATA -->
+      <section class="admin-creator-section" data-section="data">
+        <div class="form-section-title" style="margin-bottom:10px">RAG knowledge bases</div>
+        <div id="adminRagList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Customer databases</div>
+        <div class="admin-helper" style="margin-bottom:10px">Routed via internal sub-agents — the LLM only generates the query; the runtime validates and executes it (like the analytics agent).</div>
+        <div id="adminDbList"></div>
+
+        <div class="form-group" style="margin-top:18px">
+          <div class="form-label">Source priority</div>
+          <select class="form-select" id="adminSourcePriority">
+            <option>Internal policy &gt; uploaded file &gt; web</option>
+            <option>Customer database &gt; RAG &gt; web</option>
+            <option>RAG only — no web</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- 6. MODEL -->
+      <section class="admin-creator-section" data-section="model">
+        <div class="admin-section-grid">
+          <div class="form-group">
+            <div class="form-label">Minimum model capability</div>
+            <select class="form-select" id="adminMinModel">
+              <option>GPT-4.1</option>
+              <option>GPT-5.2</option>
+              <option selected>GPT-5.4</option>
+              <option>Claude Sonnet 4.6</option>
+              <option>Claude Opus 4.5</option>
+              <option>Claude Opus 4.6</option>
+              <option>Claude Opus 4.7</option>
+              <option>Gemini 2.5 Flash</option>
+              <option>Gemini 2.5 Pro</option>
+            </select>
+            <div class="admin-helper">Lowest model the colleague is allowed to run on.</div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Maximum model capability</div>
+            <select class="form-select" id="adminMaxModel">
+              <option>GPT-5.4</option>
+              <option>GPT-5.5</option>
+              <option>Claude Opus 4.6</option>
+              <option selected>Claude Opus 4.7</option>
+              <option>Gemini 2.5 Pro</option>
+            </select>
+            <div class="admin-helper">Caps cost — the colleague will never escalate beyond this.</div>
+          </div>
+          <div class="form-group full">
+            <div class="form-label">Temperature <span id="tempVal">0.20</span></div>
+            <div class="range-row">
+              <input type="range" id="adminTemperature" min="0" max="100" value="20"
+                oninput="document.getElementById('tempVal').textContent=(this.value/100).toFixed(2)">
+              <span class="range-value" id="tempValBox">0.20</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Max response tokens</div>
+            <input class="form-input" id="adminMaxTokens" type="number" value="2000">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Latency target</div>
+            <select class="form-select" id="adminLatency">
+              <option>Optimize for speed</option>
+              <option selected>Balanced</option>
+              <option>Optimize for quality</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. ACCESS -->
+      <section class="admin-creator-section" data-section="access">
+        <div class="form-section-title" style="margin-bottom:10px">Who can use this colleague?</div>
+        <div class="chip-row" id="adminAccessChips">
+          <div class="chip selected" data-group="all">🌍 All employees</div>
+          <div class="chip" data-group="legal">⚖️ Legal team</div>
+          <div class="chip" data-group="finance">💰 Finance team</div>
+          <div class="chip" data-group="ops">🏗️ Operations</div>
+          <div class="chip" data-group="sales">📈 Sales team</div>
+          <div class="chip" data-group="marketing">🎨 Marketing</div>
+          <div class="chip" data-group="hr">🧑‍💼 HR</div>
+          <div class="chip" data-group="leadership">⭐ Leadership</div>
+          <div class="chip" data-group="admins">🛡️ Admins only</div>
+        </div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Sharing scope</div>
+        <select class="form-select" id="adminScope">
+          <option>Organization (everyone with access)</option>
+          <option>Department-only</option>
+          <option>Team-only</option>
+          <option>Private — owner only</option>
+        </select>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Owner</div>
+        <input class="form-input" id="adminOwner" value="Peter Anderberg" placeholder="Owner / responsible person">
+      </section>
+
+      <!-- 8. ADVANCED -->
+      <section class="admin-creator-section" data-section="advanced">
+        <div class="form-section-title" style="margin-bottom:10px">Self-evaluation (ReAct loops)</div>
+        <div class="admin-section-grid">
+          <div class="form-group">
+            <div class="form-label">Self-evaluation before responding</div>
+            <select class="form-select" id="adminReact">
+              <option value="0">Disabled</option>
+              <option value="1">Single-pass review</option>
+              <option value="2" selected>Up to 2 loops</option>
+              <option value="3">Up to 3 loops</option>
+              <option value="5">Up to 5 loops</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Confidence threshold</div>
+            <select class="form-select" id="adminConfidence">
+              <option>Low — answer optimistically</option>
+              <option selected>Medium — flag uncertainty</option>
+              <option>High — escalate when below</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Sub-agents</div>
+        <div class="admin-helper" style="margin-bottom:10px">Internal agents the colleague can route to (e.g. database access agent that validates SQL before execution).</div>
+        <div id="adminSubagentsList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Safety</div>
+        <div class="cap-toggles">
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🔍</span><span class="cap-toggle-text">PII detection &amp; masking</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🛡️</span><span class="cap-toggle-text">Prompt-injection defense</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">📝</span><span class="cap-toggle-text">Audit logging</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. USER OVERRIDES -->
+      <section class="admin-creator-section" data-section="overrides">
+        <div class="admin-helper" style="margin-bottom:14px">Decide what end-users (and super-users) are allowed to change for this colleague.</div>
+        <div class="cap-toggles">
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🔒</span><span class="cap-toggle-text">Lock all configuration <span class="lock-badge">Strict</span></span></div>
+            <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🤖</span><span class="cap-toggle-text">Users may switch model (within min/max)</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🌡️</span><span class="cap-toggle-text">Users may adjust temperature</span></div>
+            <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🎭</span><span class="cap-toggle-text">Users may change tone</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">📚</span><span class="cap-toggle-text">Users may attach own knowledge files</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🛠️</span><span class="cap-toggle-text">Super-users may toggle tools</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="admin-creator-footer">
+      <div class="admin-foot-left">
+        <span class="admin-step-indicator" id="adminStepIndicator">Step 1 of 9 — Identity</span>
+      </div>
+      <div class="footer-right">
+        <button class="btn-cancel" onclick="closeColleagueCreatorAdmin()">Cancel</button>
+        <button class="btn-cancel" id="adminPrevBtn" onclick="prevCreatorTab()">Back</button>
+        <button class="btn-create ready" id="adminNextBtn" onclick="nextCreatorTab()">Next</button>
+        <button class="btn-deploy" onclick="deployAdminColleague()">Deploy colleague</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONNECTIONS MODAL ─── -->
+<div id="connectionsOverlay" class="gallery-overlay" onclick="if(event.target===this)closeConnections()">
+  <div class="admin-modal" style="width:780px;height:680px;max-height:88vh;display:flex;flex-direction:column">
+    <div class="admin-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="gallery-close" onclick="backToAdminHubFromConnections()" title="Back to admin">‹</button>
+        <div>
+          <div class="admin-title">Connections</div>
+          <div class="admin-subtitle">External data sources and customer databases. Access is configured per group and user.</div>
+        </div>
+      </div>
+      <button class="gallery-close" onclick="closeConnections()">✕</button>
+    </div>
+    <div class="admin-body" style="flex:1;overflow-y:auto">
+      <div class="conn-list" id="connList"></div>
+      <button class="conn-add-btn" style="margin-top:14px" onclick="alert('Connection wizard coming soon — pick a connector type and provide credentials.')">＋ Add new connection</button>
+    </div>
+  </div>
+</div>
 
 <!-- Gallery modal -->
 <div id="galleryOverlay" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
