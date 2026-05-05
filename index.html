@@ -1835,7 +1835,165 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .form-label span { font-weight: 400; color: var(--text-muted); font-size: 11px; }
-    .form-label .req { color: #e85d5d; margin-left: 2px; }
+    .form-label .req {
+      color: #e85d5d; margin-right: 6px;
+      font-weight: 700;
+    }
+    .form-label-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 6px;
+    }
+    .form-label-row .form-label { margin: 0; }
+    .form-label-actions {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .label-action-link {
+      font-size: 11px; color: var(--text-muted);
+      cursor: pointer; transition: color 0.15s;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .label-action-link:hover { color: var(--text-primary); }
+    .ai-help-btn {
+      background: rgba(194,109,230,0.1);
+      border: 1px solid rgba(194,109,230,0.3);
+      color: var(--alma-purple);
+      border-radius: 14px; padding: 3px 9px;
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: all 0.15s;
+    }
+    .ai-help-btn:hover { background: rgba(194,109,230,0.2); }
+    .ai-help-btn.loading { opacity: 0.6; pointer-events: none; }
+
+    /* Manage-options modal & drag-drop list */
+    .options-list {
+      display: flex; flex-direction: column; gap: 6px;
+      max-height: 280px; overflow-y: auto;
+      padding: 4px;
+    }
+    .options-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+    }
+    .options-row input {
+      flex: 1; background: transparent; border: none;
+      color: var(--text-primary); font-size: 13px; outline: none;
+    }
+    .options-row .row-rm {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 4px; border-radius: 4px;
+    }
+    .options-row .row-rm:hover { color: #ff8a8a; background: rgba(232,93,93,0.12); }
+    .options-add-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 8px; margin-top: 6px;
+      background: rgba(38,101,226,0.07);
+      border: 1px dashed #2665E2;
+      border-radius: 8px; color: #6b9fff;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .options-add-btn:hover { background: rgba(38,101,226,0.13); }
+
+    .priority-list { display: flex; flex-direction: column; gap: 6px; }
+    .priority-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      cursor: grab;
+    }
+    .priority-row:active { cursor: grabbing; }
+    .priority-row.dragging { opacity: 0.4; }
+    .priority-row.drop-target {
+      border-color: var(--blue);
+      background: rgba(38,101,226,0.1);
+    }
+    .priority-handle {
+      color: var(--text-muted); font-size: 14px;
+      cursor: grab; user-select: none;
+    }
+    .priority-rank {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(38,101,226,0.18); color: #6b9fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .priority-icon { font-size: 16px; flex-shrink: 0; }
+    .priority-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .priority-rm {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 4px; border-radius: 4px;
+    }
+    .priority-rm:hover { color: #ff8a8a; background: rgba(232,93,93,0.12); }
+    .priority-pool {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 10px;
+    }
+    .priority-pool-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 16px;
+      font-size: 12px; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .priority-pool-chip:hover {
+      color: var(--text-primary);
+      border-color: rgba(38,101,226,0.5);
+      background: rgba(38,101,226,0.08);
+    }
+    .priority-empty {
+      padding: 16px;
+      text-align: center;
+      font-size: 12px; color: var(--text-muted);
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    /* Owner / group chip input */
+    .chip-input {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      align-items: center;
+      padding: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      min-height: 42px;
+    }
+    .chip-input:focus-within { border-color: rgba(194,109,230,0.5); }
+    .chip-input .chip-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 14px;
+      background: rgba(38,101,226,0.18);
+      color: #cfdcff; font-size: 12px; font-weight: 600;
+    }
+    .chip-input .chip-tag.group { background: rgba(194,109,230,0.18); color: #efd0ff; }
+    .chip-input .chip-tag .chip-x {
+      background: none; border: none; color: inherit;
+      cursor: pointer; padding: 0;
+      opacity: 0.7; font-size: 12px; line-height: 1;
+    }
+    .chip-input .chip-tag .chip-x:hover { opacity: 1; }
+    .chip-input input {
+      flex: 1; min-width: 120px;
+      background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-size: 13px;
+      padding: 3px 4px;
+    }
+    .sso-note {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .sso-note .badge {
+      background: rgba(255,255,255,0.06); color: var(--text-secondary);
+      padding: 2px 7px; border-radius: 10px; font-weight: 600;
+    }
 
     .form-input, .form-textarea {
       background: rgba(255,255,255,0.05);
@@ -4127,6 +4285,10 @@ let ADMIN_MCPS = [
   { id: 'gh',       icon: '🐙', name: 'GitHub',       desc: 'Read repos, issues and pull requests', enabled: false },
   { id: 'sn',       icon: '🛟', name: 'ServiceNow',   desc: 'Read tickets and incidents', enabled: false },
 ];
+let ADMIN_CUSTOM_MCPS = [
+  { id: 'cust_billing', icon: '💳', name: 'Internal Billing API',  desc: 'Custom MCP exposing the in-house billing service', enabled: false },
+  { id: 'cust_hr',      icon: '🧑‍💼', name: 'HR Tools (internal)', desc: 'Custom MCP wrapping the HR data pipeline', enabled: false },
+];
 let ADMIN_SKILLS = [
   { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation', enabled: true },
   { id: 'hire',       icon: '🧑‍🎓', name: 'Conduct-hire-interview',     desc: 'Run a structured interview for a new hire', enabled: false },
@@ -4156,7 +4318,8 @@ let ADMIN_SUBAGENTS = [
 /* Lookup tables for the edit modal */
 const ADMIN_LISTS = {
   tools: { ref: () => ADMIN_TOOLS, label: 'tool', listId: 'adminToolsList', addLabel: 'Add new tool' },
-  mcps:  { ref: () => ADMIN_MCPS,  label: 'MCP',  listId: 'adminMcpList',   addLabel: 'Add new MCP' },
+  mcps:  { ref: () => ADMIN_MCPS,  label: 'MCP',  listId: 'adminMcpList',   addLabel: 'Add new enterprise MCP' },
+  custmcps: { ref: () => ADMIN_CUSTOM_MCPS, label: 'custom MCP', listId: 'adminCustomMcpList', addLabel: 'Add new custom MCP' },
   skills:{ ref: () => ADMIN_SKILLS,label: 'skill',listId: 'adminSkillsList',addLabel: 'Add new skill' },
   rag:   { ref: () => ADMIN_RAG,   label: 'knowledge base', listId: 'adminRagList', addLabel: 'Add new knowledge base' },
   dbs:   { ref: () => ADMIN_DBS,   label: 'database', listId: 'adminDbList',  addLabel: 'Add new database' },
@@ -4165,11 +4328,53 @@ const ADMIN_LISTS = {
 function setAdminList(key, arr) {
   if (key === 'tools') ADMIN_TOOLS = arr;
   else if (key === 'mcps') ADMIN_MCPS = arr;
+  else if (key === 'custmcps') ADMIN_CUSTOM_MCPS = arr;
   else if (key === 'skills') ADMIN_SKILLS = arr;
   else if (key === 'rag') ADMIN_RAG = arr;
   else if (key === 'dbs') ADMIN_DBS = arr;
   else if (key === 'subs') ADMIN_SUBAGENTS = arr;
 }
+
+/* ─── Editable option lists for Roles, Tones, Languages ─── */
+let ROLE_OPTIONS = ['Assistant','Analyst','Reviewer','Researcher','Tutor','Planner','Operator','Specialist'];
+let TONE_OPTIONS = ['Professional','Friendly','Concise','Technical','Executive','Supportive'];
+let LANG_OPTIONS = ['English','Swedish','Norwegian','Danish','Finnish','German','French','Auto-detect'];
+
+const PROMPT_TEMPLATE_LIST = [
+  { id:'legal',     icon:'⚖️',  label:'Legal reviewer' },
+  { id:'finance',   icon:'💰',  label:'Finance analyst' },
+  { id:'hr',        icon:'🧑‍💼', label:'HR helper' },
+  { id:'support',   icon:'📞',  label:'Support triage' },
+  { id:'sales',     icon:'🚀',  label:'Sales rep' },
+  { id:'marketing', icon:'📣',  label:'Marketing copywriter' },
+  { id:'research',  icon:'🔬',  label:'Research analyst' },
+  { id:'tutor',     icon:'🧑‍🎓', label:'Tutor / onboarding' },
+  { id:'product',   icon:'🎯',  label:'Product manager' },
+  { id:'engineer',  icon:'💻',  label:'Engineering buddy' },
+  { id:'blank',     icon:'＋',  label:'Start blank' },
+];
+
+const DISALLOWED_TEMPLATES = [
+  { id:'binding-legal',  icon:'⚖️',  label:'Binding legal advice', text:'- Provide binding legal advice\n- Approve or sign contracts on behalf of the company' },
+  { id:'medical',        icon:'🩺',  label:'Medical diagnosis',     text:'- Provide medical diagnoses or treatment recommendations\n- Replace consultation with a qualified clinician' },
+  { id:'financial',      icon:'💸',  label:'Investment advice',     text:'- Recommend specific investments or trades\n- Predict the future price of a security' },
+  { id:'sensitive',      icon:'🔒',  label:'Share sensitive data',  text:'- Share customer-level financial data with users outside finance\n- Reveal employee salary or compensation details' },
+  { id:'destructive',    icon:'🗑️',  label:'Destructive actions',   text:'- Delete records, drop tables, or run irreversible operations without confirmation' },
+  { id:'opinions',       icon:'🗣️',  label:'Personal opinions',     text:'- Express personal opinions on politics, religion, or controversial topics' },
+];
+
+/* ─── Owners (multi-select chip input) — mock SSO directory ─── */
+const SSO_DIRECTORY = [
+  { name:'Peter Anderberg',  type:'user',  email:'peter@reeinvent.com' },
+  { name:'Anna Karlsson',    type:'user',  email:'anna@reeinvent.com' },
+  { name:'Marcus Holmberg',  type:'user',  email:'marcus@reeinvent.com' },
+  { name:'Sofia Lindgren',   type:'user',  email:'sofia@reeinvent.com' },
+  { name:'Reeinvent',        type:'group', count:42 },
+  { name:'Engineering',      type:'group', count:18 },
+  { name:'Product',          type:'group', count:9 },
+  { name:'Leadership',       type:'group', count:6 },
+];
+let ownersSelected = [{ name:'Peter Anderberg', type:'user' }];
 
 /* Company colleagues — admin-side state, seeded from the runtime agents.
    Each entry holds the form values shown in the Colleague Creator form. */
@@ -4203,16 +4408,301 @@ function openColleagueCreatorAdmin() {
   document.getElementById('adminCreatorOverlay').classList.add('show');
   creatorTab = 'identity';
   applyCreatorTab();
+  refreshOptionSelects();
+  renderPromptTemplateChips();
+  renderDisallowedTemplateChips();
   renderAdminLists();
   bindIconPicker();
   bindAccessChips();
   renderCompanyColleagueList();
+  renderOwnersChips();
+  bindOwnersSearch();
+  renderPriorityList();
   // If nothing selected yet, default to "new" mode
   if (activeCompanyColleagueId == null) {
     newCompanyColleague();
   } else {
     loadCompanyColleague(activeCompanyColleagueId);
   }
+}
+
+/* Populate the editable selects from the option arrays */
+function refreshOptionSelects() {
+  const fill = (id, arr, current) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const previous = current || el.value;
+    el.innerHTML = arr.map(o => `<option ${o===previous?'selected':''}>${escapeHtml(o)}</option>`).join('');
+  };
+  fill('adminAgentRole', ROLE_OPTIONS);
+  fill('adminAgentTone', TONE_OPTIONS);
+  fill('adminAgentLang', LANG_OPTIONS);
+}
+
+/* ─── Manage options modal (Roles / Tones / Languages) ─── */
+let manageOptionsKey = null;
+let manageOptionsDraft = [];
+
+function openManageOptions(key) {
+  manageOptionsKey = key;
+  const arr = key === 'roles' ? ROLE_OPTIONS : key === 'tones' ? TONE_OPTIONS : LANG_OPTIONS;
+  manageOptionsDraft = [...arr];
+  document.getElementById('manageOptionsTitle').textContent =
+    'Manage ' + (key === 'roles' ? 'Roles / Domains' : key === 'tones' ? 'Tones' : 'Languages');
+  renderManageOptions();
+  document.getElementById('manageOptionsOverlay').classList.add('show');
+}
+function closeManageOptions() {
+  document.getElementById('manageOptionsOverlay').classList.remove('show');
+}
+function renderManageOptions() {
+  const html = manageOptionsDraft.map((opt, i) => `
+    <div class="options-row">
+      <input type="text" value="${escapeHtml(opt)}" oninput="manageOptionsDraft[${i}]=this.value">
+      <button class="row-rm" onclick="manageOptionsDraft.splice(${i},1);renderManageOptions()" title="Remove">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+      </button>
+    </div>`).join('');
+  document.getElementById('manageOptionsList').innerHTML = html;
+}
+function addManageOption() {
+  manageOptionsDraft.push('New option');
+  renderManageOptions();
+}
+function saveManageOptions() {
+  const cleaned = manageOptionsDraft.map(s => s.trim()).filter(Boolean);
+  if (manageOptionsKey === 'roles') ROLE_OPTIONS = cleaned;
+  else if (manageOptionsKey === 'tones') TONE_OPTIONS = cleaned;
+  else if (manageOptionsKey === 'languages') LANG_OPTIONS = cleaned;
+  refreshOptionSelects();
+  closeManageOptions();
+}
+
+/* ─── AI help — mock generator for textarea content ─── */
+async function aiHelpFill(targetId, kind) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const btn = event.target;
+  btn.classList.add('loading');
+  btn.textContent = '✨ Generating…';
+  // mock: build content based on the colleague being edited
+  const c = companyColleagues.find(x => x.id === activeCompanyColleagueId);
+  const name = document.getElementById('adminAgentName').value || (c && c.name) || 'this colleague';
+  const role = document.getElementById('adminAgentRole').value || 'Assistant';
+  const tone = document.getElementById('adminAgentTone').value || 'Professional';
+  await new Promise(r => setTimeout(r, 700));
+  const content =
+    kind === 'description' ?
+      `${name} is a ${tone.toLowerCase()} ${role.toLowerCase()} that helps the team with focused, day-to-day tasks. It connects to the relevant data sources and only acts within its allowed scope.` :
+    kind === 'systemPrompt' ?
+      `You are ${name}, a ${role.toLowerCase()} working at Reeinvent. Tone: ${tone.toLowerCase()}.\n\nResponsibilities:\n- Help the team with tasks within your domain.\n- Ground every answer in approved company sources.\n- Cite the source for every claim.\n\nHard rules:\n- Never give binding legal, medical, or financial advice.\n- Escalate to a human when confidence is low or the task is outside scope.` :
+    kind === 'disallowed' ?
+      `- Provide binding legal, medical, or financial advice\n- Approve, sign, or commit to contracts\n- Share customer-level data with users outside the authorized group\n- Run destructive operations without explicit confirmation` :
+    '';
+  target.value = content;
+  btn.classList.remove('loading');
+  btn.textContent = '✨ AI help';
+}
+
+/* ─── Prompt templates ─── */
+function renderPromptTemplateChips() {
+  const el = document.getElementById('promptTemplateChips');
+  if (!el) return;
+  el.innerHTML = PROMPT_TEMPLATE_LIST.map(t =>
+    `<div class="chip" onclick="loadPromptTemplate('${t.id}')">${t.icon} ${escapeHtml(t.label)}</div>`).join('');
+}
+function renderDisallowedTemplateChips() {
+  const el = document.getElementById('disallowedTemplateChips');
+  if (!el) return;
+  el.innerHTML = DISALLOWED_TEMPLATES.map(t =>
+    `<div class="chip" onclick="addDisallowedTemplate('${t.id}')">${t.icon} ${escapeHtml(t.label)}</div>`).join('');
+}
+function addDisallowedTemplate(id) {
+  const t = DISALLOWED_TEMPLATES.find(x => x.id === id);
+  if (!t) return;
+  const ta = document.getElementById('adminDisallowed');
+  const cur = ta.value.trim();
+  ta.value = (cur ? cur + '\n' : '') + t.text;
+}
+
+/* ─── Insert prompt from colleague ─── */
+function openInsertFromColleague() {
+  const list = document.getElementById('insertFromList');
+  const items = companyColleagues.filter(c => c.systemPrompt || c.id === activeCompanyColleagueId ? false : true);
+  // Show all colleagues except the one being edited
+  const filtered = companyColleagues.filter(c => c.id !== activeCompanyColleagueId);
+  list.innerHTML = filtered.length ? filtered.map(c => {
+    const preview = (c.systemPrompt || c.desc || '').slice(0, 120);
+    return `<div class="conn-card" style="cursor:pointer" onclick="insertFromColleague('${c.id}')">
+      <div class="conn-card-icon" style="font-size:16px">${c.icon || '🤖'}</div>
+      <div class="conn-card-info">
+        <div class="conn-card-name">${escapeHtml(c.name)}</div>
+        <div class="conn-card-desc">${escapeHtml(preview) || 'No prompt set yet — click to use this colleague\'s description.'}</div>
+      </div>
+    </div>`;
+  }).join('') : `<div style="color:var(--text-muted);text-align:center;padding:20px">No other colleagues to copy from yet.</div>`;
+  document.getElementById('insertFromOverlay').classList.add('show');
+}
+function closeInsertFromColleague() {
+  document.getElementById('insertFromOverlay').classList.remove('show');
+}
+function insertFromColleague(id) {
+  const c = companyColleagues.find(x => x.id === id);
+  if (!c) return;
+  const prompt = c.systemPrompt && c.systemPrompt.trim()
+    ? c.systemPrompt
+    : `You are ${c.name}, a ${(c.role||'assistant').toLowerCase()} at Reeinvent.\n\n${c.desc || ''}`;
+  document.getElementById('adminSystemPrompt').value = prompt;
+  closeInsertFromColleague();
+}
+
+/* ─── Owners chip input ─── */
+function renderOwnersChips() {
+  const wrap = document.getElementById('adminOwnersInput');
+  if (!wrap) return;
+  const input = wrap.querySelector('input');
+  // Remove existing tags but keep the input
+  [...wrap.querySelectorAll('.chip-tag, .chip-suggestions')].forEach(el => el.remove());
+  ownersSelected.forEach((o, i) => {
+    const tag = document.createElement('span');
+    tag.className = 'chip-tag' + (o.type === 'group' ? ' group' : '');
+    tag.innerHTML = `${o.type === 'group' ? '👥' : '👤'} ${escapeHtml(o.name)}
+      <button class="chip-x" onclick="removeOwner(${i})" title="Remove">✕</button>`;
+    wrap.insertBefore(tag, input);
+  });
+}
+function removeOwner(idx) {
+  ownersSelected.splice(idx, 1);
+  renderOwnersChips();
+}
+function bindOwnersSearch() {
+  const inp = document.getElementById('adminOwnerSearch');
+  if (!inp || inp._bound) return;
+  inp._bound = true;
+  let suggestionEl = null;
+  const close = () => { suggestionEl?.remove(); suggestionEl = null; };
+  inp.addEventListener('input', () => {
+    close();
+    const q = inp.value.trim().toLowerCase();
+    if (!q) return;
+    const matches = SSO_DIRECTORY.filter(d =>
+      d.name.toLowerCase().includes(q) && !ownersSelected.find(o => o.name === d.name)
+    ).slice(0, 6);
+    if (!matches.length) return;
+    suggestionEl = document.createElement('div');
+    suggestionEl.style.cssText = 'position:absolute;background:#131830;border:1px solid var(--border);border-radius:10px;padding:6px;margin-top:4px;width:280px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,0.4)';
+    suggestionEl.innerHTML = matches.map((m, i) => `
+      <div style="padding:8px 10px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px"
+        onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''"
+        onclick="addOwnerByIdx(${SSO_DIRECTORY.indexOf(m)})">
+        ${m.type === 'group' ? '👥' : '👤'}
+        <span style="flex:1">${escapeHtml(m.name)}</span>
+        <span style="font-size:10px;color:var(--text-muted)">${m.type === 'group' ? m.count + ' members' : (m.email||'')}</span>
+      </div>
+    `).join('');
+    inp.parentElement.appendChild(suggestionEl);
+  });
+  inp.addEventListener('blur', () => setTimeout(close, 200));
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && inp.value.trim()) {
+      e.preventDefault();
+      const v = inp.value.trim();
+      const found = SSO_DIRECTORY.find(d => d.name.toLowerCase() === v.toLowerCase());
+      ownersSelected.push(found ? { name: found.name, type: found.type } : { name: v, type: 'user' });
+      renderOwnersChips();
+      inp.value = '';
+      close();
+    }
+  });
+}
+function addOwnerByIdx(i) {
+  const m = SSO_DIRECTORY[i];
+  if (!m) return;
+  if (!ownersSelected.find(o => o.name === m.name)) {
+    ownersSelected.push({ name: m.name, type: m.type });
+    renderOwnersChips();
+  }
+  document.getElementById('adminOwnerSearch').value = '';
+}
+
+/* ─── Priority list (drag-and-drop) ─── */
+const SOURCE_REGISTRY = [
+  { id:'policy',  icon:'📘', name:'Company Policies' },
+  { id:'legal',   icon:'⚖️', name:'Legal Playbook' },
+  { id:'product', icon:'🎯', name:'Product Documentation' },
+  { id:'support', icon:'📞', name:'Help Center articles' },
+  { id:'erp',     icon:'🏢', name:'ERP (SAP S/4)' },
+  { id:'crm',     icon:'☁️', name:'CRM (Salesforce)' },
+  { id:'econ',    icon:'💹', name:'Economics database' },
+  { id:'web',     icon:'🌐', name:'Public web search' },
+  { id:'upload',  icon:'⬆️', name:'User-uploaded files' },
+];
+let priorityList = ['policy','legal','crm','web']; // active by default
+
+function renderPriorityList() {
+  const listEl = document.getElementById('adminPriorityList');
+  const poolEl = document.getElementById('adminPriorityPool');
+  if (!listEl || !poolEl) return;
+  if (priorityList.length === 0) {
+    listEl.innerHTML = `<div class="priority-empty">No sources in the priority list — click chips below to add.</div>`;
+  } else {
+    listEl.innerHTML = priorityList.map((id, i) => {
+      const src = SOURCE_REGISTRY.find(s => s.id === id);
+      if (!src) return '';
+      return `<div class="priority-row" draggable="true"
+        ondragstart="priorityDragStart(event, ${i})"
+        ondragover="priorityDragOver(event, ${i})"
+        ondragleave="priorityDragLeave(event)"
+        ondrop="priorityDrop(event, ${i})"
+        ondragend="priorityDragEnd(event)">
+        <span class="priority-handle">⋮⋮</span>
+        <span class="priority-rank">${i + 1}</span>
+        <span class="priority-icon">${src.icon}</span>
+        <span class="priority-name">${escapeHtml(src.name)}</span>
+        <button class="priority-rm" title="Remove" onclick="removeFromPriority('${id}')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>`;
+    }).join('');
+  }
+  const remaining = SOURCE_REGISTRY.filter(s => !priorityList.includes(s.id));
+  poolEl.innerHTML = remaining.length
+    ? `<div style="font-size:11px;color:var(--text-muted);width:100%;margin-bottom:4px">Click to add to the list:</div>` +
+       remaining.map(s => `<span class="priority-pool-chip" onclick="addToPriority('${s.id}')">${s.icon} ${escapeHtml(s.name)}</span>`).join('')
+    : '';
+}
+function addToPriority(id) {
+  if (!priorityList.includes(id)) priorityList.push(id);
+  renderPriorityList();
+}
+function removeFromPriority(id) {
+  priorityList = priorityList.filter(x => x !== id);
+  renderPriorityList();
+}
+let _dragFrom = null;
+function priorityDragStart(e, i) {
+  _dragFrom = i;
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function priorityDragOver(e, i) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drop-target');
+}
+function priorityDragLeave(e) {
+  e.currentTarget.classList.remove('drop-target');
+}
+function priorityDrop(e, i) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drop-target');
+  if (_dragFrom == null || _dragFrom === i) return;
+  const moved = priorityList.splice(_dragFrom, 1)[0];
+  priorityList.splice(i, 0, moved);
+  renderPriorityList();
+}
+function priorityDragEnd(e) {
+  document.querySelectorAll('.priority-row').forEach(r => r.classList.remove('dragging','drop-target'));
+  _dragFrom = null;
 }
 
 /* ─── Company colleague list (left sidebar inside Colleague Creator) ─── */
@@ -4239,6 +4729,10 @@ function renderCompanyColleagueList() {
         </div>
       </div>
       <div class="creator-list-actions">
+        <button class="creator-list-action" title="Duplicate as draft"
+          onclick="event.stopPropagation();duplicateCompanyColleague('${c.id}')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
         <button class="creator-list-action" title="Edit"
           onclick="event.stopPropagation();loadCompanyColleague('${c.id}')">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
@@ -4302,6 +4796,20 @@ function loadCompanyColleague(id) {
   creatorTab = 'identity';
   applyCreatorTab();
   renderCompanyColleagueList();
+}
+
+function duplicateCompanyColleague(id) {
+  const orig = companyColleagues.find(x => x.id === id);
+  if (!orig) return;
+  const copy = {
+    ...orig,
+    id: 'cc_' + Date.now(),
+    name: orig.name + ' (copy)',
+    status: 'draft',
+    builtin: false,
+  };
+  companyColleagues.push(copy);
+  loadCompanyColleague(copy.id);
 }
 
 function confirmDeleteColleague(id) {
@@ -4606,6 +5114,11 @@ const FULL_EDIT_SCHEMAS = {
   mcps: {
     title: (d) => 'MCP — ' + (d.name || 'New MCP'),
     breadcrumb: 'MCPs',
+    sections: ['identity','connection','actions','limits'],
+  },
+  custmcps: {
+    title: (d) => 'Custom MCP — ' + (d.name || 'New custom MCP'),
+    breadcrumb: 'Custom MCPs',
     sections: ['identity','connection','actions','limits'],
   },
   skills: {
@@ -5199,6 +5712,52 @@ Hard rules:
 - Draft replies only — never send email automatically.
 - Identify priority and category before drafting.
 - If the customer is enterprise tier, flag for human review.`,
+  sales: `You are a sales rep assistant at Reeinvent.
+
+- Find prospects that match our top existing customers.
+- Suggest pricing tiers based on demand and historical margin.
+- Draft outreach emails grounded in the customer's industry and recent news.
+
+Never:
+- Promise discounts above company policy.
+- Share customer references without their explicit consent.`,
+  marketing: `You are a marketing copywriter at Reeinvent.
+
+- Match the brand voice (professional but warm).
+- Always provide 2 variations for any copy you draft.
+- Cite which campaign template you started from.
+
+Never:
+- Make competitive comparisons that aren't backed by public data.
+- Use customer logos without confirming permission.`,
+  research: `You are a research analyst.
+
+- Synthesize findings from approved sources only.
+- Cite every claim with a clickable reference.
+- Surface confidence ratings and counter-evidence.
+
+Never produce a final recommendation without listing the assumptions behind it.`,
+  tutor: `You are an onboarding tutor for new hires.
+
+- Use a friendly, encouraging tone.
+- Break complex topics into 2-3 step explanations with examples.
+- Quiz the learner at the end of each topic.
+
+Always tell the learner when something is your interpretation vs. official policy.`,
+  product: `You are a product manager assistant.
+
+- Help draft PRDs, user stories and release notes.
+- Prioritize using RICE and surface the assumptions behind each score.
+- Reference the latest customer interview transcripts when discussing user pain points.
+
+Never commit to a release date without engineering confirmation.`,
+  engineer: `You are a senior software engineer pairing with the team.
+
+- Answer questions grounded in our actual codebase and architecture docs.
+- Show diffs, not full file rewrites, when proposing changes.
+- Flag tests and migration steps for any non-trivial change.
+
+Never run destructive operations (DROP, DELETE, force-push) without confirmation.`,
   blank: ``
 };
 function loadPromptTemplate(key) {
@@ -6005,45 +6564,37 @@ function updateGalleryCount() {
       <section class="admin-creator-section active" data-section="identity">
         <div class="admin-section-grid">
           <div class="form-group">
-            <div class="form-label">Assistant name <span class="req">*</span></div>
+            <div class="form-label"><span class="req">*</span>Assistant name</div>
             <input class="form-input" id="adminAgentName" placeholder="e.g. Legal Contract Reviewer">
           </div>
           <div class="form-group">
-            <div class="form-label">Role / Domain</div>
-            <select class="form-select" id="adminAgentRole">
-              <option>Assistant</option>
-              <option>Analyst</option>
-              <option>Reviewer</option>
-              <option>Researcher</option>
-              <option>Tutor</option>
-              <option>Planner</option>
-              <option>Operator</option>
-              <option>Specialist</option>
-            </select>
+            <div class="form-label-row">
+              <div class="form-label">Role / Domain</div>
+              <span class="label-action-link" onclick="openManageOptions('roles')">⚙ Manage</span>
+            </div>
+            <select class="form-select" id="adminAgentRole"></select>
           </div>
           <div class="form-group full">
-            <div class="form-label">Short description <span class="req">*</span></div>
+            <div class="form-label-row">
+              <div class="form-label"><span class="req">*</span>Short description</div>
+              <button class="ai-help-btn" onclick="aiHelpFill('adminAgentDesc','description')">✨ AI help</button>
+            </div>
             <textarea class="form-textarea" id="adminAgentDesc" maxlength="200"
               placeholder="A short explanation of what this colleague does"></textarea>
           </div>
           <div class="form-group">
-            <div class="form-label">Tone</div>
-            <select class="form-select" id="adminAgentTone">
-              <option>Professional</option>
-              <option>Friendly</option>
-              <option>Concise</option>
-              <option>Technical</option>
-              <option>Executive</option>
-              <option>Supportive</option>
-            </select>
+            <div class="form-label-row">
+              <div class="form-label">Tone</div>
+              <span class="label-action-link" onclick="openManageOptions('tones')">⚙ Manage</span>
+            </div>
+            <select class="form-select" id="adminAgentTone"></select>
           </div>
           <div class="form-group">
-            <div class="form-label">Default language</div>
-            <select class="form-select" id="adminAgentLang">
-              <option>English</option>
-              <option>Swedish</option>
-              <option>Auto-detect</option>
-            </select>
+            <div class="form-label-row">
+              <div class="form-label">Default language</div>
+              <span class="label-action-link" onclick="openManageOptions('languages')">⚙ Manage</span>
+            </div>
+            <select class="form-select" id="adminAgentLang"></select>
           </div>
           <div class="form-group full">
             <div class="form-label">Icon</div>
@@ -6068,22 +6619,27 @@ function updateGalleryCount() {
       <!-- 2. PROMPT -->
       <section class="admin-creator-section" data-section="prompt">
         <div class="form-group">
-          <div class="form-label">System prompt <span class="req">*</span></div>
+          <div class="form-label-row">
+            <div class="form-label"><span class="req">*</span>System prompt</div>
+            <span class="form-label-actions">
+              <span class="label-action-link" onclick="openInsertFromColleague()">↧ Insert from colleague</span>
+              <button class="ai-help-btn" onclick="aiHelpFill('adminSystemPrompt','systemPrompt')">✨ AI help</button>
+            </span>
+          </div>
           <textarea class="form-textarea tall" id="adminSystemPrompt" maxlength="8000"
             placeholder="You are a [role] working at [company]. Your responsibility is to..." style="height:200px"></textarea>
           <div class="admin-helper">Defines the colleague's perspective, behavior rules and reasoning style. Pick a starting template:</div>
-          <div class="chip-row" style="margin-top:8px">
-            <div class="chip" onclick="loadPromptTemplate('legal')">⚖️ Legal reviewer</div>
-            <div class="chip" onclick="loadPromptTemplate('finance')">💰 Finance analyst</div>
-            <div class="chip" onclick="loadPromptTemplate('hr')">🧑‍💼 HR helper</div>
-            <div class="chip" onclick="loadPromptTemplate('support')">📞 Support triage</div>
-            <div class="chip" onclick="loadPromptTemplate('blank')">＋ Start blank</div>
-          </div>
+          <div class="chip-row" id="promptTemplateChips" style="margin-top:8px"></div>
         </div>
         <div class="form-group" style="margin-top:18px">
-          <div class="form-label">Disallowed tasks</div>
+          <div class="form-label-row">
+            <div class="form-label">Disallowed tasks</div>
+            <button class="ai-help-btn" onclick="aiHelpFill('adminDisallowed','disallowed')">✨ AI help</button>
+          </div>
           <textarea class="form-textarea" id="adminDisallowed"
             placeholder="What this colleague should refuse to do (e.g. give binding legal advice, approve contracts)"></textarea>
+          <div class="admin-helper" style="margin-top:6px">Common patterns:</div>
+          <div class="chip-row" id="disallowedTemplateChips" style="margin-top:6px"></div>
         </div>
       </section>
 
@@ -6093,7 +6649,12 @@ function updateGalleryCount() {
         <div id="adminToolsList"></div>
 
         <div class="form-section-title" style="margin: 22px 0 10px">Enterprise MCPs</div>
+        <div class="admin-helper" style="margin-bottom:10px">Vendor-provided MCP servers vetted by your IT team.</div>
         <div id="adminMcpList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Custom MCPs</div>
+        <div class="admin-helper" style="margin-bottom:10px">Internal MCP servers built or hosted by your organization.</div>
+        <div id="adminCustomMcpList"></div>
       </section>
 
       <!-- 4. SKILLS -->
@@ -6106,21 +6667,35 @@ function updateGalleryCount() {
 
       <!-- 5. DATA -->
       <section class="admin-creator-section" data-section="data">
+        <div class="admin-helper" style="margin-bottom:14px">
+          Data sources for this customer are configured centrally in
+          <a class="label-action-link" style="display:inline" onclick="closeColleagueCreatorAdmin();openConnections()">Admin → Connections ↗</a>.
+          Pick which of those sources this colleague is allowed to use.
+        </div>
+
         <div class="form-section-title" style="margin-bottom:10px">RAG knowledge bases</div>
         <div id="adminRagList"></div>
+
+        <div class="cap-toggle" style="margin-top:10px">
+          <div class="cap-toggle-info">
+            <span class="cap-toggle-icon">⬆️</span>
+            <span class="cap-toggle-text">Allow users to upload knowledge from this colleague
+              <span style="font-weight:400;color:var(--text-muted);font-size:11px">(subject to user access level)</span></span>
+          </div>
+          <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
+        </div>
 
         <div class="form-section-title" style="margin: 22px 0 10px">Customer databases</div>
         <div class="admin-helper" style="margin-bottom:10px">Routed via internal sub-agents — the LLM only generates the query; the runtime validates and executes it (like the analytics agent).</div>
         <div id="adminDbList"></div>
 
-        <div class="form-group" style="margin-top:18px">
-          <div class="form-label">Source priority</div>
-          <select class="form-select" id="adminSourcePriority">
-            <option>Internal policy &gt; uploaded file &gt; web</option>
-            <option>Customer database &gt; RAG &gt; web</option>
-            <option>RAG only — no web</option>
-          </select>
+        <div class="form-section-title" style="margin: 22px 0 10px">Source priority</div>
+        <div class="admin-helper" style="margin-bottom:10px">
+          Drag to reorder. The list order = priority. Sources not in the list are excluded
+          (drag from the pool below to include them).
         </div>
+        <div class="priority-list" id="adminPriorityList"></div>
+        <div class="priority-pool" id="adminPriorityPool"></div>
       </section>
 
       <!-- 6. MODEL -->
@@ -6189,6 +6764,11 @@ function updateGalleryCount() {
           <div class="chip" data-group="leadership">⭐ Leadership</div>
           <div class="chip" data-group="admins">🛡️ Admins only</div>
         </div>
+        <div class="sso-note">
+          <span class="badge">SSO</span>
+          Group memberships are pulled from your customer's identity provider (Azure AD / Okta).
+          Changes to group composition take effect on the next sync.
+        </div>
 
         <div class="form-section-title" style="margin: 22px 0 10px">Sharing scope</div>
         <select class="form-select" id="adminScope">
@@ -6198,8 +6778,15 @@ function updateGalleryCount() {
           <option>Private — owner only</option>
         </select>
 
-        <div class="form-section-title" style="margin: 22px 0 10px">Owner</div>
-        <input class="form-input" id="adminOwner" value="Peter Anderberg" placeholder="Owner / responsible person">
+        <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
+        <div class="admin-helper" style="margin-bottom:8px">Add multiple users or a group as owner. Type to search SSO directory.</div>
+        <div class="chip-input" id="adminOwnersInput">
+          <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
+        </div>
+        <div class="sso-note" style="margin-top:8px">
+          <span class="badge">SSO</span>
+          Owner suggestions come from your customer's directory. Type a name or paste a group like "Reeinvent".
+        </div>
       </section>
 
       <!-- 8. ADVANCED -->
@@ -6295,6 +6882,42 @@ function updateGalleryCount() {
     </div>
     </div><!-- /.creator-main -->
   </div><!-- /.creator-layout -->
+</div>
+
+<!-- Manage options modal (Roles / Tones / Languages) -->
+<div id="manageOptionsOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeManageOptions()">
+  <div class="item-edit-modal" style="width:480px">
+    <div class="item-edit-header">
+      <div class="item-edit-title" id="manageOptionsTitle">Manage</div>
+      <button class="gallery-close" onclick="closeManageOptions()">✕</button>
+    </div>
+    <div class="item-edit-body">
+      <div class="options-list" id="manageOptionsList"></div>
+      <button class="options-add-btn" onclick="addManageOption()">＋ Add option</button>
+    </div>
+    <div class="item-edit-footer">
+      <div></div>
+      <div class="footer-right" style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeManageOptions()">Cancel</button>
+        <button class="btn-create ready" onclick="saveManageOptions()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Insert prompt from colleague -->
+<div id="insertFromOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeInsertFromColleague()">
+  <div class="item-edit-modal" style="width:480px">
+    <div class="item-edit-header">
+      <div class="item-edit-title">Insert prompt from colleague</div>
+      <button class="gallery-close" onclick="closeInsertFromColleague()">✕</button>
+    </div>
+    <div class="item-edit-body" id="insertFromList"></div>
+    <div class="item-edit-footer">
+      <div></div>
+      <div><button class="btn-cancel" onclick="closeInsertFromColleague()">Close</button></div>
+    </div>
+  </div>
 </div>
 
 <!-- Confirm delete dialog -->
