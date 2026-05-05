@@ -1310,6 +1310,62 @@
     }
     .feature-row-add:hover { background: rgba(38,101,226,0.13); }
 
+    /* ─── ITEM FULL-EDIT PAGE ─── */
+    .full-edit-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .full-edit-nav {
+      position: sticky; top: 24px;
+      display: flex; flex-direction: column;
+      gap: 4px;
+    }
+    .full-edit-nav-link {
+      padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .full-edit-nav-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+    .full-edit-nav-link.active {
+      color: var(--text-primary);
+      border-left-color: var(--blue);
+      background: rgba(38,101,226,0.08);
+    }
+    .full-edit-content { display: flex; flex-direction: column; gap: 18px; }
+    .full-edit-section {
+      background: #13163a; border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .full-edit-section h3 {
+      font-size: 15px; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .full-edit-section .section-desc {
+      font-size: 12px; color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .full-edit-section .form-group + .form-group { margin-top: 14px; }
+    .full-edit-section .admin-section-grid { gap: 14px; }
+    .full-edit-toolbar {
+      display: flex; align-items: center; gap: 10px;
+      margin-left: auto;
+    }
+    .full-edit-status {
+      font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .full-edit-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted);
+    }
+    .full-edit-status.dirty .dot { background: #f59e0b; }
+    .full-edit-status.dirty { color: #f59e0b; }
+    .full-edit-status.saved .dot { background: #34d399; }
+    .full-edit-status.saved { color: #34d399; }
+
     /* ─── ITEM EDIT MODAL (over admin pages) ─── */
     .item-edit-overlay {
       display: none; position: fixed; inset: 0; z-index: 500;
@@ -4080,6 +4136,10 @@ function addRowHtml(listKey, label) {
   return `<div class="feature-row-add" onclick="openItemEdit('${listKey}', null)">
     <span style="font-size:16px;line-height:1">＋</span>
     <span>${label}</span>
+    <span style="margin-left:auto;font-size:11px;font-weight:500;color:var(--text-muted)"
+      onclick="event.stopPropagation();openItemFullEditDirect('${listKey}', null)">
+      or open full editor →
+    </span>
   </div>`;
 }
 
@@ -4257,6 +4317,586 @@ function deleteCurrentItem() {
   setAdminList(listKey, arr);
   renderAdminLists();
   closeItemEdit();
+}
+
+/* ─── ITEM FULL-EDIT PAGE ─── */
+let fullEditContext = null;
+
+const FULL_EDIT_SCHEMAS = {
+  tools: {
+    title: (d) => 'Tool — ' + (d.name || 'New tool'),
+    breadcrumb: 'Tools',
+    sections: ['identity','permissions','limits','audit'],
+  },
+  mcps: {
+    title: (d) => 'MCP — ' + (d.name || 'New MCP'),
+    breadcrumb: 'MCPs',
+    sections: ['identity','connection','actions','limits'],
+  },
+  skills: {
+    title: (d) => 'Skill — ' + (d.name || 'New skill'),
+    breadcrumb: 'Skills',
+    sections: ['identity','definition','triggers','io'],
+  },
+  rag: {
+    title: (d) => 'Knowledge base — ' + (d.name || 'New source'),
+    breadcrumb: 'RAG',
+    sections: ['identity','source','indexing','priority'],
+  },
+  dbs: {
+    title: (d) => 'Database — ' + (d.name || 'New database'),
+    breadcrumb: 'Databases',
+    sections: ['identity','connection','schema','safety'],
+  },
+  subs: {
+    title: (d) => 'Sub-agent — ' + (d.name || 'New sub-agent'),
+    breadcrumb: 'Sub-agents',
+    sections: ['identity','process','validation','escalation'],
+  },
+  __conn__: {
+    title: (d) => 'Connection — ' + (d.name || 'New connection'),
+    breadcrumb: 'Connections',
+    sections: ['identity','connection','access','sync'],
+  },
+};
+
+const SECTION_TITLES = {
+  identity:    { title: 'Identity',    desc: 'Display name, description and icon.' },
+  permissions: { title: 'Permissions', desc: 'Read-only vs write access, action approval mode.' },
+  limits:      { title: 'Limits',      desc: 'Rate limits, execution timeout and cost guardrails.' },
+  audit:       { title: 'Audit & sandboxing', desc: 'Logging, sandboxing and rollback support.' },
+  connection:  { title: 'Connection',  desc: 'Endpoint, auth method and credentials.' },
+  actions:     { title: 'Available actions', desc: 'Which operations are exposed to the colleague.' },
+  definition:  { title: 'Skill definition', desc: 'Folder location and skill standard version.' },
+  triggers:    { title: 'Triggers',    desc: 'When and how the colleague should invoke this skill.' },
+  io:          { title: 'Inputs & outputs', desc: 'Required inputs and the structured output format.' },
+  source:      { title: 'Source',      desc: 'Where the data lives and how it is fetched.' },
+  indexing:    { title: 'Indexing',    desc: 'Refresh interval, chunking and embeddings.' },
+  priority:    { title: 'Source priority', desc: 'How this source ranks against other knowledge.' },
+  schema:      { title: 'Schema & exposure', desc: 'Tables and views available to the LLM.' },
+  safety:      { title: 'Query safety', desc: 'How queries are validated before execution.' },
+  process:     { title: 'Process flow', desc: 'Steps the sub-agent follows when invoked.' },
+  validation:  { title: 'Validation policy', desc: 'How the runtime checks the sub-agent output.' },
+  escalation:  { title: 'Escalation',  desc: 'When to hand off to a human or another agent.' },
+  access:      { title: 'Access control', desc: 'Which groups and users may use this connection.' },
+  sync:        { title: 'Sync settings', desc: 'How often data is refreshed and how stale data is handled.' },
+};
+
+function openItemFullEditFromModal() {
+  if (!editContext) return;
+  const { listKey, id, isNew, draft } = editContext;
+  // persist current modal values into draft first
+  if (listKey === '__conn__') {
+    saveCurrentItem();
+    // saveCurrentItem closes modal; reopen full edit on the freshly saved id
+    openItemFullEditDirect(listKey, isNew ? draft.id : id);
+  } else {
+    saveCurrentItem();
+    openItemFullEditDirect(listKey, isNew ? draft.id : id);
+  }
+}
+
+function openItemFullEditDirect(listKey, id) {
+  const schema = FULL_EDIT_SCHEMAS[listKey];
+  if (!schema) return;
+  let item, isNew = false;
+  if (listKey === '__conn__') {
+    if (id == null) {
+      item = { id: 'c_' + Date.now(), icon: '🔌', name: '', desc: '', meta: '', status: 'disconnected' };
+      isNew = true;
+    } else {
+      item = CONNECTIONS.find(c => c.id === id);
+    }
+  } else {
+    const cfg = ADMIN_LISTS[listKey];
+    const arr = cfg.ref();
+    if (id == null) {
+      item = { id: cfg.label.replace(/\s+/g,'_') + '_' + Date.now(),
+               icon: '⚙️', name: '', desc: '', enabled: true };
+      isNew = true;
+    } else {
+      item = arr.find(x => String(x.id) === String(id));
+    }
+  }
+  if (!item) return;
+  fullEditContext = { listKey, id: item.id, isNew, draft: { ...item } };
+  closeItemEdit();
+  renderItemFullEdit();
+  document.getElementById('itemFullEditOverlay').classList.add('show');
+  setFullEditStatus('saved', isNew ? 'Draft' : 'Saved');
+}
+
+function closeItemFullEdit() {
+  document.getElementById('itemFullEditOverlay').classList.remove('show');
+  fullEditContext = null;
+}
+
+function setFullEditStatus(state, label) {
+  const el = document.getElementById('fullEditStatus');
+  el.classList.remove('saved','dirty');
+  el.classList.add(state);
+  document.getElementById('fullEditStatusLabel').textContent = label;
+}
+
+function renderItemFullEdit() {
+  if (!fullEditContext) return;
+  const { listKey, draft, isNew } = fullEditContext;
+  const schema = FULL_EDIT_SCHEMAS[listKey];
+
+  const isConnections = listKey === '__conn__';
+  const adminPath = isConnections
+    ? `<span class="topbar-pill">Admin</span>
+       <span class="crumb" onclick="closeItemFullEdit();openAdminHub()">Home</span>
+       <span class="crumb-sep">/</span>
+       <span class="crumb" onclick="closeItemFullEdit();openConnections()">Connections</span>
+       <span class="crumb-sep">/</span>
+       <span class="crumb current">${draft.name || 'New'}</span>`
+    : `<span class="topbar-pill">Admin</span>
+       <span class="crumb" onclick="closeItemFullEdit();openAdminHub()">Home</span>
+       <span class="crumb-sep">/</span>
+       <span class="crumb" onclick="closeItemFullEdit();openColleagueCreatorAdmin()">Colleague Creator</span>
+       <span class="crumb-sep">/</span>
+       <span class="crumb" onclick="closeItemFullEdit();openColleagueCreatorAdmin()">${schema.breadcrumb}</span>
+       <span class="crumb-sep">/</span>
+       <span class="crumb current">${draft.name || 'New'}</span>`;
+  document.getElementById('fullEditBreadcrumbs').innerHTML = adminPath;
+
+  document.getElementById('fullEditTitle').textContent = schema.title(draft);
+  document.getElementById('fullEditSubtitle').textContent = isNew
+    ? 'New item — fill in the sections below and click Save.'
+    : 'Edit the configuration below. Changes are not saved until you click Save.';
+  document.getElementById('fullEditDelete').style.display = isNew ? 'none' : 'inline-block';
+
+  // Nav
+  const nav = document.getElementById('fullEditNav');
+  nav.innerHTML = schema.sections.map((s, i) => `
+    <div class="full-edit-nav-link ${i===0?'active':''}" data-target="${s}"
+      onclick="document.querySelectorAll('.full-edit-nav-link').forEach(n=>n.classList.remove('active'));this.classList.add('active');document.getElementById('fe_${s}').scrollIntoView({behavior:'smooth',block:'start'})">
+      ${SECTION_TITLES[s].title}
+    </div>
+  `).join('');
+
+  // Content
+  const content = document.getElementById('fullEditContent');
+  content.innerHTML = schema.sections.map(s => fullEditSectionHtml(listKey, s, draft)).join('');
+
+  // mark dirty on input
+  content.addEventListener('input', () => setFullEditStatus('dirty', 'Unsaved changes'));
+  content.addEventListener('change', () => setFullEditStatus('dirty', 'Unsaved changes'));
+}
+
+function fullEditSectionHtml(listKey, section, d) {
+  const head = `<h3>${SECTION_TITLES[section].title}</h3><div class="section-desc">${SECTION_TITLES[section].desc}</div>`;
+  const wrap = (body) => `<div class="full-edit-section" id="fe_${section}">${head}${body}</div>`;
+  const iconChoices = ['🌐','📄','💻','🖼️','📧','📅','📊','◎','📋','📚','☁️','💬','🐙','🛟','🎤','🧑‍🎓','📑','📝','⚠️','📘','⚖️','🎯','📞','🏢','💹','🧑‍💼','🏗️','🔎','🛡️','🔌','⚙️'];
+
+  if (section === 'identity') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Display name</div>
+          <input class="form-input" id="fe_name" value="${(d.name||'').replace(/"/g,'&quot;')}" placeholder="Display name">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Internal id</div>
+          <input class="form-input" value="${d.id}" readonly style="opacity:0.7">
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Description</div>
+          <textarea class="form-textarea" id="fe_desc" placeholder="What does this do?">${d.desc || ''}</textarea>
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Icon</div>
+          <div class="icon-picker" id="fe_icon">
+            ${iconChoices.map(ic => `<button class="icon-picker-btn ${ic===d.icon?'selected':''}" onclick="document.querySelectorAll('#fe_icon .icon-picker-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected');setFullEditStatus('dirty','Unsaved changes')" data-icon="${ic}">${ic}</button>`).join('')}
+          </div>
+        </div>
+        ${listKey !== '__conn__' ? `
+          <div class="form-group full">
+            <div class="cap-toggle">
+              <div class="cap-toggle-info">
+                <span class="cap-toggle-icon">${d.enabled ? '✅' : '⚪️'}</span>
+                <span class="cap-toggle-text">Enabled by default for this colleague</span>
+              </div>
+              <button class="toggle-switch ${d.enabled ? 'on' : ''}" id="fe_enabled" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+            </div>
+          </div>` : ''}
+      </div>`);
+  }
+
+  if (section === 'permissions') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Access level</div>
+          <select class="form-select" id="fe_access">
+            <option value="readonly" ${d.access==='readonly'?'selected':''}>Read-only</option>
+            <option value="readwrite" ${d.access==='readwrite'?'selected':''}>Read &amp; write</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Action approval</div>
+          <select class="form-select" id="fe_approval">
+            <option ${d.approval==='auto'?'selected':''} value="auto">Auto-run</option>
+            <option ${d.approval==='ask'?'selected':''} value="ask">Ask before action</option>
+            <option ${d.approval==='admin'?'selected':''} value="admin">Admin-only approval</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Allowed operations (comma-separated)</div>
+          <input class="form-input" id="fe_ops" value="${d.ops||''}" placeholder="e.g. search, read, summarize">
+        </div>
+      </div>`);
+  }
+
+  if (section === 'limits') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Rate limit (calls / min)</div>
+          <input class="form-input" id="fe_rate" type="number" value="${d.rate||30}">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Execution timeout (s)</div>
+          <input class="form-input" id="fe_timeout" type="number" value="${d.timeout||30}">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Cost budget (USD / month)</div>
+          <input class="form-input" id="fe_budget" type="number" value="${d.budget||100}">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Retry policy</div>
+          <select class="form-select" id="fe_retry">
+            <option ${d.retry==='none'?'selected':''} value="none">No retries</option>
+            <option ${d.retry==='1'?'selected':''} value="1">1 retry</option>
+            <option ${d.retry==='3'?'selected':''} value="3">Up to 3 retries</option>
+          </select>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'audit') {
+    return wrap(`
+      <div class="cap-toggles">
+        <div class="cap-toggle">
+          <div class="cap-toggle-info"><span class="cap-toggle-icon">🛡️</span><span class="cap-toggle-text">Run in sandbox</span></div>
+          <button class="toggle-switch ${d.sandbox!==false?'on':''}" id="fe_sandbox" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+        </div>
+        <div class="cap-toggle">
+          <div class="cap-toggle-info"><span class="cap-toggle-icon">📝</span><span class="cap-toggle-text">Audit log every call</span></div>
+          <button class="toggle-switch ${d.audit!==false?'on':''}" id="fe_audit" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+        </div>
+        <div class="cap-toggle">
+          <div class="cap-toggle-info"><span class="cap-toggle-icon">↩️</span><span class="cap-toggle-text">Rollback supported</span></div>
+          <button class="toggle-switch ${d.rollback?'on':''}" id="fe_rollback" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'connection') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group full">
+          <div class="form-label">Endpoint URL</div>
+          <input class="form-input" id="fe_endpoint" value="${d.endpoint||''}" placeholder="https://api.example.com/v1">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Auth method</div>
+          <select class="form-select" id="fe_auth">
+            <option value="oauth" ${d.auth==='oauth'?'selected':''}>OAuth 2.0</option>
+            <option value="apikey" ${d.auth==='apikey'?'selected':''}>API key</option>
+            <option value="basic" ${d.auth==='basic'?'selected':''}>Basic auth</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Credentials secret name</div>
+          <input class="form-input" id="fe_secret" value="${d.secret||''}" placeholder="e.g. SF_PROD_OAUTH">
+        </div>
+        ${listKey === '__conn__' ? `
+          <div class="form-group">
+            <div class="form-label">Connection status</div>
+            <select class="form-select" id="fe_status">
+              <option value="connected" ${d.status==='connected'?'selected':''}>Connected</option>
+              <option value="disconnected" ${d.status==='disconnected'?'selected':''}>Disconnected</option>
+            </select>
+          </div>` : ''}
+        <div class="form-group full">
+          <button class="btn-cancel" onclick="alert('Test connection — would ping the endpoint and verify credentials.')">Test connection</button>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'actions') {
+    return wrap(`
+      <div class="cap-toggles">
+        <div class="cap-toggle"><div class="cap-toggle-info"><span class="cap-toggle-icon">📖</span><span class="cap-toggle-text">List / read resources</span></div><button class="toggle-switch on" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button></div>
+        <div class="cap-toggle"><div class="cap-toggle-info"><span class="cap-toggle-icon">✏️</span><span class="cap-toggle-text">Create / update resources</span></div><button class="toggle-switch" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button></div>
+        <div class="cap-toggle"><div class="cap-toggle-info"><span class="cap-toggle-icon">🗑️</span><span class="cap-toggle-text">Delete resources</span></div><button class="toggle-switch" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button></div>
+        <div class="cap-toggle"><div class="cap-toggle-info"><span class="cap-toggle-icon">▶️</span><span class="cap-toggle-text">Run workflows</span></div><button class="toggle-switch" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button></div>
+      </div>`);
+  }
+
+  if (section === 'definition') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group full">
+          <div class="form-label">Skill folder (per skills standard)</div>
+          <input class="form-input" id="fe_folder" value="${d.folder||''}" placeholder="e.g. /skills/interview-for-presentation">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Skill standard version</div>
+          <select class="form-select" id="fe_skillver">
+            <option value="1.0" ${d.skillver==='1.0'?'selected':''}>v1.0</option>
+            <option value="1.1" ${d.skillver==='1.1'?'selected':''}>v1.1</option>
+            <option value="2.0" ${d.skillver==='2.0'?'selected':''}>v2.0</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Owner</div>
+          <input class="form-input" id="fe_owner" value="${d.owner||'Peter Anderberg'}">
+        </div>
+      </div>`);
+  }
+
+  if (section === 'triggers') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">When should the colleague invoke this skill?</div>
+        <textarea class="form-textarea" id="fe_trigger" placeholder="e.g. When the user says 'help me prepare a presentation' or uploads a topic outline.">${d.trigger||''}</textarea>
+      </div>`);
+  }
+
+  if (section === 'io') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group full">
+          <div class="form-label">Required inputs</div>
+          <textarea class="form-textarea" id="fe_inputs" placeholder="e.g. Audience, presentation goal, topic outline">${d.inputs||''}</textarea>
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Output format</div>
+          <textarea class="form-textarea" id="fe_outputs" placeholder="e.g. Structured outline + 3-5 follow-up questions">${d.outputs||''}</textarea>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'source') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group full">
+          <div class="form-label">Source path / collection</div>
+          <input class="form-input" id="fe_source" value="${d.source||''}" placeholder="e.g. sharepoint://hr/policies">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Source type</div>
+          <select class="form-select" id="fe_srctype">
+            <option ${d.srctype==='sharepoint'?'selected':''} value="sharepoint">SharePoint</option>
+            <option ${d.srctype==='gdrive'?'selected':''} value="gdrive">Google Drive</option>
+            <option ${d.srctype==='confluence'?'selected':''} value="confluence">Confluence</option>
+            <option ${d.srctype==='s3'?'selected':''} value="s3">S3 bucket</option>
+            <option ${d.srctype==='local'?'selected':''} value="local">Local upload</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Citation policy</div>
+          <select class="form-select" id="fe_citation">
+            <option ${d.citation==='required'?'selected':''} value="required">Required</option>
+            <option ${d.citation==='optional'?'selected':''} value="optional">Optional</option>
+            <option ${d.citation==='hidden'?'selected':''} value="hidden">Hidden</option>
+          </select>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'indexing') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Refresh interval</div>
+          <select class="form-select" id="fe_refresh">
+            <option ${d.refresh==='live'?'selected':''} value="live">Live</option>
+            <option ${d.refresh==='hourly'?'selected':''} value="hourly">Hourly</option>
+            <option ${d.refresh==='daily'?'selected':''} value="daily">Daily</option>
+            <option ${d.refresh==='weekly'?'selected':''} value="weekly">Weekly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Chunk size (tokens)</div>
+          <input class="form-input" id="fe_chunk" type="number" value="${d.chunk||512}">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Embedding model</div>
+          <select class="form-select" id="fe_embed">
+            <option ${d.embed==='openai'?'selected':''} value="openai">text-embedding-3-large</option>
+            <option ${d.embed==='cohere'?'selected':''} value="cohere">cohere-embed-v3</option>
+            <option ${d.embed==='voyage'?'selected':''} value="voyage">voyage-large-2</option>
+          </select>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'priority') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Source priority</div>
+        <select class="form-select" id="fe_prio">
+          <option ${d.prio==='high'?'selected':''} value="high">High — prefer over web</option>
+          <option ${d.prio==='medium'?'selected':''} value="medium">Medium</option>
+          <option ${d.prio==='low'?'selected':''} value="low">Low — fall back when other sources fail</option>
+        </select>
+      </div>`);
+  }
+
+  if (section === 'schema') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Tables / views exposed to the colleague</div>
+        <textarea class="form-textarea" id="fe_tables" placeholder="One per line, e.g. customers, orders_v, monthly_revenue">${d.tables||''}</textarea>
+      </div>`);
+  }
+
+  if (section === 'safety') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Query validation</div>
+          <select class="form-select" id="fe_qval">
+            <option ${d.qval==='strict'?'selected':''} value="strict">Strict — runtime validates &amp; rewrites</option>
+            <option ${d.qval==='log'?'selected':''} value="log">Log only</option>
+            <option ${d.qval==='off'?'selected':''} value="off">Off</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Max rows per query</div>
+          <input class="form-input" id="fe_maxrows" type="number" value="${d.maxrows||10000}">
+        </div>
+        <div class="form-group full">
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🚫</span><span class="cap-toggle-text">Block destructive statements (DELETE / DROP)</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  if (section === 'process') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Process steps (one per line)</div>
+        <textarea class="form-textarea tall" id="fe_steps" placeholder="1. LLM proposes a query
+2. Runtime validates
+3. Runtime executes against database
+4. Result returned to colleague" style="height:140px">${d.steps||''}</textarea>
+      </div>`);
+  }
+
+  if (section === 'validation') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Validation policy</div>
+        <select class="form-select" id="fe_policy">
+          <option ${d.policy==='strict'?'selected':''} value="strict">Strict — runtime verifies before execution</option>
+          <option ${d.policy==='log'?'selected':''} value="log">Log only</option>
+          <option ${d.policy==='off'?'selected':''} value="off">Off</option>
+        </select>
+      </div>`);
+  }
+
+  if (section === 'escalation') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Escalation conditions</div>
+        <textarea class="form-textarea" id="fe_esc" placeholder="e.g. Confidence below 0.6, query touches PII, total rows &gt; 100k">${d.esc||''}</textarea>
+      </div>`);
+  }
+
+  if (section === 'access') {
+    return wrap(`
+      <div class="form-group">
+        <div class="form-label">Groups (comma-separated)</div>
+        <input class="form-input" id="fe_meta" value="${(d.meta||'').replace(/"/g,'&quot;')}" placeholder="e.g. Sales, Leadership">
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Specific user emails (optional, one per line)</div>
+        <textarea class="form-textarea" id="fe_users" placeholder="alice@example.com&#10;bob@example.com">${d.users||''}</textarea>
+      </div>`);
+  }
+
+  if (section === 'sync') {
+    return wrap(`
+      <div class="admin-section-grid">
+        <div class="form-group">
+          <div class="form-label">Sync frequency</div>
+          <select class="form-select" id="fe_syncfreq">
+            <option ${d.syncfreq==='5m'?'selected':''} value="5m">Every 5 minutes</option>
+            <option ${d.syncfreq==='1h'?'selected':''} value="1h">Every hour</option>
+            <option ${d.syncfreq==='daily'?'selected':''} value="daily">Daily</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Stale-data behavior</div>
+          <select class="form-select" id="fe_stale">
+            <option ${d.stale==='warn'?'selected':''} value="warn">Warn the user</option>
+            <option ${d.stale==='block'?'selected':''} value="block">Block the colleague</option>
+            <option ${d.stale==='ignore'?'selected':''} value="ignore">Ignore</option>
+          </select>
+        </div>
+      </div>`);
+  }
+
+  return wrap('<p style="color:var(--text-muted)">Section not implemented.</p>');
+}
+
+function collectFullEditDraft() {
+  if (!fullEditContext) return;
+  const d = fullEditContext.draft;
+  const set = (id, prop) => { const el = document.getElementById(id); if (el) d[prop || id.replace('fe_','')] = el.value; };
+  ['fe_name','fe_desc','fe_endpoint','fe_auth','fe_secret','fe_status','fe_meta','fe_users','fe_access','fe_approval','fe_ops','fe_rate','fe_timeout','fe_budget','fe_retry','fe_folder','fe_skillver','fe_owner','fe_trigger','fe_inputs','fe_outputs','fe_source','fe_srctype','fe_citation','fe_refresh','fe_chunk','fe_embed','fe_prio','fe_tables','fe_qval','fe_maxrows','fe_steps','fe_policy','fe_esc','fe_syncfreq','fe_stale'].forEach(f => set(f));
+  const icon = document.querySelector('#fe_icon .icon-picker-btn.selected');
+  if (icon) d.icon = icon.dataset.icon;
+  const enabledBtn = document.getElementById('fe_enabled');
+  if (enabledBtn) d.enabled = enabledBtn.classList.contains('on');
+}
+
+function saveFromFullEdit() {
+  if (!fullEditContext) return;
+  collectFullEditDraft();
+  const { listKey, id, isNew, draft } = fullEditContext;
+  if (listKey === '__conn__') {
+    if (isNew) {
+      CONNECTIONS.push(draft);
+    } else {
+      const idx = CONNECTIONS.findIndex(c => c.id === id);
+      if (idx >= 0) CONNECTIONS[idx] = { ...CONNECTIONS[idx], ...draft };
+    }
+    renderConnections();
+  } else {
+    const cfg = ADMIN_LISTS[listKey];
+    const arr = cfg.ref();
+    if (isNew) arr.push(draft);
+    else {
+      const idx = arr.findIndex(x => String(x.id) === String(id));
+      if (idx >= 0) arr[idx] = { ...arr[idx], ...draft };
+    }
+    setAdminList(listKey, arr);
+    renderAdminLists();
+  }
+  setFullEditStatus('saved', 'Saved');
+  fullEditContext.isNew = false;
+}
+
+function deleteFromFullEdit() {
+  if (!fullEditContext) return;
+  const { listKey, id } = fullEditContext;
+  if (listKey === '__conn__') {
+    CONNECTIONS = CONNECTIONS.filter(c => c.id !== id);
+    renderConnections();
+  } else {
+    const arr = ADMIN_LISTS[listKey].ref().filter(x => String(x.id) !== String(id));
+    setAdminList(listKey, arr);
+    renderAdminLists();
+  }
+  closeItemFullEdit();
 }
 
 const PROMPT_TEMPLATES = {
@@ -5368,6 +6008,34 @@ function updateGalleryCount() {
   </div>
 </div>
 
+<!-- ─── ITEM FULL-EDIT PAGE (deep editor) ─── -->
+<div id="itemFullEditOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs" id="fullEditBreadcrumbs"></div>
+    <div class="full-edit-toolbar">
+      <span class="full-edit-status saved" id="fullEditStatus"><span class="dot"></span><span id="fullEditStatusLabel">Saved</span></span>
+      <button class="btn-delete" id="fullEditDelete" onclick="deleteFromFullEdit()">Delete</button>
+      <button class="btn-cancel" onclick="closeItemFullEdit()">Cancel</button>
+      <button class="btn-create ready" onclick="saveFromFullEdit()">Save</button>
+      <button class="admin-page-close" onclick="closeItemFullEdit()" title="Close">✕</button>
+    </div>
+  </div>
+  <div class="admin-page-content">
+    <div class="admin-page-inner">
+      <div class="admin-header">
+        <div>
+          <div class="admin-title" id="fullEditTitle">Edit item</div>
+          <div class="admin-subtitle" id="fullEditSubtitle"></div>
+        </div>
+      </div>
+      <div class="full-edit-layout">
+        <nav class="full-edit-nav" id="fullEditNav"></nav>
+        <div class="full-edit-content" id="fullEditContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ─── ITEM EDIT MODAL (generic) ─── -->
 <div id="itemEditOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeItemEdit()">
   <div class="item-edit-modal">
@@ -5381,7 +6049,7 @@ function updateGalleryCount() {
         <button class="btn-delete" id="itemEditDelete" onclick="deleteCurrentItem()">Delete</button>
       </div>
       <div class="footer-right" style="display:flex;align-items:center;gap:10px">
-        <span class="item-edit-link"><a onclick="alert('In the full version this opens the dedicated editor page for this item.')">Open in full editor →</a></span>
+        <span class="item-edit-link"><a onclick="openItemFullEditFromModal()">Open in full editor →</a></span>
         <button class="btn-cancel" onclick="closeItemEdit()">Cancel</button>
         <button class="btn-create ready" onclick="saveCurrentItem()">Save</button>
       </div>
