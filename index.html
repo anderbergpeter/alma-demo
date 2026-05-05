@@ -4497,18 +4497,30 @@ const DISALLOWED_TEMPLATES = [
   { id:'opinions',       icon:'🗣️',  label:'Personal opinions',     text:'- Express personal opinions on politics, religion, or controversial topics' },
 ];
 
-/* ─── Owners (multi-select chip input) — mock SSO directory ─── */
+/* ─── SSO directory (mock) — used for both Access and Owners pickers ─── */
 const SSO_DIRECTORY = [
+  // Users
   { name:'Peter Anderberg',  type:'user',  email:'peter@reeinvent.com' },
   { name:'Anna Karlsson',    type:'user',  email:'anna@reeinvent.com' },
   { name:'Marcus Holmberg',  type:'user',  email:'marcus@reeinvent.com' },
   { name:'Sofia Lindgren',   type:'user',  email:'sofia@reeinvent.com' },
+  // Groups (synced from Azure AD / Okta)
+  { name:'All employees',    type:'group', count:312 },
   { name:'Reeinvent',        type:'group', count:42 },
   { name:'Engineering',      type:'group', count:18 },
   { name:'Product',          type:'group', count:9 },
   { name:'Leadership',       type:'group', count:6 },
+  { name:'Finance team',     type:'group', count:14 },
+  { name:'Legal team',       type:'group', count:5 },
+  { name:'Sales team',       type:'group', count:32 },
+  { name:'Marketing',        type:'group', count:11 },
+  { name:'Operations',       type:'group', count:21 },
+  { name:'HR',               type:'group', count:7 },
+  { name:'Service desk',     type:'group', count:24 },
+  { name:'Admins',           type:'group', count:4 },
 ];
 let ownersSelected = [{ name:'Peter Anderberg', type:'user' }];
+let accessSelected = [{ name:'All employees', type:'group' }];
 
 /* Company colleagues — admin-side state, seeded from the runtime agents.
    Each entry holds the form values shown in the Colleague Creator form. */
@@ -4547,7 +4559,8 @@ function openColleagueCreatorAdmin() {
   renderDisallowedTemplateChips();
   renderAdminLists();
   bindIconPicker();
-  bindAccessChips();
+  renderAccessChips();
+  bindAccessSearch();
   renderCompanyColleagueList();
   renderOwnersChips();
   bindOwnersSearch();
@@ -5022,10 +5035,72 @@ function bindIconPicker() {
     };
   });
 }
-function bindAccessChips() {
-  document.querySelectorAll('#adminAccessChips .chip').forEach(chip => {
-    chip.onclick = () => chip.classList.toggle('selected');
+/* ─── Access chip input (SSO-driven) ─── */
+function renderAccessChips() {
+  const wrap = document.getElementById('adminAccessInput');
+  if (!wrap) return;
+  const input = wrap.querySelector('input');
+  [...wrap.querySelectorAll('.chip-tag, .chip-suggestions')].forEach(el => el.remove());
+  accessSelected.forEach((o, i) => {
+    const tag = document.createElement('span');
+    tag.className = 'chip-tag' + (o.type === 'group' ? ' group' : '');
+    tag.innerHTML = `${o.type === 'group' ? '👥' : '👤'} ${escapeHtml(o.name)}
+      <button class="chip-x" onclick="removeAccess(${i})" title="Remove">✕</button>`;
+    wrap.insertBefore(tag, input);
   });
+}
+function removeAccess(idx) {
+  accessSelected.splice(idx, 1);
+  renderAccessChips();
+}
+function bindAccessSearch() {
+  const inp = document.getElementById('adminAccessSearch');
+  if (!inp || inp._bound) return;
+  inp._bound = true;
+  let suggestionEl = null;
+  const close = () => { suggestionEl?.remove(); suggestionEl = null; };
+  inp.addEventListener('input', () => {
+    close();
+    const q = inp.value.trim().toLowerCase();
+    if (!q) return;
+    const matches = SSO_DIRECTORY.filter(d =>
+      d.name.toLowerCase().includes(q) && !accessSelected.find(o => o.name === d.name)
+    ).slice(0, 6);
+    if (!matches.length) return;
+    suggestionEl = document.createElement('div');
+    suggestionEl.style.cssText = 'position:absolute;background:#131830;border:1px solid var(--border);border-radius:10px;padding:6px;margin-top:4px;width:280px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,0.4)';
+    suggestionEl.innerHTML = matches.map(m => `
+      <div style="padding:8px 10px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px"
+        onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''"
+        onclick="addAccessByIdx(${SSO_DIRECTORY.indexOf(m)})">
+        ${m.type === 'group' ? '👥' : '👤'}
+        <span style="flex:1">${escapeHtml(m.name)}</span>
+        <span style="font-size:10px;color:var(--text-muted)">${m.type === 'group' ? m.count + ' members' : (m.email||'')}</span>
+      </div>
+    `).join('');
+    inp.parentElement.appendChild(suggestionEl);
+  });
+  inp.addEventListener('blur', () => setTimeout(close, 200));
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && inp.value.trim()) {
+      e.preventDefault();
+      const v = inp.value.trim();
+      const found = SSO_DIRECTORY.find(d => d.name.toLowerCase() === v.toLowerCase());
+      accessSelected.push(found ? { name: found.name, type: found.type } : { name: v, type: 'group' });
+      renderAccessChips();
+      inp.value = '';
+      close();
+    }
+  });
+}
+function addAccessByIdx(i) {
+  const m = SSO_DIRECTORY[i];
+  if (!m) return;
+  if (!accessSelected.find(o => o.name === m.name)) {
+    accessSelected.push({ name: m.name, type: m.type });
+    renderAccessChips();
+  }
+  document.getElementById('adminAccessSearch').value = '';
 }
 
 function featureRowHtml(item, listKey) {
@@ -7043,39 +7118,26 @@ function updateGalleryCount() {
       <!-- 7. ACCESS -->
       <section class="admin-creator-section" data-section="access">
         <div class="form-section-title" style="margin-bottom:10px">Who can use this colleague?</div>
-        <div class="chip-row" id="adminAccessChips">
-          <div class="chip selected" data-group="all">🌍 All employees</div>
-          <div class="chip" data-group="legal">⚖️ Legal team</div>
-          <div class="chip" data-group="finance">💰 Finance team</div>
-          <div class="chip" data-group="ops">🏗️ Operations</div>
-          <div class="chip" data-group="sales">📈 Sales team</div>
-          <div class="chip" data-group="marketing">🎨 Marketing</div>
-          <div class="chip" data-group="hr">🧑‍💼 HR</div>
-          <div class="chip" data-group="leadership">⭐ Leadership</div>
-          <div class="chip" data-group="admins">🛡️ Admins only</div>
+        <div class="admin-helper" style="margin-bottom:8px">
+          Access is granted by SSO group membership. Add the groups (or individual users)
+          from your customer's identity provider that should be able to use this colleague.
         </div>
-        <div class="sso-note">
-          <span class="badge">SSO</span>
-          Group memberships are pulled from your customer's identity provider (Azure AD / Okta).
-          Changes to group composition take effect on the next sync.
-        </div>
-
-        <div class="form-section-title" style="margin: 22px 0 10px">Sharing scope</div>
-        <select class="form-select" id="adminScope">
-          <option>Organization (everyone with access)</option>
-          <option>Department-only</option>
-          <option>Team-only</option>
-          <option>Private — owner only</option>
-        </select>
-
-        <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
-        <div class="admin-helper" style="margin-bottom:8px">Add multiple users or a group as owner. Type to search SSO directory.</div>
-        <div class="chip-input" id="adminOwnersInput">
-          <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
+        <div class="chip-input" id="adminAccessInput">
+          <input type="text" id="adminAccessSearch" placeholder="Add group or user from SSO...">
         </div>
         <div class="sso-note" style="margin-top:8px">
           <span class="badge">SSO</span>
-          Owner suggestions come from your customer's directory. Type a name or paste a group like "Reeinvent".
+          Pulled from your customer's identity provider (Azure AD / Okta). Group composition
+          changes take effect on the next sync — no manual reconciliation needed here.
+        </div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
+        <div class="admin-helper" style="margin-bottom:8px">
+          Owners are responsible for the colleague's configuration. Add multiple users or a
+          group (e.g. "Reeinvent"). Type to search the SSO directory.
+        </div>
+        <div class="chip-input" id="adminOwnersInput">
+          <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
         </div>
       </section>
 
