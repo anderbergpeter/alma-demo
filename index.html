@@ -1434,6 +1434,192 @@
     }
     .btn-confirm-danger:hover { background: #d04646; }
 
+    /* ─── DATABASE schema browser ─── */
+    .db-type-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    }
+    .db-type-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 12px 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .db-type-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); }
+    .db-type-btn.selected {
+      border-color: var(--blue);
+      background: rgba(38,101,226,0.1);
+    }
+    .db-type-btn .icon { font-size: 22px; }
+    .db-type-btn .label { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+    .db-type-btn.selected .label { color: var(--text-primary); }
+
+    .schema-toolbar {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+    }
+    .schema-toolbar-info {
+      flex: 1; font-size: 12px; color: var(--text-muted);
+    }
+    .schema-toolbar-info strong { color: var(--text-primary); }
+    .schema-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; padding: 3px 9px; border-radius: 12px;
+      background: rgba(52,211,153,0.15); color: #34d399;
+    }
+    .schema-status.unknown { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .schema-tables-count {
+      font-size: 11px; color: var(--text-muted);
+    }
+
+    .schema-table {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      margin-bottom: 8px; overflow: hidden;
+    }
+    .schema-table-head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .schema-table-head:hover { background: rgba(255,255,255,0.04); }
+    .schema-chevron {
+      color: var(--text-muted); font-size: 11px;
+      transition: transform 0.2s;
+    }
+    .schema-table.expanded .schema-chevron { transform: rotate(90deg); }
+    .schema-table-name {
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      font-size: 13px; font-weight: 700; color: var(--text-primary);
+    }
+    .schema-table-desc {
+      font-size: 11px; color: var(--text-muted);
+      flex: 1; min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .schema-row-count {
+      font-size: 10px; color: var(--text-muted);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 8px; border-radius: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+    .schema-table-body {
+      display: none;
+      padding: 0 14px 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .schema-table.expanded .schema-table-body { display: block; }
+    .schema-actions {
+      display: flex; gap: 8px;
+      padding: 10px 0; flex-wrap: wrap;
+    }
+    .schema-table-desc-input {
+      width: 100%; margin-top: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 8px 10px;
+      color: var(--text-primary); font-size: 12px;
+      font-family: inherit; outline: none; resize: none;
+    }
+    .schema-table-desc-input:focus { border-color: rgba(194,109,230,0.5); }
+    .schema-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin: 14px 0 6px;
+    }
+
+    .col-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 2fr 70px 30px;
+      gap: 6px; align-items: center;
+      font-size: 12px;
+    }
+    .col-grid.head {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 6px;
+    }
+    .col-grid input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 6px; padding: 5px 9px;
+      color: var(--text-secondary); font-size: 12px;
+      outline: none;
+    }
+    .col-grid input:focus { border-color: rgba(194,109,230,0.4); color: var(--text-primary); }
+    .col-name {
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      font-weight: 600; color: var(--text-primary);
+      padding: 5px 0;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .col-pk {
+      font-size: 9px; padding: 1px 6px; border-radius: 8px;
+      background: rgba(194,109,230,0.18); color: var(--alma-purple);
+      font-weight: 700; letter-spacing: 0.05em;
+    }
+    .col-type {
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      color: var(--text-muted); font-size: 11px;
+      padding: 5px 0;
+    }
+    .pii-toggle {
+      cursor: pointer; user-select: none;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 10px;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .pii-toggle.on {
+      background: rgba(232,93,93,0.15);
+      color: #ff8a8a;
+    }
+    .col-rm {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 4px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .col-rm:hover { color: #ff8a8a; background: rgba(232,93,93,0.12); }
+
+    .sample-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    .sample-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 11px;
+    }
+    .sample-table th, .sample-table td {
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      white-space: nowrap;
+    }
+    .sample-table th {
+      background: rgba(255,255,255,0.04);
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+      color: var(--text-muted);
+      text-transform: lowercase;
+    }
+    .sample-table td {
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+    }
+    .sample-table tr:last-child td { border-bottom: none; }
+
     /* ─── WORKFLOWS — step chain visualization ─── */
     .workflow-row {
       display: flex; flex-direction: column; gap: 12px;
@@ -4435,12 +4621,91 @@ let ADMIN_RAG = [
   { id: 'support', icon: '📞', name: 'Help Center articles',     desc: 'Customer-facing knowledge base', enabled: false },
 ];
 let ADMIN_DBS = [
-  { id: 'erp',     icon: '🏢', name: 'ERP (SAP S/4)',          desc: 'Finance and supply chain master data', enabled: false },
-  { id: 'crm',     icon: '☁️', name: 'CRM (Salesforce)',       desc: 'Accounts, opportunities, contacts', enabled: false },
-  { id: 'econ',    icon: '💹', name: 'Economics database',     desc: 'Group financials and forecasts', enabled: false },
-  { id: 'hr',      icon: '🧑‍💼', name: 'HR system (Workday)',   desc: 'Employees, leave balances, org chart', enabled: false },
-  { id: 'mes',     icon: '🏗️', name: 'MES production data',    desc: 'Production lines, OEE and quality data', enabled: false },
+  { id: 'erp',  icon: '🏢', name: 'ERP (SAP S/4)',     desc: 'Finance and supply chain master data', enabled: false, dbType: 'mssql', endpoint: 'mssql://erp.internal:1433/sap_prod', schemaIntrospected: true,
+    schema: [
+      { name:'finance_accounts', desc:'Chart of accounts and ledger balances', rows:1240, exposed:true,
+        columns: [
+          { name:'account_id',   type:'uuid',          pk:true,  description:'Internal account identifier', pii:false },
+          { name:'account_no',   type:'varchar(20)',   description:'Account number from ERP', pii:false },
+          { name:'name',         type:'varchar(200)',  description:'Account display name', pii:false },
+          { name:'type',         type:'varchar(50)',   description:'Asset / Liability / Equity / Revenue / Expense', pii:false },
+          { name:'balance',      type:'numeric(18,2)', description:'Current balance in base currency', pii:false },
+        ],
+        sample: [
+          { account_id:'a8f...', account_no:'1010', name:'Cash',           type:'Asset',   balance:'1,243,012.40' },
+          { account_id:'b2c...', account_no:'1500', name:'Accounts Recv.', type:'Asset',   balance:'   684,200.10' },
+          { account_id:'c91...', account_no:'4000', name:'Revenue',        type:'Revenue', balance:'12,400,000.00' },
+        ]
+      },
+      { name:'invoices', desc:'Issued and received invoices', rows:84520, exposed:true,
+        columns: [
+          { name:'invoice_id', type:'uuid',          pk:true, description:'Invoice identifier', pii:false },
+          { name:'customer_id',type:'uuid',          description:'FK → customers.id', pii:false },
+          { name:'amount',     type:'numeric(18,2)', description:'Total invoice amount', pii:false },
+          { name:'currency',   type:'char(3)',       description:'ISO currency code', pii:false },
+          { name:'status',     type:'varchar(20)',   description:'open / paid / overdue / disputed', pii:false },
+          { name:'due_date',   type:'date',          description:'Payment due date', pii:false },
+        ],
+        sample: [
+          { invoice_id:'9aa...', customer_id:'c1...', amount:'  12,400.00', currency:'EUR', status:'open',     due_date:'2026-05-30' },
+          { invoice_id:'9ab...', customer_id:'c2...', amount:'   6,890.50', currency:'EUR', status:'paid',     due_date:'2026-04-15' },
+          { invoice_id:'9ac...', customer_id:'c3...', amount:'  31,250.00', currency:'USD', status:'overdue',  due_date:'2026-03-20' },
+        ]
+      },
+    ]
+  },
+  { id: 'crm',  icon: '☁️', name: 'CRM (Salesforce)',  desc: 'Accounts, opportunities, contacts', enabled: false, dbType: 'salesforce', endpoint: 'https://reeinvent.my.salesforce.com', schemaIntrospected: false, schema: [] },
+  { id: 'econ', icon: '💹', name: 'Economics database',desc: 'Group financials and forecasts', enabled: false, dbType: 'postgres', endpoint: 'postgres://econ.internal:5432/economics', schemaIntrospected: false, schema: [] },
+  { id: 'hr',   icon: '🧑‍💼', name: 'HR system (Workday)',desc:'Employees, leave balances, org chart', enabled: false, dbType: 'mssql', endpoint: 'mssql://hr.internal:1433/workday', schemaIntrospected: false, schema: [] },
+  { id: 'mes',  icon: '🏗️', name: 'MES production data',desc:'Production lines, OEE and quality data', enabled: false, dbType: 'postgres', endpoint: 'postgres://mes.internal:5432/mes', schemaIntrospected: false, schema: [] },
 ];
+
+const DB_TYPES = [
+  { id:'postgres',   icon:'🐘', label:'PostgreSQL' },
+  { id:'mysql',      icon:'🐬', label:'MySQL' },
+  { id:'mssql',      icon:'📘', label:'MS SQL' },
+  { id:'oracle',     icon:'🅾️', label:'Oracle' },
+  { id:'snowflake',  icon:'❄️', label:'Snowflake' },
+  { id:'bigquery',   icon:'🔷', label:'BigQuery' },
+  { id:'salesforce', icon:'☁️', label:'Salesforce' },
+  { id:'mongo',      icon:'🍃', label:'MongoDB' },
+];
+
+/* Mock schema returned by "introspect" for a brand-new DB connection */
+function mockSchemaForNewDb() {
+  return [
+    { name:'customers', desc:'', rows:12453, exposed:true,
+      columns: [
+        { name:'id',         type:'uuid',         pk:true, description:'', pii:false },
+        { name:'email',      type:'varchar(255)', description:'', pii:true  },
+        { name:'first_name', type:'varchar(100)', description:'', pii:true  },
+        { name:'last_name',  type:'varchar(100)', description:'', pii:true  },
+        { name:'created_at', type:'timestamptz',  description:'', pii:false },
+        { name:'country',    type:'char(2)',      description:'', pii:false },
+      ],
+      sample: [
+        { id:'a8f3…', email:'jane@ex.com', first_name:'Jane',  last_name:'Doe',     created_at:'2024-08-01', country:'SE' },
+        { id:'b2c4…', email:'kai@ex.com',  first_name:'Kai',   last_name:'Berg',    created_at:'2025-01-15', country:'SE' },
+        { id:'c91a…', email:'lin@ex.com',  first_name:'Lin',   last_name:'Larsson', created_at:'2025-09-04', country:'NO' },
+      ]
+    },
+    { name:'orders', desc:'', rows:48210, exposed:true,
+      columns: [
+        { name:'id',          type:'uuid',          pk:true, description:'', pii:false },
+        { name:'customer_id', type:'uuid',          description:'', pii:false },
+        { name:'amount',      type:'numeric(18,2)', description:'', pii:false },
+        { name:'currency',    type:'char(3)',       description:'', pii:false },
+        { name:'status',      type:'varchar(20)',   description:'', pii:false },
+        { name:'placed_at',   type:'timestamptz',   description:'', pii:false },
+      ],
+      sample: [
+        { id:'o-001', customer_id:'a8f3…', amount:'   249.00', currency:'EUR', status:'paid',     placed_at:'2026-04-12' },
+        { id:'o-002', customer_id:'b2c4…', amount:' 1,200.00', currency:'EUR', status:'shipped',  placed_at:'2026-04-21' },
+        { id:'o-003', customer_id:'c91a…', amount:'   599.99', currency:'NOK', status:'pending',  placed_at:'2026-05-01' },
+      ]
+    },
+  ];
+}
 let ADMIN_SUBAGENTS = [
   { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'LLM produces SQL; runtime validates & executes safely', enabled: true },
   { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files from connected sources', enabled: false },
@@ -5628,11 +5893,27 @@ function fullEditSectionHtml(listKey, section, d) {
   }
 
   if (section === 'connection') {
+    const isDb = listKey === 'dbs';
+    const dbTypePicker = isDb ? `
+      <div class="form-group full">
+        <div class="form-label">Database type</div>
+        <div class="db-type-grid">
+          ${DB_TYPES.map(t => `
+            <button class="db-type-btn ${d.dbType===t.id?'selected':''}"
+              onclick="selectDbType('${t.id}')">
+              <span class="icon">${t.icon}</span>
+              <span class="label">${t.label}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>` : '';
+
     return wrap(`
       <div class="admin-section-grid">
+        ${dbTypePicker}
         <div class="form-group full">
-          <div class="form-label">Endpoint URL</div>
-          <input class="form-input" id="fe_endpoint" value="${d.endpoint||''}" placeholder="https://api.example.com/v1">
+          <div class="form-label">${isDb ? 'Connection string' : 'Endpoint URL'}</div>
+          <input class="form-input" id="fe_endpoint" value="${escapeHtml(d.endpoint||'')}" placeholder="${isDb ? 'postgres://host:5432/db' : 'https://api.example.com/v1'}">
         </div>
         <div class="form-group">
           <div class="form-label">Auth method</div>
@@ -5640,11 +5921,12 @@ function fullEditSectionHtml(listKey, section, d) {
             <option value="oauth" ${d.auth==='oauth'?'selected':''}>OAuth 2.0</option>
             <option value="apikey" ${d.auth==='apikey'?'selected':''}>API key</option>
             <option value="basic" ${d.auth==='basic'?'selected':''}>Basic auth</option>
+            ${isDb ? `<option value="iam" ${d.auth==='iam'?'selected':''}>IAM role</option>` : ''}
           </select>
         </div>
         <div class="form-group">
           <div class="form-label">Credentials secret name</div>
-          <input class="form-input" id="fe_secret" value="${d.secret||''}" placeholder="e.g. SF_PROD_OAUTH">
+          <input class="form-input" id="fe_secret" value="${escapeHtml(d.secret||'')}" placeholder="e.g. SF_PROD_OAUTH">
         </div>
         ${listKey === '__conn__' ? `
           <div class="form-group">
@@ -5654,8 +5936,9 @@ function fullEditSectionHtml(listKey, section, d) {
               <option value="disconnected" ${d.status==='disconnected'?'selected':''}>Disconnected</option>
             </select>
           </div>` : ''}
-        <div class="form-group full">
-          <button class="btn-cancel" onclick="alert('Test connection — would ping the endpoint and verify credentials.')">Test connection</button>
+        <div class="form-group full" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-cancel" onclick="testDbConnection(this)">⚡ Test connection</button>
+          ${isDb ? `<button class="btn-cancel" onclick="introspectDbSchema(this)">🔍 Discover schema</button>` : ''}
         </div>
       </div>`);
   }
@@ -5782,11 +6065,7 @@ function fullEditSectionHtml(listKey, section, d) {
   }
 
   if (section === 'schema') {
-    return wrap(`
-      <div class="form-group">
-        <div class="form-label">Tables / views exposed to the colleague</div>
-        <textarea class="form-textarea" id="fe_tables" placeholder="One per line, e.g. customers, orders_v, monthly_revenue">${d.tables||''}</textarea>
-      </div>`);
+    return wrap(renderSchemaSection(d));
   }
 
   if (section === 'safety') {
@@ -5932,6 +6211,278 @@ function fullEditSectionHtml(listKey, section, d) {
   }
 
   return wrap('<p style="color:var(--text-muted)">Section not implemented.</p>');
+}
+
+/* ─── Database schema browser ─── */
+function renderSchemaSection(d) {
+  const introspected = d.schemaIntrospected;
+  const tables = d.schema || [];
+  if (!introspected || tables.length === 0) {
+    return `
+      <div class="schema-toolbar">
+        <div class="schema-toolbar-info">
+          <strong>Schema not yet discovered.</strong>
+          Connect to the database (Connection tab) and click "Discover schema" to fetch tables and columns.
+        </div>
+        <span class="schema-status unknown">○ Not introspected</span>
+      </div>
+      <div class="schema-toolbar" style="cursor:pointer;background:rgba(38,101,226,0.07);border-color:#2665E2"
+        onclick="introspectDbSchema(this)">
+        <div class="schema-toolbar-info" style="color:#6b9fff">
+          <strong>🔍 Discover schema now</strong> — fetch tables, columns and sample rows.
+        </div>
+      </div>`;
+  }
+
+  const tablesHtml = tables.map((t, i) => `
+    <div class="schema-table ${t.expanded ? 'expanded' : ''}" data-table="${escapeHtml(t.name)}">
+      <div class="schema-table-head" onclick="toggleSchemaTable(${i})">
+        <span class="schema-chevron">▶</span>
+        <span class="schema-table-name">${escapeHtml(t.name)}</span>
+        <span class="schema-table-desc">${escapeHtml(t.desc || 'No description — click to add one')}</span>
+        <span class="schema-row-count">${(t.rows||0).toLocaleString('en-US')} rows</span>
+        <button class="toggle-switch ${t.exposed ? 'on' : ''}"
+          onclick="event.stopPropagation();toggleSchemaTableExposed(${i}, this)" title="Expose to LLM"></button>
+      </div>
+      <div class="schema-table-body">
+        <div class="schema-actions">
+          <button class="ai-help-btn" onclick="aiEnrichTable(${i}, this)">✨ Auto-enrich descriptions</button>
+        </div>
+        <textarea class="schema-table-desc-input" rows="2"
+          placeholder="What does this table represent? (visible to the LLM)"
+          oninput="updateSchemaTableDesc(${i}, this.value);setFullEditStatus('dirty','Unsaved changes')">${escapeHtml(t.desc||'')}</textarea>
+
+        <div class="schema-section-label">Columns</div>
+        <div class="col-grid head">
+          <div>Name</div><div>Type</div><div>Description</div><div>PII</div><div></div>
+        </div>
+        ${(t.columns||[]).map((c, j) => `
+          <div class="col-grid">
+            <div class="col-name">${escapeHtml(c.name)}${c.pk ? '<span class="col-pk">PK</span>':''}</div>
+            <div class="col-type">${escapeHtml(c.type)}</div>
+            <input value="${escapeHtml(c.description||'')}"
+              placeholder="Description shown to the LLM"
+              oninput="updateSchemaColDesc(${i},${j},this.value);setFullEditStatus('dirty','Unsaved changes')">
+            <div class="pii-toggle ${c.pii?'on':''}"
+              onclick="toggleSchemaColPii(${i},${j},this)">${c.pii ? 'PII' : '—'}</div>
+            <button class="col-rm" title="Remove column" onclick="removeSchemaCol(${i},${j})">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        `).join('')}
+
+        ${t.sample && t.sample.length ? `
+          <div class="schema-section-label">Sample rows</div>
+          <div class="sample-table-wrap">
+            <table class="sample-table">
+              <thead><tr>${(t.columns||[]).map(c => `<th>${escapeHtml(c.name)}</th>`).join('')}</tr></thead>
+              <tbody>${t.sample.map(r => `<tr>${(t.columns||[]).map(c => `<td>${escapeHtml(String(r[c.name] != null ? r[c.name] : ''))}</td>`).join('')}</tr>`).join('')}</tbody>
+            </table>
+          </div>` : ''}
+      </div>
+    </div>`).join('');
+
+  const exposed = tables.filter(t => t.exposed).length;
+  return `
+    <div class="schema-toolbar">
+      <div class="schema-toolbar-info">
+        <strong>Schema ready.</strong>
+        <span class="schema-tables-count">${tables.length} table${tables.length===1?'':'s'} · ${exposed} exposed to LLM</span>
+      </div>
+      <span class="schema-status">● Introspected</span>
+      <button class="ai-help-btn" onclick="aiEnrichAllTables(this)">✨ Auto-enrich all</button>
+      <button class="btn-cancel" onclick="reIntrospectSchema(this)">🔄 Re-introspect</button>
+    </div>
+    ${tablesHtml}
+    <button class="conn-add-btn" style="margin-top:10px" onclick="addSchemaTable()">＋ Add table manually</button>`;
+}
+
+function rerenderSchemaSection() {
+  if (!fullEditContext) return;
+  const sec = document.getElementById('fe_schema');
+  if (!sec) return;
+  sec.outerHTML = `<div class="full-edit-section" id="fe_schema"><h3>${SECTION_TITLES['schema'].title}</h3><div class="section-desc">${SECTION_TITLES['schema'].desc}</div>${renderSchemaSection(fullEditContext.draft)}</div>`;
+}
+function rerenderConnectionSection() {
+  if (!fullEditContext) return;
+  const sec = document.getElementById('fe_connection');
+  if (!sec) return;
+  sec.outerHTML = fullEditSectionHtml(fullEditContext.listKey, 'connection', fullEditContext.draft);
+}
+
+function selectDbType(id) {
+  if (!fullEditContext) return;
+  fullEditContext.draft.dbType = id;
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderConnectionSection();
+}
+
+async function testDbConnection(btn) {
+  const orig = btn.textContent;
+  btn.textContent = 'Pinging…'; btn.disabled = true;
+  await new Promise(r => setTimeout(r, 800));
+  btn.textContent = '✅ Connected';
+  setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1400);
+}
+
+async function introspectDbSchema(btn) {
+  if (!fullEditContext) return;
+  const orig = btn.textContent;
+  btn.textContent = '🔍 Discovering…'; btn.disabled = true;
+  await new Promise(r => setTimeout(r, 1100));
+  if (!fullEditContext.draft.schema || fullEditContext.draft.schema.length === 0) {
+    fullEditContext.draft.schema = mockSchemaForNewDb();
+  }
+  fullEditContext.draft.schemaIntrospected = true;
+  setFullEditStatus('dirty','Unsaved changes');
+  btn.textContent = orig; btn.disabled = false;
+  rerenderSchemaSection();
+  // Switch to Schema section automatically
+  document.querySelectorAll('.full-edit-nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelector('.full-edit-nav-link[data-target="schema"]')?.classList.add('active');
+  document.getElementById('fe_schema')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function reIntrospectSchema(btn) {
+  if (!fullEditContext) return;
+  const orig = btn.textContent;
+  btn.textContent = '🔄 Re-introspecting…'; btn.disabled = true;
+  await new Promise(r => setTimeout(r, 800));
+  // Pretend we found a new column
+  const tbl = (fullEditContext.draft.schema || [])[0];
+  if (tbl && !tbl.columns.find(c => c.name === 'phone')) {
+    tbl.columns.push({ name:'phone', type:'varchar(40)', description:'', pii:true });
+  }
+  setFullEditStatus('dirty','Unsaved changes');
+  btn.textContent = orig; btn.disabled = false;
+  rerenderSchemaSection();
+}
+
+function toggleSchemaTable(i) {
+  if (!fullEditContext) return;
+  const t = fullEditContext.draft.schema[i];
+  t.expanded = !t.expanded;
+  document.querySelectorAll('#fe_schema .schema-table')[i]?.classList.toggle('expanded', t.expanded);
+}
+function toggleSchemaTableExposed(i, btn) {
+  fullEditContext.draft.schema[i].exposed = !fullEditContext.draft.schema[i].exposed;
+  btn.classList.toggle('on', fullEditContext.draft.schema[i].exposed);
+  setFullEditStatus('dirty','Unsaved changes');
+}
+function updateSchemaTableDesc(i, value) {
+  fullEditContext.draft.schema[i].desc = value;
+}
+function updateSchemaColDesc(i, j, value) {
+  fullEditContext.draft.schema[i].columns[j].description = value;
+}
+function toggleSchemaColPii(i, j, el) {
+  const c = fullEditContext.draft.schema[i].columns[j];
+  c.pii = !c.pii;
+  el.classList.toggle('on', c.pii);
+  el.textContent = c.pii ? 'PII' : '—';
+  setFullEditStatus('dirty','Unsaved changes');
+}
+function removeSchemaCol(i, j) {
+  fullEditContext.draft.schema[i].columns.splice(j, 1);
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderSchemaSection();
+}
+function addSchemaTable() {
+  fullEditContext.draft.schema.push({
+    name: 'new_table',
+    desc: '',
+    rows: 0,
+    exposed: true,
+    expanded: true,
+    columns: [
+      { name:'id', type:'uuid', pk:true, description:'', pii:false }
+    ],
+    sample: []
+  });
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderSchemaSection();
+}
+
+const ENRICHMENT_HINTS = {
+  customers: { table: 'Customer master records — one row per registered customer.',
+    columns: { id:'Primary key — uuid generated at signup',
+               email:'Customer login email; deduplicated, lowercased',
+               first_name:'Customer first name as provided at signup',
+               last_name:'Customer last name as provided at signup',
+               created_at:'Account creation timestamp (UTC)',
+               country:'ISO-3166 alpha-2 country code',
+               phone:'Customer phone number (E.164 format)' } },
+  orders: { table: 'Customer orders — one row per checkout.',
+    columns: { id:'Order identifier shown in confirmation emails',
+               customer_id:'FK → customers.id',
+               amount:'Total amount including tax in the order currency',
+               currency:'ISO-4217 currency code',
+               status:'pending → paid → shipped → delivered (or refunded)',
+               placed_at:'Order placement timestamp (UTC)' } },
+  finance_accounts: { table: 'Chart of accounts and ledger balances.',
+    columns: { account_id:'Internal account identifier (uuid)',
+               account_no:'Account number from the source ERP',
+               name:'Human-readable account name',
+               type:'Asset / Liability / Equity / Revenue / Expense',
+               balance:'Current balance in base currency' } },
+  invoices: { table: 'Issued and received invoices, both AR and AP.',
+    columns: { invoice_id:'Invoice identifier',
+               customer_id:'FK → customers.id (null for AP invoices)',
+               amount:'Total invoice amount including tax',
+               currency:'ISO-4217 code',
+               status:'open / paid / overdue / disputed',
+               due_date:'Payment due date' } },
+};
+
+async function aiEnrichTable(i, btn) {
+  const orig = btn.textContent;
+  btn.classList.add('loading');
+  btn.textContent = '✨ Enriching…';
+  await new Promise(r => setTimeout(r, 700));
+  const t = fullEditContext.draft.schema[i];
+  const hints = ENRICHMENT_HINTS[t.name] || {};
+  if (!t.desc && hints.table) t.desc = hints.table;
+  (t.columns || []).forEach(c => {
+    if (!c.description && hints.columns && hints.columns[c.name]) {
+      c.description = hints.columns[c.name];
+    } else if (!c.description) {
+      c.description = inferColumnDesc(c);
+    }
+  });
+  btn.classList.remove('loading');
+  btn.textContent = orig;
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderSchemaSection();
+}
+async function aiEnrichAllTables(btn) {
+  const orig = btn.textContent;
+  btn.classList.add('loading');
+  btn.textContent = '✨ Enriching all…';
+  await new Promise(r => setTimeout(r, 1100));
+  fullEditContext.draft.schema.forEach(t => {
+    const hints = ENRICHMENT_HINTS[t.name] || {};
+    if (!t.desc && hints.table) t.desc = hints.table;
+    (t.columns || []).forEach(c => {
+      if (!c.description) {
+        c.description = (hints.columns && hints.columns[c.name]) || inferColumnDesc(c);
+      }
+    });
+  });
+  btn.classList.remove('loading');
+  btn.textContent = orig;
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderSchemaSection();
+}
+function inferColumnDesc(c) {
+  if (c.pk) return 'Primary key';
+  if (c.name.endsWith('_id')) return `FK reference to ${c.name.replace(/_id$/,'')} table`;
+  if (c.name.includes('email')) return 'Email address';
+  if (c.name.includes('name')) return 'Display name';
+  if (c.name.includes('amount') || c.name.includes('balance')) return 'Monetary amount';
+  if (c.name === 'currency') return 'ISO currency code';
+  if (c.name === 'status') return 'Lifecycle status of the record';
+  if (c.name.endsWith('_at') || c.name.endsWith('_date')) return 'Timestamp / date';
+  return `${c.name} (${c.type})`;
 }
 
 /* ─── Workflow step editor ─── */
