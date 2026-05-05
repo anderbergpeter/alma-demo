@@ -1434,6 +1434,101 @@
     }
     .btn-confirm-danger:hover { background: #d04646; }
 
+    /* ─── WORKFLOWS — step chain visualization ─── */
+    .workflow-row {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      margin-bottom: 6px;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    }
+    .workflow-row:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+    .workflow-row-head {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .workflow-row-head .feature-row-icon { width: 30px; height: 30px; }
+    .workflow-row-head .feature-row-text { flex: 1; min-width: 0; }
+    .workflow-chain {
+      display: flex; flex-wrap: wrap;
+      gap: 6px; align-items: center;
+      margin-left: 40px;
+    }
+    .workflow-chain-step {
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      font-size: 11px; padding: 3px 9px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .workflow-chain-step.llm { background: rgba(194,109,230,0.1); border-color: rgba(194,109,230,0.3); color: #efd0ff; }
+    .workflow-chain-step.tool { background: rgba(38,101,226,0.1); border-color: rgba(38,101,226,0.3); color: #cfdcff; }
+    .workflow-chain-arrow {
+      color: var(--text-muted); font-size: 10px; opacity: 0.6;
+    }
+
+    /* Full-edit step editor */
+    .step-editor { display: flex; flex-direction: column; gap: 8px; }
+    .step-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      cursor: grab;
+    }
+    .step-row.dragging { opacity: 0.4; }
+    .step-row.drop-target { border-color: var(--blue); background: rgba(38,101,226,0.1); }
+    .step-row:active { cursor: grabbing; }
+    .step-handle { color: var(--text-muted); font-size: 14px; cursor: grab; user-select: none; }
+    .step-rank {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(38,101,226,0.18); color: #6b9fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .step-type-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .step-type-badge.tool { background: rgba(38,101,226,0.2); color: #6b9fff; }
+    .step-type-badge.llm  { background: rgba(194,109,230,0.2); color: #c26de6; }
+    .step-type-badge.sub  { background: rgba(52,211,153,0.2); color: #34d399; }
+    .step-name {
+      flex: 1; font-size: 13px; font-weight: 600; color: var(--text-primary);
+      font-family: 'JetBrains Mono', ui-monospace, monospace, 'Inter';
+      background: transparent; border: none; outline: none;
+    }
+    .step-rm {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 4px; border-radius: 4px;
+    }
+    .step-rm:hover { color: #ff8a8a; background: rgba(232,93,93,0.12); }
+    .step-add-row {
+      display: flex; gap: 6px; align-items: center;
+      padding: 8px;
+      background: rgba(38,101,226,0.04);
+      border: 1px dashed #2665E2;
+      border-radius: 10px;
+    }
+    .step-add-row select, .step-add-row input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 6px 10px;
+      color: var(--text-primary); font-size: 12px; outline: none;
+    }
+    .step-add-row select { width: 110px; }
+    .step-add-row input { flex: 1; }
+    .step-add-row .step-add-btn {
+      background: rgba(38,101,226,0.18); border: none;
+      color: #6b9fff; border-radius: 6px;
+      padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .step-add-row .step-add-btn:hover { background: rgba(38,101,226,0.28); }
+
     /* ─── ITEM FULL-EDIT PAGE ─── */
     .full-edit-layout {
       display: grid;
@@ -4289,6 +4384,43 @@ let ADMIN_CUSTOM_MCPS = [
   { id: 'cust_billing', icon: '💳', name: 'Internal Billing API',  desc: 'Custom MCP exposing the in-house billing service', enabled: false },
   { id: 'cust_hr',      icon: '🧑‍💼', name: 'HR Tools (internal)', desc: 'Custom MCP wrapping the HR data pipeline', enabled: false },
 ];
+
+/* Workflows — registered as tools for the LLM, but listed separately.
+   Each workflow has an ordered list of steps (tool calls, LLM calls, sub-workflows). */
+let ADMIN_WORKFLOWS = [
+  { id: 'wf_sql', icon: '🧮', name: 'SQL query workflow',
+    desc: 'Generate, validate and execute a database query — then format the answer.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'sql_generate_tool' },
+      { type:'tool', name:'sql_validate_tool' },
+      { type:'tool', name:'sql_execute_tool' },
+      { type:'tool', name:'context_enrichment_tool' },
+      { type:'tool', name:'answer_format_tool' },
+    ]
+  },
+  { id: 'wf_proposal', icon: '📑', name: 'Proposal generation',
+    desc: 'Pull customer data, draft a proposal, run brand-voice check, and produce a PDF.',
+    enabled: false, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'crm_lookup_tool' },
+      { type:'llm',  name:'draft_proposal' },
+      { type:'tool', name:'brand_voice_check' },
+      { type:'llm',  name:'refine_proposal' },
+      { type:'tool', name:'pdf_render_tool' },
+    ]
+  },
+  { id: 'wf_meeting', icon: '📝', name: 'Meeting follow-up',
+    desc: 'Transcribe, extract action items, draft email and create tickets.',
+    enabled: false, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'transcribe_tool' },
+      { type:'llm',  name:'extract_action_items' },
+      { type:'llm',  name:'draft_followup_email' },
+      { type:'tool', name:'jira_create_issues' },
+    ]
+  },
+];
 let ADMIN_SKILLS = [
   { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation', enabled: true },
   { id: 'hire',       icon: '🧑‍🎓', name: 'Conduct-hire-interview',     desc: 'Run a structured interview for a new hire', enabled: false },
@@ -4324,6 +4456,7 @@ const ADMIN_LISTS = {
   rag:   { ref: () => ADMIN_RAG,   label: 'knowledge base', listId: 'adminRagList', addLabel: 'Add new knowledge base' },
   dbs:   { ref: () => ADMIN_DBS,   label: 'database', listId: 'adminDbList',  addLabel: 'Add new database' },
   subs:  { ref: () => ADMIN_SUBAGENTS, label: 'sub-agent', listId: 'adminSubagentsList', addLabel: 'Add new sub-agent' },
+  workflows: { ref: () => ADMIN_WORKFLOWS, label: 'workflow', listId: 'adminWorkflowList', addLabel: 'Add new workflow', isWorkflow: true },
 };
 function setAdminList(key, arr) {
   if (key === 'tools') ADMIN_TOOLS = arr;
@@ -4333,6 +4466,7 @@ function setAdminList(key, arr) {
   else if (key === 'rag') ADMIN_RAG = arr;
   else if (key === 'dbs') ADMIN_DBS = arr;
   else if (key === 'subs') ADMIN_SUBAGENTS = arr;
+  else if (key === 'workflows') ADMIN_WORKFLOWS = arr;
 }
 
 /* ─── Editable option lists for Roles, Tones, Languages ─── */
@@ -4932,8 +5066,38 @@ function renderAdminLists() {
     const el = document.getElementById(cfg.listId);
     if (!el) return;
     const items = cfg.ref();
-    el.innerHTML = items.map(it => featureRowHtml(it, key)).join('') + addRowHtml(key, cfg.addLabel);
+    const renderer = cfg.isWorkflow ? workflowRowHtml : featureRowHtml;
+    el.innerHTML = items.map(it => renderer(it, key)).join('') + addRowHtml(key, cfg.addLabel);
   });
+}
+
+function workflowRowHtml(item, listKey) {
+  const safeId = String(item.id).replace(/'/g,"\\'");
+  const steps = (item.steps || []).map((s, i, arr) => {
+    const cls = s.type === 'llm' ? 'llm' : 'tool';
+    const arrow = i < arr.length - 1 ? '<span class="workflow-chain-arrow">→</span>' : '';
+    return `<span class="workflow-chain-step ${cls}">${escapeHtml(s.name)}</span>${arrow}`;
+  }).join('');
+  return `<div class="workflow-row" onclick="openItemEdit('${listKey}','${safeId}')">
+    <div class="workflow-row-head">
+      <div class="feature-row-icon">${item.icon || '⚙️'}</div>
+      <div class="feature-row-text">
+        <div class="feature-row-name">${escapeHtml(item.name)}
+          ${item.registerAsTool !== false ? '<span class="lock-badge" style="background:rgba(38,101,226,0.15);color:#6b9fff;margin-left:8px">Registered as tool</span>' : ''}
+        </div>
+        <div class="feature-row-desc">${escapeHtml(item.desc || '')} · ${(item.steps||[]).length} step${(item.steps||[]).length===1?'':'s'}</div>
+      </div>
+      <div class="feature-row-actions">
+        <button class="toggle-switch ${item.enabled ? 'on' : ''}"
+          onclick="event.stopPropagation();toggleItemEnabled('${listKey}','${safeId}',this)"></button>
+        <button class="feature-row-edit" title="Edit"
+          onclick="event.stopPropagation();openItemEdit('${listKey}','${safeId}')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="workflow-chain">${steps || '<span class="feature-row-desc">No steps yet — open in editor to define.</span>'}</div>
+  </div>`;
 }
 
 function toggleItemEnabled(listKey, id, btn) {
@@ -5141,6 +5305,11 @@ const FULL_EDIT_SCHEMAS = {
     breadcrumb: 'Sub-agents',
     sections: ['identity','process','validation','escalation'],
   },
+  workflows: {
+    title: (d) => 'Workflow — ' + (d.name || 'New workflow'),
+    breadcrumb: 'Workflows',
+    sections: ['identity','steps','registration','limits'],
+  },
   __conn__: {
     title: (d) => 'Connection — ' + (d.name || 'New connection'),
     breadcrumb: 'Connections',
@@ -5168,6 +5337,8 @@ const SECTION_TITLES = {
   escalation:  { title: 'Escalation',  desc: 'When to hand off to a human or another agent.' },
   access:      { title: 'Access control', desc: 'Which groups and users may use this connection.' },
   sync:        { title: 'Sync settings', desc: 'How often data is refreshed and how stale data is handled.' },
+  steps:       { title: 'Steps',           desc: 'Ordered sequence of tool and LLM calls. Drag to reorder.' },
+  registration:{ title: 'Tool registration', desc: 'How this workflow is exposed to the LLM.' },
 };
 
 function openItemFullEditFromModal() {
@@ -5610,6 +5781,59 @@ function fullEditSectionHtml(listKey, section, d) {
       </div>`);
   }
 
+  if (section === 'steps') {
+    const steps = d.steps || [];
+    return wrap(`
+      <div class="step-editor" id="fe_step_editor">
+        ${steps.map((s, i) => `
+          <div class="step-row" draggable="true"
+            ondragstart="stepDragStart(event,${i})"
+            ondragover="stepDragOver(event,${i})"
+            ondragleave="stepDragLeave(event)"
+            ondrop="stepDrop(event,${i})"
+            ondragend="stepDragEnd(event)">
+            <span class="step-handle">⋮⋮</span>
+            <span class="step-rank">${i+1}</span>
+            <span class="step-type-badge ${s.type}">${s.type}</span>
+            <input class="step-name" value="${escapeHtml(s.name)}" oninput="updateStepName(${i}, this.value)">
+            <button class="step-rm" title="Remove" onclick="removeStep(${i})">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>`).join('')}
+      </div>
+      <div class="step-add-row" style="margin-top:10px">
+        <select id="fe_newStepType">
+          <option value="tool">tool</option>
+          <option value="llm">LLM call</option>
+          <option value="sub">sub-workflow</option>
+        </select>
+        <input id="fe_newStepName" placeholder="step_name (e.g. sql_validate_tool)">
+        <button class="step-add-btn" onclick="addStep()">＋ Add step</button>
+      </div>`);
+  }
+
+  if (section === 'registration') {
+    return wrap(`
+      <div class="cap-toggle" style="margin-bottom:10px">
+        <div class="cap-toggle-info">
+          <span class="cap-toggle-icon">🛠️</span>
+          <span class="cap-toggle-text">Register this workflow as a tool for the LLM
+            <span style="font-weight:400;color:var(--text-muted);font-size:11px">(LLM can invoke it like any other tool)</span>
+          </span>
+        </div>
+        <button class="toggle-switch ${d.registerAsTool!==false ? 'on' : ''}" id="fe_registerAsTool"
+          onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Tool description (shown to the LLM)</div>
+        <textarea class="form-textarea" id="fe_toolDesc" placeholder="When the LLM should pick this workflow over an atomic tool.">${escapeHtml(d.toolDesc||d.desc||'')}</textarea>
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Trigger conditions (optional, natural language)</div>
+        <textarea class="form-textarea" id="fe_triggerCond" placeholder="e.g. When the user asks a question that needs to query a database.">${escapeHtml(d.triggerCond||'')}</textarea>
+      </div>`);
+  }
+
   if (section === 'sync') {
     return wrap(`
       <div class="admin-section-grid">
@@ -5635,15 +5859,73 @@ function fullEditSectionHtml(listKey, section, d) {
   return wrap('<p style="color:var(--text-muted)">Section not implemented.</p>');
 }
 
+/* ─── Workflow step editor ─── */
+function ensureSteps() {
+  if (!fullEditContext) return null;
+  if (!Array.isArray(fullEditContext.draft.steps)) fullEditContext.draft.steps = [];
+  return fullEditContext.draft.steps;
+}
+function rerenderStepsSection() {
+  if (!fullEditContext) return;
+  const sec = document.getElementById('fe_steps');
+  if (!sec) return;
+  // Replace the steps section content
+  sec.outerHTML = fullEditSectionHtml(fullEditContext.listKey, 'steps', fullEditContext.draft);
+}
+function addStep() {
+  const steps = ensureSteps(); if (!steps) return;
+  const type = document.getElementById('fe_newStepType').value;
+  const name = (document.getElementById('fe_newStepName').value || 'new_step').trim();
+  if (!name) return;
+  steps.push({ type, name });
+  document.getElementById('fe_newStepName').value = '';
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderStepsSection();
+}
+function removeStep(i) {
+  const steps = ensureSteps(); if (!steps) return;
+  steps.splice(i, 1);
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderStepsSection();
+}
+function updateStepName(i, value) {
+  const steps = ensureSteps(); if (!steps) return;
+  if (steps[i]) {
+    steps[i].name = value;
+    setFullEditStatus('dirty','Unsaved changes');
+  }
+}
+let _stepDragFrom = null;
+function stepDragStart(e, i) { _stepDragFrom = i; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
+function stepDragOver(e, i) { e.preventDefault(); e.currentTarget.classList.add('drop-target'); }
+function stepDragLeave(e)   { e.currentTarget.classList.remove('drop-target'); }
+function stepDrop(e, i) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drop-target');
+  const steps = ensureSteps(); if (!steps) return;
+  if (_stepDragFrom == null || _stepDragFrom === i) return;
+  const moved = steps.splice(_stepDragFrom, 1)[0];
+  steps.splice(i, 0, moved);
+  setFullEditStatus('dirty','Unsaved changes');
+  rerenderStepsSection();
+}
+function stepDragEnd(e) {
+  document.querySelectorAll('.step-row').forEach(r => r.classList.remove('dragging','drop-target'));
+  _stepDragFrom = null;
+}
+
 function collectFullEditDraft() {
   if (!fullEditContext) return;
   const d = fullEditContext.draft;
   const set = (id, prop) => { const el = document.getElementById(id); if (el) d[prop || id.replace('fe_','')] = el.value; };
-  ['fe_name','fe_desc','fe_endpoint','fe_auth','fe_secret','fe_status','fe_meta','fe_users','fe_access','fe_approval','fe_ops','fe_rate','fe_timeout','fe_budget','fe_retry','fe_folder','fe_skillver','fe_owner','fe_trigger','fe_inputs','fe_outputs','fe_source','fe_srctype','fe_citation','fe_refresh','fe_chunk','fe_embed','fe_prio','fe_tables','fe_qval','fe_maxrows','fe_steps','fe_policy','fe_esc','fe_syncfreq','fe_stale'].forEach(f => set(f));
+  ['fe_name','fe_desc','fe_endpoint','fe_auth','fe_secret','fe_status','fe_meta','fe_users','fe_access','fe_approval','fe_ops','fe_rate','fe_timeout','fe_budget','fe_retry','fe_folder','fe_skillver','fe_owner','fe_trigger','fe_inputs','fe_outputs','fe_source','fe_srctype','fe_citation','fe_refresh','fe_chunk','fe_embed','fe_prio','fe_tables','fe_qval','fe_maxrows','fe_policy','fe_esc','fe_syncfreq','fe_stale','fe_toolDesc','fe_triggerCond'].forEach(f => set(f));
   const icon = document.querySelector('#fe_icon .icon-picker-btn.selected');
   if (icon) d.icon = icon.dataset.icon;
   const enabledBtn = document.getElementById('fe_enabled');
   if (enabledBtn) d.enabled = enabledBtn.classList.contains('on');
+  const regBtn = document.getElementById('fe_registerAsTool');
+  if (regBtn) d.registerAsTool = regBtn.classList.contains('on');
+  // Steps are mutated in-place via the editor — no extra collection needed.
 }
 
 function saveFromFullEdit() {
@@ -6655,6 +6937,14 @@ function updateGalleryCount() {
         <div class="form-section-title" style="margin: 22px 0 10px">Custom MCPs</div>
         <div class="admin-helper" style="margin-bottom:10px">Internal MCP servers built or hosted by your organization.</div>
         <div id="adminCustomMcpList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Workflows</div>
+        <div class="admin-helper" style="margin-bottom:10px">
+          Multi-step pipelines that chain tools and LLM calls. Workflows are registered as
+          tools for the LLM, but listed separately so admins can distinguish them from
+          atomic tools. Configure a workflow's steps in its full editor.
+        </div>
+        <div id="adminWorkflowList"></div>
       </section>
 
       <!-- 4. SKILLS -->
