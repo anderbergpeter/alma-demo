@@ -1778,8 +1778,28 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 6px; padding: 6px 10px;
       color: var(--text-primary); font-size: 12px; outline: none;
+      font-family: inherit;
     }
-    .step-add-row select { width: 110px; }
+    .step-add-row select {
+      width: 130px;
+      padding-right: 26px;
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238891b5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      cursor: pointer;
+    }
+    .step-add-row select:focus { border-color: rgba(194,109,230,0.4); }
+    .step-add-row select::-ms-expand { display: none; }
+    .step-add-row select option {
+      background: #131830;
+      color: var(--text-primary);
+      padding: 8px;
+    }
+    .step-add-row select option:checked,
+    .step-add-row select option:hover {
+      background: #1a1f48;
+    }
     .step-add-row input { flex: 1; }
     .step-add-row .step-add-btn {
       background: rgba(38,101,226,0.18); border: none;
