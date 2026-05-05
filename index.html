@@ -1045,6 +1045,62 @@
     }
     .gallery-done-btn:hover { background: #1d55c8; }
 
+    /* ─── ADMIN — FULL PAGE LAYOUT ─── */
+    .admin-overlay {
+      display: none; position: fixed; inset: 0; z-index: 400;
+      background: #0d0f1a;
+      flex-direction: column;
+      animation: pageFadeIn 0.18s ease;
+    }
+    .admin-overlay.show { display: flex; }
+    @keyframes pageFadeIn { from { opacity:0 } to { opacity:1 } }
+
+    .admin-page-topbar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border);
+      background: #10122a;
+      flex-shrink: 0;
+    }
+    .admin-page-topbar .breadcrumbs {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .admin-page-topbar .crumb {
+      cursor: pointer; transition: color 0.15s;
+    }
+    .admin-page-topbar .crumb:hover { color: var(--text-primary); }
+    .admin-page-topbar .crumb.current { color: var(--text-primary); font-weight: 600; }
+    .admin-page-topbar .crumb-sep { color: var(--text-muted); opacity: 0.6; }
+    .admin-page-topbar .topbar-pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 3px 8px; border-radius: 12px;
+      background: rgba(194,109,230,0.15); color: var(--alma-purple);
+      text-transform: uppercase;
+    }
+    .admin-page-close {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      width: 32px; height: 32px; border-radius: 8px;
+      cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .admin-page-close:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+    .admin-page-content {
+      flex: 1; overflow-y: auto;
+    }
+    .admin-page-inner {
+      max-width: 1080px; width: 100%;
+      margin: 0 auto;
+      padding: 32px 32px 48px;
+    }
+    .admin-page-inner.tight { padding: 24px 32px 0; }
+    .admin-page-inner.flush { padding: 0 32px; }
+    .admin-page-inner.body  { padding: 24px 32px 32px; }
+
     /* ─── ADMIN HUB ─── */
     .admin-modal {
       background: #10122a; border: 1px solid var(--border);
@@ -1055,46 +1111,40 @@
     }
     .admin-header {
       display: flex; align-items: flex-start; justify-content: space-between;
-      padding: 24px 28px 18px; border-bottom: 1px solid var(--border);
+      padding: 0 0 24px; margin-bottom: 8px;
     }
-    .admin-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
-    .admin-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-    .admin-body { padding: 24px 28px 28px; }
+    .admin-title { font-size: 26px; font-weight: 700; color: var(--text-primary); }
+    .admin-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 6px; }
+    .admin-body { padding: 0; }
     .admin-cards {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
     }
     .admin-card {
       background: #13163a; border: 1px solid var(--border);
-      border-radius: 12px; padding: 22px; cursor: pointer;
-      transition: all 0.15s; display: flex; flex-direction: column; gap: 10px;
+      border-radius: 14px; padding: 28px; cursor: pointer;
+      transition: all 0.15s; display: flex; flex-direction: column; gap: 12px;
     }
     .admin-card:hover { border-color: #3a4070; background: #1a1f48; transform: translateY(-2px); }
     .admin-card-icon {
-      width: 40px; height: 40px; border-radius: 10px;
+      width: 48px; height: 48px; border-radius: 12px;
       background: linear-gradient(135deg, var(--blue), var(--alma-purple));
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+      font-size: 22px;
     }
-    .admin-card-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .admin-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+    .admin-card-name { font-size: 17px; font-weight: 700; color: var(--text-primary); }
+    .admin-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
 
     /* ─── ADMIN COLLEAGUE CREATOR ─── */
     .admin-creator {
-      background: #0e1530;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      width: 95vw; max-width: 1100px;
-      height: 88vh; max-height: 760px;
-      display: flex; flex-direction: column; overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      flex: 1; display: flex; flex-direction: column;
+      background: transparent;
     }
     .admin-creator-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-shrink: 0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 0 0 18px; margin-bottom: 0;
     }
     .admin-creator-title-wrap { display: flex; align-items: center; gap: 12px; }
-    .admin-creator-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .admin-creator-title { font-size: 22px; font-weight: 700; color: var(--text-primary); }
     .admin-creator-pill {
       font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
       padding: 3px 8px; border-radius: 12px;
@@ -1102,8 +1152,8 @@
       text-transform: uppercase;
     }
     .admin-creator-tabs {
-      display: flex; gap: 0; padding: 0 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;
+      display: flex; gap: 0; padding: 0;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
       overflow-x: auto;
     }
     .admin-creator-tab {
@@ -1115,7 +1165,7 @@
     .admin-creator-tab:hover { color: var(--text-primary); }
     .admin-creator-tab.active { color: var(--text-primary); border-bottom-color: #2665E2; }
     .admin-creator-body {
-      flex: 1; overflow-y: auto; padding: 22px 28px;
+      flex: 1; padding: 24px 0;
     }
     .admin-creator-section { display: none; }
     .admin-creator-section.active { display: block; }
@@ -1128,8 +1178,9 @@
       margin-top: 4px;
     }
     .admin-creator-footer {
-      padding: 14px 24px;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 16px 22px;
+      border-top: 1px solid var(--border);
+      background: #10122a;
       display: flex; align-items: center; justify-content: space-between;
       flex-shrink: 0;
     }
@@ -1194,16 +1245,30 @@
       padding: 3px 8px;
     }
 
-    /* Form select */
+    /* Form select — themed (overrides browser default white) */
     .form-select {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px; padding: 10px 14px;
+      border-radius: 10px; padding: 10px 36px 10px 14px;
       color: var(--text-primary); font-size: 13px; font-family: inherit;
       outline: none; transition: border-color 0.2s;
       width: 100%; cursor: pointer;
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238891b5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
     }
     .form-select:focus { border-color: rgba(194,109,230,0.5); }
+    .form-select::-ms-expand { display: none; }
+    .form-select option {
+      background: #131830;
+      color: var(--text-primary);
+      padding: 8px;
+    }
+    .form-select option:checked,
+    .form-select option:hover {
+      background: #1a1f48;
+    }
 
     /* Tool/skill row with toggle */
     .feature-row {
@@ -1213,7 +1278,9 @@
       border: 1px solid rgba(255,255,255,0.07);
       border-radius: 10px;
       margin-bottom: 6px;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
     }
+    .feature-row:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
     .feature-row-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .feature-row-icon {
       width: 30px; height: 30px; border-radius: 8px;
@@ -1224,6 +1291,61 @@
     .feature-row-text { min-width: 0; }
     .feature-row-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
     .feature-row-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .feature-row-actions { display: flex; align-items: center; gap: 8px; }
+    .feature-row-edit {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 6px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .feature-row-edit:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); }
+    .feature-row-add {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px;
+      background: rgba(38,101,226,0.07);
+      border: 1px dashed #2665E2;
+      border-radius: 10px; cursor: pointer;
+      color: #6b9fff; font-size: 13px; font-weight: 600;
+      transition: background 0.15s; margin-top: 4px;
+    }
+    .feature-row-add:hover { background: rgba(38,101,226,0.13); }
+
+    /* ─── ITEM EDIT MODAL (over admin pages) ─── */
+    .item-edit-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+    }
+    .item-edit-overlay.show { display: flex; }
+    .item-edit-modal {
+      background: #10122a; border: 1px solid var(--border);
+      border-radius: 14px; width: 560px; max-width: 92vw;
+      max-height: 86vh; display: flex; flex-direction: column;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.55);
+      animation: galleryIn 0.2s ease;
+    }
+    .item-edit-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid var(--border);
+    }
+    .item-edit-title { font-size: 15px; font-weight: 700; }
+    .item-edit-body { flex: 1; overflow-y: auto; padding: 20px 22px; }
+    .item-edit-footer {
+      padding: 12px 22px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .item-edit-link {
+      font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .item-edit-link a { color: #6b9fff; text-decoration: none; cursor: pointer; }
+    .item-edit-link a:hover { text-decoration: underline; }
+    .btn-delete {
+      background: none; border: 1px solid rgba(232,93,93,0.4);
+      color: #ff8a8a; border-radius: 8px; padding: 7px 14px;
+      font-size: 12px; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-delete:hover { background: rgba(232,93,93,0.1); }
 
     /* Badge for "admin lock" */
     .lock-badge {
@@ -3807,49 +3929,67 @@ function closeAdminHub() {
 }
 
 /* ─── ADMIN COLLEAGUE CREATOR ─── */
-const ADMIN_TOOLS = [
-  { id: 'web',     icon: '🌐', name: 'Web search',           desc: 'Browse the public web for current information' },
-  { id: 'doc',     icon: '📄', name: 'Document reader',      desc: 'Read uploaded files and documents' },
-  { id: 'code',    icon: '💻', name: 'Code interpreter',     desc: 'Run code in a sandboxed environment' },
-  { id: 'image',   icon: '🖼️', name: 'Image generation',     desc: 'Generate images from text prompts' },
-  { id: 'email',   icon: '📧', name: 'Email (draft)',        desc: 'Compose drafts; sending requires confirmation' },
-  { id: 'cal',     icon: '📅', name: 'Calendar',             desc: 'Read calendar; events created with confirmation' },
-  { id: 'data',    icon: '📊', name: 'Data analysis',        desc: 'Run analysis over structured data' },
-  { id: 'think',   icon: '◎',  name: 'Think deeper',         desc: 'Allow extended reasoning steps before responding' },
+let ADMIN_TOOLS = [
+  { id: 'web',     icon: '🌐', name: 'Web search',           desc: 'Browse the public web for current information', enabled: true },
+  { id: 'doc',     icon: '📄', name: 'Document reader',      desc: 'Read uploaded files and documents', enabled: true },
+  { id: 'code',    icon: '💻', name: 'Code interpreter',     desc: 'Run code in a sandboxed environment', enabled: true },
+  { id: 'image',   icon: '🖼️', name: 'Image generation',     desc: 'Generate images from text prompts', enabled: true },
+  { id: 'email',   icon: '📧', name: 'Email (draft)',        desc: 'Compose drafts; sending requires confirmation', enabled: false },
+  { id: 'cal',     icon: '📅', name: 'Calendar',             desc: 'Read calendar; events created with confirmation', enabled: false },
+  { id: 'data',    icon: '📊', name: 'Data analysis',        desc: 'Run analysis over structured data', enabled: false },
+  { id: 'think',   icon: '◎',  name: 'Think deeper',         desc: 'Allow extended reasoning steps before responding', enabled: false },
 ];
-const ADMIN_MCPS = [
-  { id: 'jira',     icon: '📋', name: 'Jira',         desc: 'Read tickets and write comments' },
-  { id: 'confl',    icon: '📚', name: 'Confluence',   desc: 'Search internal wiki spaces' },
-  { id: 'sf',       icon: '☁️', name: 'Salesforce',   desc: 'Read CRM accounts and opportunities' },
-  { id: 'slack',    icon: '💬', name: 'Slack',        desc: 'Read channels and post messages' },
-  { id: 'gh',       icon: '🐙', name: 'GitHub',       desc: 'Read repos, issues and pull requests' },
-  { id: 'sn',       icon: '🛟', name: 'ServiceNow',   desc: 'Read tickets and incidents' },
+let ADMIN_MCPS = [
+  { id: 'jira',     icon: '📋', name: 'Jira',         desc: 'Read tickets and write comments', enabled: true },
+  { id: 'confl',    icon: '📚', name: 'Confluence',   desc: 'Search internal wiki spaces', enabled: true },
+  { id: 'sf',       icon: '☁️', name: 'Salesforce',   desc: 'Read CRM accounts and opportunities', enabled: false },
+  { id: 'slack',    icon: '💬', name: 'Slack',        desc: 'Read channels and post messages', enabled: false },
+  { id: 'gh',       icon: '🐙', name: 'GitHub',       desc: 'Read repos, issues and pull requests', enabled: false },
+  { id: 'sn',       icon: '🛟', name: 'ServiceNow',   desc: 'Read tickets and incidents', enabled: false },
 ];
-const ADMIN_SKILLS = [
-  { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation' },
-  { id: 'hire',       icon: '🧑‍🎓', name: 'Conduct-hire-interview',     desc: 'Run a structured interview for a new hire' },
-  { id: 'rfp',        icon: '📑', name: 'Tender-response-drafter',     desc: 'Draft RFP/tender responses from templates' },
-  { id: 'meeting',    icon: '📝', name: 'Meeting-notes-summarizer',    desc: 'Summarize transcripts and extract action items' },
-  { id: 'risk',       icon: '⚠️', name: 'Contract-risk-review',         desc: 'Identify risky clauses against your playbook' },
+let ADMIN_SKILLS = [
+  { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation', enabled: true },
+  { id: 'hire',       icon: '🧑‍🎓', name: 'Conduct-hire-interview',     desc: 'Run a structured interview for a new hire', enabled: false },
+  { id: 'rfp',        icon: '📑', name: 'Tender-response-drafter',     desc: 'Draft RFP/tender responses from templates', enabled: false },
+  { id: 'meeting',    icon: '📝', name: 'Meeting-notes-summarizer',    desc: 'Summarize transcripts and extract action items', enabled: false },
+  { id: 'risk',       icon: '⚠️', name: 'Contract-risk-review',         desc: 'Identify risky clauses against your playbook', enabled: false },
 ];
-const ADMIN_RAG = [
-  { id: 'policy',  icon: '📘', name: 'Company Policies',         desc: 'HR, IT and travel policies' },
-  { id: 'legal',   icon: '⚖️', name: 'Legal Playbook',           desc: 'Approved clauses and contract templates' },
-  { id: 'product', icon: '🎯', name: 'Product Documentation',     desc: 'Internal product specs and roadmaps' },
-  { id: 'support', icon: '📞', name: 'Help Center articles',     desc: 'Customer-facing knowledge base' },
+let ADMIN_RAG = [
+  { id: 'policy',  icon: '📘', name: 'Company Policies',         desc: 'HR, IT and travel policies', enabled: true },
+  { id: 'legal',   icon: '⚖️', name: 'Legal Playbook',           desc: 'Approved clauses and contract templates', enabled: true },
+  { id: 'product', icon: '🎯', name: 'Product Documentation',     desc: 'Internal product specs and roadmaps', enabled: false },
+  { id: 'support', icon: '📞', name: 'Help Center articles',     desc: 'Customer-facing knowledge base', enabled: false },
 ];
-const ADMIN_DBS = [
-  { id: 'erp',     icon: '🏢', name: 'ERP (SAP S/4)',          desc: 'Finance and supply chain master data' },
-  { id: 'crm',     icon: '☁️', name: 'CRM (Salesforce)',       desc: 'Accounts, opportunities, contacts' },
-  { id: 'econ',    icon: '💹', name: 'Economics database',     desc: 'Group financials and forecasts' },
-  { id: 'hr',      icon: '🧑‍💼', name: 'HR system (Workday)',   desc: 'Employees, leave balances, org chart' },
-  { id: 'mes',     icon: '🏗️', name: 'MES production data',    desc: 'Production lines, OEE and quality data' },
+let ADMIN_DBS = [
+  { id: 'erp',     icon: '🏢', name: 'ERP (SAP S/4)',          desc: 'Finance and supply chain master data', enabled: false },
+  { id: 'crm',     icon: '☁️', name: 'CRM (Salesforce)',       desc: 'Accounts, opportunities, contacts', enabled: false },
+  { id: 'econ',    icon: '💹', name: 'Economics database',     desc: 'Group financials and forecasts', enabled: false },
+  { id: 'hr',      icon: '🧑‍💼', name: 'HR system (Workday)',   desc: 'Employees, leave balances, org chart', enabled: false },
+  { id: 'mes',     icon: '🏗️', name: 'MES production data',    desc: 'Production lines, OEE and quality data', enabled: false },
 ];
-const ADMIN_SUBAGENTS = [
-  { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'LLM produces SQL; runtime validates & executes safely' },
-  { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files from connected sources' },
-  { id: 'webresearch', icon: '🔎', name: 'Web research', desc: 'Multi-step web search and synthesis with citations' },
+let ADMIN_SUBAGENTS = [
+  { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'LLM produces SQL; runtime validates & executes safely', enabled: true },
+  { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files from connected sources', enabled: false },
+  { id: 'webresearch', icon: '🔎', name: 'Web research', desc: 'Multi-step web search and synthesis with citations', enabled: false },
 ];
+
+/* Lookup tables for the edit modal */
+const ADMIN_LISTS = {
+  tools: { ref: () => ADMIN_TOOLS, label: 'tool', listId: 'adminToolsList', addLabel: 'Add new tool' },
+  mcps:  { ref: () => ADMIN_MCPS,  label: 'MCP',  listId: 'adminMcpList',   addLabel: 'Add new MCP' },
+  skills:{ ref: () => ADMIN_SKILLS,label: 'skill',listId: 'adminSkillsList',addLabel: 'Add new skill' },
+  rag:   { ref: () => ADMIN_RAG,   label: 'knowledge base', listId: 'adminRagList', addLabel: 'Add new knowledge base' },
+  dbs:   { ref: () => ADMIN_DBS,   label: 'database', listId: 'adminDbList',  addLabel: 'Add new database' },
+  subs:  { ref: () => ADMIN_SUBAGENTS, label: 'sub-agent', listId: 'adminSubagentsList', addLabel: 'Add new sub-agent' },
+};
+function setAdminList(key, arr) {
+  if (key === 'tools') ADMIN_TOOLS = arr;
+  else if (key === 'mcps') ADMIN_MCPS = arr;
+  else if (key === 'skills') ADMIN_SKILLS = arr;
+  else if (key === 'rag') ADMIN_RAG = arr;
+  else if (key === 'dbs') ADMIN_DBS = arr;
+  else if (key === 'subs') ADMIN_SUBAGENTS = arr;
+}
 
 let creatorTab = 'identity';
 const CREATOR_TABS = ['identity','prompt','tools','skills','data','model','access','advanced','overrides'];
@@ -3915,32 +4055,208 @@ function bindAccessChips() {
   });
 }
 
-function featureRowHtml(item, defaultOn) {
-  return `<div class="feature-row">
+function featureRowHtml(item, listKey) {
+  const safeId = String(item.id).replace(/'/g,"\\'");
+  return `<div class="feature-row" onclick="openItemEdit('${listKey}','${safeId}')">
     <div class="feature-row-info">
-      <div class="feature-row-icon">${item.icon}</div>
+      <div class="feature-row-icon">${item.icon || '⚙️'}</div>
       <div class="feature-row-text">
         <div class="feature-row-name">${item.name}</div>
-        <div class="feature-row-desc">${item.desc}</div>
+        <div class="feature-row-desc">${item.desc || ''}</div>
       </div>
     </div>
-    <button class="toggle-switch ${defaultOn ? 'on' : ''}" onclick="this.classList.toggle('on')"></button>
+    <div class="feature-row-actions">
+      <button class="toggle-switch ${item.enabled ? 'on' : ''}"
+        onclick="event.stopPropagation();toggleItemEnabled('${listKey}','${safeId}',this)"></button>
+      <button class="feature-row-edit" title="Edit"
+        onclick="event.stopPropagation();openItemEdit('${listKey}','${safeId}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function addRowHtml(listKey, label) {
+  return `<div class="feature-row-add" onclick="openItemEdit('${listKey}', null)">
+    <span style="font-size:16px;line-height:1">＋</span>
+    <span>${label}</span>
   </div>`;
 }
 
 function renderAdminLists() {
-  document.getElementById('adminToolsList').innerHTML =
-    ADMIN_TOOLS.map((t, i) => featureRowHtml(t, i < 4)).join('');
-  document.getElementById('adminMcpList').innerHTML =
-    ADMIN_MCPS.map((m, i) => featureRowHtml(m, i < 2)).join('');
-  document.getElementById('adminSkillsList').innerHTML =
-    ADMIN_SKILLS.map((s, i) => featureRowHtml(s, i === 0)).join('');
-  document.getElementById('adminRagList').innerHTML =
-    ADMIN_RAG.map((r, i) => featureRowHtml(r, i < 2)).join('');
-  document.getElementById('adminDbList').innerHTML =
-    ADMIN_DBS.map((d, i) => featureRowHtml(d, false)).join('');
-  document.getElementById('adminSubagentsList').innerHTML =
-    ADMIN_SUBAGENTS.map((a, i) => featureRowHtml(a, i === 0)).join('');
+  Object.keys(ADMIN_LISTS).forEach(key => {
+    const cfg = ADMIN_LISTS[key];
+    const el = document.getElementById(cfg.listId);
+    if (!el) return;
+    const items = cfg.ref();
+    el.innerHTML = items.map(it => featureRowHtml(it, key)).join('') + addRowHtml(key, cfg.addLabel);
+  });
+}
+
+function toggleItemEnabled(listKey, id, btn) {
+  const arr = ADMIN_LISTS[listKey].ref();
+  const item = arr.find(x => String(x.id) === id);
+  if (!item) return;
+  item.enabled = !item.enabled;
+  btn.classList.toggle('on', item.enabled);
+}
+
+/* ─── ITEM EDIT MODAL ─── */
+let editContext = null; // { listKey, id, isNew }
+
+function openItemEdit(listKey, id) {
+  const cfg = ADMIN_LISTS[listKey];
+  if (!cfg) return;
+  const arr = cfg.ref();
+  let item;
+  let isNew = false;
+  if (id == null) {
+    item = { id: cfg.label.replace(/\s+/g,'_') + '_' + Date.now(),
+             icon: '⚙️', name: '', desc: '', enabled: true };
+    isNew = true;
+  } else {
+    item = arr.find(x => String(x.id) === String(id));
+    if (!item) return;
+  }
+  editContext = { listKey, id: item.id, isNew, draft: { ...item } };
+
+  document.getElementById('itemEditTitle').textContent =
+    (isNew ? 'New ' : 'Edit ') + cfg.label;
+  document.getElementById('itemEditDelete').style.display = isNew ? 'none' : 'inline-block';
+  document.getElementById('itemEditBody').innerHTML = renderItemEditForm(listKey, editContext.draft);
+  bindItemEditInputs();
+  document.getElementById('itemEditOverlay').classList.add('show');
+}
+
+function closeItemEdit() {
+  document.getElementById('itemEditOverlay').classList.remove('show');
+  editContext = null;
+}
+
+function renderItemEditForm(listKey, d) {
+  const iconChoices = ['🌐','📄','💻','🖼️','📧','📅','📊','◎','📋','📚','☁️','💬','🐙','🛟','🎤','🧑‍🎓','📑','📝','⚠️','📘','⚖️','🎯','📞','🏢','💹','🧑‍💼','🏗️','🔎','🛡️','🔌','⚙️'];
+  const iconHtml = `<div class="icon-picker" id="itemEditIconPicker">${
+    iconChoices.map(ic => `<button class="icon-picker-btn ${ic===d.icon?'selected':''}" data-icon="${ic}">${ic}</button>`).join('')
+  }</div>`;
+
+  let extra = '';
+  if (listKey === 'mcps' || listKey === 'dbs') {
+    extra = `
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Endpoint URL</div>
+        <input class="form-input" id="ie_endpoint" value="${d.endpoint || ''}" placeholder="https://api.example.com">
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Auth method</div>
+        <select class="form-select" id="ie_auth">
+          <option ${d.auth==='oauth'?'selected':''} value="oauth">OAuth 2.0</option>
+          <option ${d.auth==='apikey'?'selected':''} value="apikey">API key</option>
+          <option ${d.auth==='basic'?'selected':''} value="basic">Basic auth</option>
+        </select>
+      </div>`;
+  }
+  if (listKey === 'rag') {
+    extra = `
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Source path / collection</div>
+        <input class="form-input" id="ie_source" value="${d.source || ''}" placeholder="e.g. sharepoint://hr/policies">
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Refresh interval</div>
+        <select class="form-select" id="ie_refresh">
+          <option ${d.refresh==='live'?'selected':''} value="live">Live</option>
+          <option ${d.refresh==='hourly'?'selected':''} value="hourly">Hourly</option>
+          <option ${d.refresh==='daily'?'selected':''} value="daily" >Daily</option>
+          <option ${d.refresh==='weekly'?'selected':''} value="weekly">Weekly</option>
+        </select>
+      </div>`;
+  }
+  if (listKey === 'skills') {
+    extra = `
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Skill folder (per skills standard)</div>
+        <input class="form-input" id="ie_folder" value="${d.folder || ''}" placeholder="e.g. /skills/interview-for-presentation">
+      </div>`;
+  }
+  if (listKey === 'subs') {
+    extra = `
+      <div class="form-group" style="margin-top:14px">
+        <div class="form-label">Validation policy</div>
+        <select class="form-select" id="ie_policy">
+          <option ${d.policy==='strict'?'selected':''} value="strict">Strict — runtime verifies before execution</option>
+          <option ${d.policy==='log'?'selected':''} value="log">Log-only</option>
+          <option ${d.policy==='off'?'selected':''} value="off">Off</option>
+        </select>
+      </div>`;
+  }
+
+  return `
+    <div class="form-group">
+      <div class="form-label">Name</div>
+      <input class="form-input" id="ie_name" value="${(d.name||'').replace(/"/g,'&quot;')}" placeholder="Display name">
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Description</div>
+      <textarea class="form-textarea" id="ie_desc" placeholder="What does this do?">${d.desc || ''}</textarea>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Icon</div>
+      ${iconHtml}
+    </div>
+    ${extra}
+    <div class="cap-toggle" style="margin-top:18px">
+      <div class="cap-toggle-info">
+        <span class="cap-toggle-icon">${d.enabled ? '✅' : '⚪️'}</span>
+        <span class="cap-toggle-text">Enabled by default for this colleague</span>
+      </div>
+      <button class="toggle-switch ${d.enabled ? 'on' : ''}" id="ie_enabled"
+        onclick="this.classList.toggle('on')"></button>
+    </div>
+  `;
+}
+
+function bindItemEditInputs() {
+  document.querySelectorAll('#itemEditIconPicker .icon-picker-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#itemEditIconPicker .icon-picker-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+  });
+}
+
+function saveCurrentItem() {
+  if (!editContext) return;
+  const { listKey, id, isNew, draft } = editContext;
+  const cfg = ADMIN_LISTS[listKey];
+  const arr = cfg.ref();
+  draft.name = document.getElementById('ie_name').value.trim() || draft.name || 'Untitled';
+  draft.desc = document.getElementById('ie_desc').value.trim();
+  const icon = document.querySelector('#itemEditIconPicker .icon-picker-btn.selected');
+  if (icon) draft.icon = icon.dataset.icon;
+  draft.enabled = document.getElementById('ie_enabled').classList.contains('on');
+  ['ie_endpoint','ie_auth','ie_source','ie_refresh','ie_folder','ie_policy'].forEach(f => {
+    const el = document.getElementById(f);
+    if (el) draft[f.replace('ie_','')] = el.value;
+  });
+
+  if (isNew) {
+    arr.push(draft);
+  } else {
+    const idx = arr.findIndex(x => String(x.id) === String(id));
+    if (idx >= 0) arr[idx] = { ...arr[idx], ...draft };
+  }
+  setAdminList(listKey, arr);
+  renderAdminLists();
+  closeItemEdit();
+}
+
+function deleteCurrentItem() {
+  if (!editContext) return;
+  const { listKey, id } = editContext;
+  const arr = ADMIN_LISTS[listKey].ref().filter(x => String(x.id) !== String(id));
+  setAdminList(listKey, arr);
+  renderAdminLists();
+  closeItemEdit();
 }
 
 const PROMPT_TEMPLATES = {
@@ -3989,15 +4305,15 @@ function deployAdminColleague() {
 }
 
 /* ─── CONNECTIONS ─── */
-const CONNECTIONS = [
-  { icon: '☁️', name: 'Salesforce CRM',  desc: 'Accounts, opportunities, contacts',         meta: 'Sales, Leadership',           status: 'connected' },
-  { icon: '🏢', name: 'SAP S/4 HANA',     desc: 'Finance, supply chain, master data',         meta: 'Finance, Operations',         status: 'connected' },
-  { icon: '💹', name: 'Economics DB',     desc: 'Group financial reporting database',         meta: 'Finance, Leadership',         status: 'connected' },
-  { icon: '🧑‍💼', name: 'Workday HR',     desc: 'Employees, leave balances, org chart',       meta: 'HR, Leadership',              status: 'connected' },
-  { icon: '📋', name: 'Jira',             desc: 'Issues, sprints, project boards',            meta: 'Engineering, Product',         status: 'connected' },
-  { icon: '📚', name: 'Confluence',       desc: 'Internal wiki and documentation',            meta: 'All employees',                status: 'connected' },
-  { icon: '🐙', name: 'GitHub Enterprise',desc: 'Source code and pull requests',              meta: 'Engineering',                 status: 'disconnected' },
-  { icon: '🛟', name: 'ServiceNow',       desc: 'IT incidents and service requests',          meta: 'IT, Support',                 status: 'disconnected' },
+let CONNECTIONS = [
+  { id: 'c_sf',   icon: '☁️', name: 'Salesforce CRM',   desc: 'Accounts, opportunities, contacts',     meta: 'Sales, Leadership',         status: 'connected' },
+  { id: 'c_sap',  icon: '🏢', name: 'SAP S/4 HANA',     desc: 'Finance, supply chain, master data',    meta: 'Finance, Operations',       status: 'connected' },
+  { id: 'c_econ', icon: '💹', name: 'Economics DB',     desc: 'Group financial reporting database',    meta: 'Finance, Leadership',       status: 'connected' },
+  { id: 'c_wd',   icon: '🧑‍💼', name: 'Workday HR',     desc: 'Employees, leave balances, org chart',  meta: 'HR, Leadership',            status: 'connected' },
+  { id: 'c_jira', icon: '📋', name: 'Jira',             desc: 'Issues, sprints, project boards',       meta: 'Engineering, Product',      status: 'connected' },
+  { id: 'c_conf', icon: '📚', name: 'Confluence',       desc: 'Internal wiki and documentation',       meta: 'All employees',             status: 'connected' },
+  { id: 'c_gh',   icon: '🐙', name: 'GitHub Enterprise',desc: 'Source code and pull requests',         meta: 'Engineering',               status: 'disconnected' },
+  { id: 'c_sn',   icon: '🛟', name: 'ServiceNow',       desc: 'IT incidents and service requests',     meta: 'IT, Support',               status: 'disconnected' },
 ];
 function openConnections() {
   closeAdminHub();
@@ -4013,7 +4329,7 @@ function backToAdminHubFromConnections() {
 }
 function renderConnections() {
   document.getElementById('connList').innerHTML = CONNECTIONS.map(c => `
-    <div class="conn-card">
+    <div class="conn-card" onclick="openConnectionEdit('${c.id}')" style="cursor:pointer">
       <div class="conn-card-icon">${c.icon}</div>
       <div class="conn-card-info">
         <div class="conn-card-name">${c.name}</div>
@@ -4024,9 +4340,111 @@ function renderConnections() {
         </div>
       </div>
       <div class="conn-card-status ${c.status}">${c.status === 'connected' ? '● Connected' : 'Disconnected'}</div>
+      <button class="feature-row-edit" title="Edit"
+        onclick="event.stopPropagation();openConnectionEdit('${c.id}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      </button>
     </div>
   `).join('');
 }
+
+/* Connection edit reuses the item-edit modal but with connection-specific fields */
+function openConnectionEdit(id) {
+  let item, isNew = false;
+  if (id == null) {
+    item = { id: 'c_' + Date.now(), icon: '🔌', name: '', desc: '', meta: '', status: 'disconnected' };
+    isNew = true;
+  } else {
+    item = CONNECTIONS.find(c => c.id === id);
+    if (!item) return;
+  }
+  editContext = { listKey: '__conn__', id: item.id, isNew, draft: { ...item } };
+  document.getElementById('itemEditTitle').textContent = (isNew ? 'New connection' : 'Edit connection');
+  document.getElementById('itemEditDelete').style.display = isNew ? 'none' : 'inline-block';
+  document.getElementById('itemEditBody').innerHTML = renderConnectionEditForm(editContext.draft);
+  bindItemEditInputs();
+  document.getElementById('itemEditOverlay').classList.add('show');
+}
+function renderConnectionEditForm(d) {
+  const iconChoices = ['☁️','🏢','💹','🧑‍💼','📋','📚','🐙','🛟','🔌','📊','🛡️','📞'];
+  const iconHtml = `<div class="icon-picker" id="itemEditIconPicker">${
+    iconChoices.map(ic => `<button class="icon-picker-btn ${ic===d.icon?'selected':''}" data-icon="${ic}">${ic}</button>`).join('')
+  }</div>`;
+  return `
+    <div class="form-group">
+      <div class="form-label">Connection name</div>
+      <input class="form-input" id="ie_name" value="${(d.name||'').replace(/"/g,'&quot;')}" placeholder="e.g. Salesforce CRM">
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Description</div>
+      <textarea class="form-textarea" id="ie_desc" placeholder="What this data source contains">${d.desc||''}</textarea>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Endpoint URL</div>
+      <input class="form-input" id="ie_endpoint" value="${d.endpoint||''}" placeholder="https://api.example.com">
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Auth method</div>
+      <select class="form-select" id="ie_auth">
+        <option value="oauth" ${d.auth==='oauth'?'selected':''}>OAuth 2.0</option>
+        <option value="apikey" ${d.auth==='apikey'?'selected':''}>API key</option>
+        <option value="basic" ${d.auth==='basic'?'selected':''}>Basic auth</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Access — groups (comma-separated)</div>
+      <input class="form-input" id="ie_meta" value="${(d.meta||'').replace(/"/g,'&quot;')}" placeholder="e.g. Sales, Leadership">
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Connection status</div>
+      <select class="form-select" id="ie_status">
+        <option value="connected" ${d.status==='connected'?'selected':''}>Connected</option>
+        <option value="disconnected" ${d.status==='disconnected'?'selected':''}>Disconnected</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Icon</div>
+      ${iconHtml}
+    </div>
+    <input type="hidden" id="ie_enabled">
+  `;
+}
+
+/* Override save/delete to handle connections too */
+const _origSave = saveCurrentItem;
+saveCurrentItem = function() {
+  if (editContext && editContext.listKey === '__conn__') {
+    const d = editContext.draft;
+    d.name = document.getElementById('ie_name').value.trim() || 'Untitled';
+    d.desc = document.getElementById('ie_desc').value.trim();
+    d.endpoint = document.getElementById('ie_endpoint').value.trim();
+    d.auth = document.getElementById('ie_auth').value;
+    d.meta = document.getElementById('ie_meta').value.trim();
+    d.status = document.getElementById('ie_status').value;
+    const icon = document.querySelector('#itemEditIconPicker .icon-picker-btn.selected');
+    if (icon) d.icon = icon.dataset.icon;
+    if (editContext.isNew) {
+      CONNECTIONS.push(d);
+    } else {
+      const idx = CONNECTIONS.findIndex(c => c.id === editContext.id);
+      if (idx >= 0) CONNECTIONS[idx] = { ...CONNECTIONS[idx], ...d };
+    }
+    renderConnections();
+    closeItemEdit();
+    return;
+  }
+  _origSave();
+};
+const _origDelete = deleteCurrentItem;
+deleteCurrentItem = function() {
+  if (editContext && editContext.listKey === '__conn__') {
+    CONNECTIONS = CONNECTIONS.filter(c => c.id !== editContext.id);
+    renderConnections();
+    closeItemEdit();
+    return;
+  }
+  _origDelete();
+};
 
 /* ─── AGENT BUILDER ─── */
 const customAgents = [
@@ -4555,45 +4973,62 @@ function updateGalleryCount() {
 }
 </script>
 
-<!-- ─── ADMIN HUB MODAL ─── -->
-<div id="adminHubOverlay" class="gallery-overlay" onclick="if(event.target===this)closeAdminHub()">
-  <div class="admin-modal">
-    <div class="admin-header">
-      <div>
-        <div class="admin-title">Admin</div>
-        <div class="admin-subtitle">Configure colleagues and external connections for your organization.</div>
-      </div>
-      <button class="gallery-close" onclick="closeAdminHub()">✕</button>
+<!-- ─── ADMIN HUB (full page) ─── -->
+<div id="adminHubOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs">
+      <span class="topbar-pill">Admin</span>
+      <span class="crumb current">Home</span>
     </div>
-    <div class="admin-body">
-      <div class="admin-cards">
-        <div class="admin-card" onclick="openColleagueCreatorAdmin()">
-          <div class="admin-card-icon">🧑‍💼</div>
-          <div class="admin-card-name">Colleague Creator Admin Panel</div>
-          <div class="admin-card-desc">Create and configure new company AI Colleagues — identity, prompts, tools, MCPs, skills, data sources, model bounds and access control.</div>
+    <button class="admin-page-close" onclick="closeAdminHub()" title="Close admin">✕</button>
+  </div>
+  <div class="admin-page-content">
+    <div class="admin-page-inner">
+      <div class="admin-header">
+        <div>
+          <div class="admin-title">Admin</div>
+          <div class="admin-subtitle">Configure colleagues and external connections for your organization.</div>
         </div>
-        <div class="admin-card" onclick="openConnections()">
-          <div class="admin-card-icon">🔌</div>
-          <div class="admin-card-name">Connections</div>
-          <div class="admin-card-desc">Connect external data sources and customer databases. Configure access by groups and users.</div>
+      </div>
+      <div class="admin-body">
+        <div class="admin-cards">
+          <div class="admin-card" onclick="openColleagueCreatorAdmin()">
+            <div class="admin-card-icon">🧑‍💼</div>
+            <div class="admin-card-name">Colleague Creator Admin Panel</div>
+            <div class="admin-card-desc">Create and configure new company AI Colleagues — identity, prompts, tools, MCPs, skills, data sources, model bounds and access control.</div>
+          </div>
+          <div class="admin-card" onclick="openConnections()">
+            <div class="admin-card-icon">🔌</div>
+            <div class="admin-card-name">Connections</div>
+            <div class="admin-card-desc">Connect external data sources and customer databases. Configure access by groups and users.</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ─── ADMIN COLLEAGUE CREATOR MODAL ─── -->
-<div id="adminCreatorOverlay" class="gallery-overlay" onclick="if(event.target===this)closeColleagueCreatorAdmin()">
+<!-- ─── ADMIN COLLEAGUE CREATOR (full page) ─── -->
+<div id="adminCreatorOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs">
+      <span class="topbar-pill">Admin</span>
+      <span class="crumb" onclick="backToAdminHub()">Home</span>
+      <span class="crumb-sep">/</span>
+      <span class="crumb current">Colleague Creator</span>
+    </div>
+    <button class="admin-page-close" onclick="closeColleagueCreatorAdmin()" title="Close admin">✕</button>
+  </div>
   <div class="admin-creator">
-    <div class="admin-creator-header">
-      <div class="admin-creator-title-wrap">
-        <button class="gallery-close" onclick="backToAdminHub()" title="Back to admin">‹</button>
-        <div class="admin-creator-title">Create Company Colleague</div>
-        <span class="admin-creator-pill">Admin</span>
+    <div class="admin-page-inner tight">
+      <div class="admin-creator-header">
+        <div class="admin-creator-title-wrap">
+          <div class="admin-creator-title">Create Company Colleague</div>
+        </div>
       </div>
-      <button class="gallery-close" onclick="closeColleagueCreatorAdmin()">✕</button>
     </div>
 
+    <div class="admin-page-inner flush">
     <div class="admin-creator-tabs">
       <button class="admin-creator-tab active" data-tab="identity" onclick="switchCreatorTab('identity')">1. Identity</button>
       <button class="admin-creator-tab" data-tab="prompt" onclick="switchCreatorTab('prompt')">2. Prompt</button>
@@ -4605,7 +5040,10 @@ function updateGalleryCount() {
       <button class="admin-creator-tab" data-tab="advanced" onclick="switchCreatorTab('advanced')">8. Advanced</button>
       <button class="admin-creator-tab" data-tab="overrides" onclick="switchCreatorTab('overrides')">9. User Overrides</button>
     </div>
+    </div>
 
+    <div class="admin-page-content">
+    <div class="admin-page-inner body">
     <div class="admin-creator-body">
 
       <!-- 1. IDENTITY -->
@@ -4886,6 +5324,8 @@ function updateGalleryCount() {
       </section>
 
     </div>
+    </div>
+    </div>
 
     <div class="admin-creator-footer">
       <div class="admin-foot-left">
@@ -4901,22 +5341,50 @@ function updateGalleryCount() {
   </div>
 </div>
 
-<!-- ─── CONNECTIONS MODAL ─── -->
-<div id="connectionsOverlay" class="gallery-overlay" onclick="if(event.target===this)closeConnections()">
-  <div class="admin-modal" style="width:780px;height:680px;max-height:88vh;display:flex;flex-direction:column">
-    <div class="admin-header">
-      <div style="display:flex;align-items:center;gap:10px">
-        <button class="gallery-close" onclick="backToAdminHubFromConnections()" title="Back to admin">‹</button>
+<!-- ─── CONNECTIONS (full page) ─── -->
+<div id="connectionsOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs">
+      <span class="topbar-pill">Admin</span>
+      <span class="crumb" onclick="backToAdminHubFromConnections()">Home</span>
+      <span class="crumb-sep">/</span>
+      <span class="crumb current">Connections</span>
+    </div>
+    <button class="admin-page-close" onclick="closeConnections()" title="Close admin">✕</button>
+  </div>
+  <div class="admin-page-content">
+    <div class="admin-page-inner">
+      <div class="admin-header">
         <div>
           <div class="admin-title">Connections</div>
           <div class="admin-subtitle">External data sources and customer databases. Access is configured per group and user.</div>
         </div>
       </div>
-      <button class="gallery-close" onclick="closeConnections()">✕</button>
+      <div class="admin-body">
+        <div class="conn-list" id="connList"></div>
+        <button class="conn-add-btn" style="margin-top:14px" onclick="openConnectionEdit(null)">＋ Add new connection</button>
+      </div>
     </div>
-    <div class="admin-body" style="flex:1;overflow-y:auto">
-      <div class="conn-list" id="connList"></div>
-      <button class="conn-add-btn" style="margin-top:14px" onclick="alert('Connection wizard coming soon — pick a connector type and provide credentials.')">＋ Add new connection</button>
+  </div>
+</div>
+
+<!-- ─── ITEM EDIT MODAL (generic) ─── -->
+<div id="itemEditOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeItemEdit()">
+  <div class="item-edit-modal">
+    <div class="item-edit-header">
+      <div class="item-edit-title" id="itemEditTitle">Edit item</div>
+      <button class="gallery-close" onclick="closeItemEdit()">✕</button>
+    </div>
+    <div class="item-edit-body" id="itemEditBody"></div>
+    <div class="item-edit-footer">
+      <div>
+        <button class="btn-delete" id="itemEditDelete" onclick="deleteCurrentItem()">Delete</button>
+      </div>
+      <div class="footer-right" style="display:flex;align-items:center;gap:10px">
+        <span class="item-edit-link"><a onclick="alert('In the full version this opens the dedicated editor page for this item.')">Open in full editor →</a></span>
+        <button class="btn-cancel" onclick="closeItemEdit()">Cancel</button>
+        <button class="btn-create ready" onclick="saveCurrentItem()">Save</button>
+      </div>
     </div>
   </div>
 </div>
