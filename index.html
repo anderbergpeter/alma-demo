@@ -1262,6 +1262,113 @@
     .admin-foot-left { display: flex; align-items: center; gap: 10px; }
     .admin-step-indicator { font-size: 12px; color: var(--text-muted); }
 
+    /* Scope toggle — Company vs Personal */
+    .scope-toggle {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .scope-option {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      cursor: pointer; text-align: left;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .scope-option:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.14);
+    }
+    .scope-option.active {
+      background: rgba(38,101,226,0.12);
+      border-color: rgba(38,101,226,0.55);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 1px rgba(38,101,226,0.25) inset;
+    }
+    .scope-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .scope-option.active .scope-icon {
+      background: rgba(38,101,226,0.25);
+    }
+    .scope-info { flex: 1; min-width: 0; }
+    .scope-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .scope-desc {
+      font-size: 12px; color: var(--text-muted);
+      margin-top: 2px; line-height: 1.45;
+    }
+
+    /* Used-by pill: shown next to a tool's name when a sub-agent wraps it */
+    .used-by-pill {
+      display: inline-flex; align-items: center;
+      margin-left: 10px;
+      padding: 2px 8px;
+      background: rgba(194,109,230,0.12);
+      border: 1px solid rgba(194,109,230,0.28);
+      color: #d9b3ec;
+      border-radius: 10px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+    }
+
+    /* Layer note: explains atomic vs multi-step at the top of Tools / Sub-agents */
+    .layer-note {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 3px solid var(--alma-purple);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 12px; color: var(--text-secondary); line-height: 1.55;
+    }
+    .layer-note b { color: var(--text-primary); font-weight: 700; }
+    .layer-note .layer-note-icon {
+      font-size: 14px; line-height: 1; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* Identity: collapsible "Customize icon" disclosure */
+    .icon-disclosure { margin-top: 4px; }
+    .icon-disclosure > summary {
+      cursor: pointer; user-select: none;
+      font-size: 12px; color: var(--text-muted);
+      padding: 6px 0;
+      list-style: none;
+    }
+    .icon-disclosure > summary::-webkit-details-marker { display: none; }
+    .icon-disclosure > summary::before {
+      content: '▸'; display: inline-block; margin-right: 6px;
+      transition: transform 0.15s; color: var(--text-muted);
+    }
+    .icon-disclosure[open] > summary::before { transform: rotate(90deg); }
+    .icon-disclosure > summary:hover { color: var(--text-secondary); }
+    .icon-disclosure[open] > summary { color: var(--text-secondary); margin-bottom: 8px; }
+
+    /* Sidebar lifecycle hint card */
+    .creator-sidebar-hint {
+      margin: 12px 8px 14px;
+      padding: 12px 12px;
+      background: rgba(194,109,230,0.06);
+      border: 1px solid rgba(194,109,230,0.18);
+      border-radius: 10px;
+      font-size: 11px; color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .creator-sidebar-hint b { color: var(--text-primary); font-weight: 700; }
+    .creator-sidebar-hint kbd {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      padding: 1px 5px; font-size: 10px;
+      color: var(--text-secondary);
+    }
+
     /* Icon picker — uniform grid, framed so it reads as a designed control */
     .icon-picker {
       display: grid;
@@ -4887,9 +4994,9 @@ function mockSchemaForNewDb() {
   ];
 }
 let ADMIN_SUBAGENTS = [
-  { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'LLM produces SQL; runtime validates & executes safely', enabled: true },
-  { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files from connected sources', enabled: false },
-  { id: 'webresearch', icon: '🔎', name: 'Web research', desc: 'Multi-step web search and synthesis with citations', enabled: false },
+  { id: 'analytics', icon: '📊', name: 'Analytics agent',  desc: 'Plans queries, has the LLM produce SQL, and validates + executes them safely', uses: ['data'], enabled: true },
+  { id: 'docfetch',  icon: '📄', name: 'Document fetcher', desc: 'Locates and retrieves files across connected sources', uses: ['doc'], enabled: false },
+  { id: 'deepres',   icon: '🔎', name: 'Deep research',    desc: 'Plans, runs many web searches, follows links, and synthesizes a cited answer', uses: ['web','doc'], enabled: false },
 ];
 
 /* Lookup tables for the edit modal */
@@ -4988,7 +5095,33 @@ let companyColleagues = COMPANY_COLLEAGUE_SEED.map(c => ({ ...c }));
 let activeCompanyColleagueId = null; // null = creating new
 
 let creatorTab = 'identity';
+let adminScope = 'company'; // 'company' | 'personal'
 const CREATOR_TABS = ['identity','prompt','tools','skills','data','workflows','model','access','advanced','overrides'];
+
+function setAdminScope(scope) {
+  adminScope = (scope === 'personal') ? 'personal' : 'company';
+  document.querySelectorAll('#adminScopeToggle .scope-option').forEach(b => {
+    b.classList.toggle('active', b.dataset.scope === adminScope);
+  });
+  // Morph the Access section to match the chosen scope.
+  const isPersonal = adminScope === 'personal';
+  const desc    = document.getElementById('accessSectionDesc');
+  const title   = document.getElementById('accessSectionTitle');
+  const helper  = document.getElementById('accessSectionHelper');
+  const ssoNote = document.getElementById('accessSsoNote');
+  const owners  = document.getElementById('accessOwnersBlock');
+  const search  = document.getElementById('adminAccessSearch');
+  if (desc)   desc.textContent   = isPersonal
+    ? 'Personal colleague — only you can see it. Optionally share with specific colleagues.'
+    : 'Who is allowed to use this colleague — and who owns its configuration.';
+  if (title)  title.textContent  = isPersonal ? 'Share with' : 'Who can use this colleague?';
+  if (helper) helper.textContent = isPersonal
+    ? 'By default only you can use this colleague. Add the people you want to share it with.'
+    : "Access is granted by SSO group membership. Add the groups (or individual users) from your customer's identity provider that should be able to use this colleague.";
+  if (ssoNote) ssoNote.style.display = isPersonal ? 'none' : '';
+  if (owners)  owners.style.display  = isPersonal ? 'none' : '';
+  if (search)  search.placeholder    = isPersonal ? 'Add a person to share with...' : 'Add group or user from SSO...';
+}
 const CREATOR_TAB_LABELS = {
   identity: 'Identity', prompt: 'Prompt', tools: 'Tools', skills: 'Skills',
   data: 'Data', workflows: 'Workflows', model: 'Model', access: 'Access', advanced: 'Advanced', overrides: 'User Overrides'
@@ -5352,10 +5485,10 @@ function newCompanyColleague() {
   document.getElementById('adminAgentName').value = '';
   document.getElementById('adminAgentRole').value = 'Assistant';
   document.getElementById('adminAgentTone').value = 'Professional';
-  document.getElementById('adminAgentLang').value = 'English';
   document.getElementById('adminAgentDesc').value = '';
   document.getElementById('adminSystemPrompt').value = '';
   document.getElementById('adminDisallowed').value = '';
+  setAdminScope('company');
   document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach((b,i) => b.classList.toggle('selected', i === 0));
   document.getElementById('creatorMainTitle').textContent = 'Create Company Colleague';
   document.getElementById('adminDeployBtn').textContent = 'Deploy colleague';
@@ -5371,7 +5504,7 @@ function loadCompanyColleague(id) {
   document.getElementById('adminAgentName').value = c.name || '';
   document.getElementById('adminAgentRole').value = c.role || 'Assistant';
   document.getElementById('adminAgentTone').value = c.tone || 'Professional';
-  document.getElementById('adminAgentLang').value = c.language || 'English';
+  setAdminScope(c.scope || 'company');
   document.getElementById('adminAgentDesc').value = c.desc || '';
   document.getElementById('adminSystemPrompt').value = c.systemPrompt || '';
   document.getElementById('adminDisallowed').value = c.disallowed || '';
@@ -5550,11 +5683,19 @@ function addAccessByIdx(i) {
 
 function featureRowHtml(item, listKey) {
   const safeId = String(item.id).replace(/'/g,"\\'");
+  // For tools: surface the sub-agents that wrap this tool (only enabled ones), so the layering is legible.
+  let usedByHtml = '';
+  if (listKey === 'tools') {
+    const usedBy = ADMIN_SUBAGENTS.filter(s => s.enabled && (s.uses || []).includes(item.id));
+    if (usedBy.length) {
+      usedByHtml = `<span class="used-by-pill" title="This tool is wrapped by a multi-step sub-agent">↳ used by ${usedBy.map(s => escapeHtml(s.name)).join(', ')}</span>`;
+    }
+  }
   return `<div class="feature-row" onclick="openItemEdit('${listKey}','${safeId}')">
     <div class="feature-row-info">
       <div class="feature-row-icon">${item.icon || '⚙️'}</div>
       <div class="feature-row-text">
-        <div class="feature-row-name">${item.name}</div>
+        <div class="feature-row-name">${item.name}${usedByHtml}</div>
         <div class="feature-row-desc">${item.desc || ''}</div>
       </div>
     </div>
@@ -7081,7 +7222,7 @@ function deployAdminColleague() {
     icon,
     role:         document.getElementById('adminAgentRole').value,
     tone:         document.getElementById('adminAgentTone').value,
-    language:     document.getElementById('adminAgentLang').value,
+    scope:        adminScope,
     systemPrompt: document.getElementById('adminSystemPrompt').value,
     disallowed:   document.getElementById('adminDisallowed').value,
   };
@@ -7831,6 +7972,11 @@ function updateGalleryCount() {
         </button>
       </div>
       <div class="creator-list" id="creatorColleagueList"></div>
+      <div class="creator-sidebar-hint">
+        <b>How this works</b><br>
+        <kbd>＋ New colleague</kbd> opens a draft. <b>Deploy colleague</b> in the footer makes it live; until then it sits under <b>Drafts</b>.<br>
+        Hover any row above to <b>duplicate</b> ⧉ or <b>delete</b> 🗑 — deleting a live colleague removes it for everyone with access.
+      </div>
     </aside>
 
     <!-- Right: editor for the selected colleague -->
@@ -7897,6 +8043,27 @@ function updateGalleryCount() {
           <h2 class="cfg-section-title">Identity</h2>
           <p class="cfg-section-desc">How this colleague is named, presented and recognised in the chat surface.</p>
         </header>
+
+        <div class="form-group full" style="margin-bottom:18px">
+          <div class="form-label">Scope</div>
+          <div class="scope-toggle" id="adminScopeToggle">
+            <button type="button" class="scope-option active" data-scope="company" onclick="setAdminScope('company')">
+              <div class="scope-icon">🏢</div>
+              <div class="scope-info">
+                <div class="scope-title">Company colleague</div>
+                <div class="scope-desc">Available across the organization. Access is granted by SSO group.</div>
+              </div>
+            </button>
+            <button type="button" class="scope-option" data-scope="personal" onclick="setAdminScope('personal')">
+              <div class="scope-icon">👤</div>
+              <div class="scope-info">
+                <div class="scope-title">Personal colleague</div>
+                <div class="scope-desc">Private to you. Optionally share with specific colleagues.</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
         <div class="admin-section-grid">
           <div class="form-group">
             <div class="form-label"><span class="req">*</span>Assistant name</div>
@@ -7917,36 +8084,32 @@ function updateGalleryCount() {
             <textarea class="form-textarea" id="adminAgentDesc" maxlength="200"
               placeholder="A short explanation of what this colleague does"></textarea>
           </div>
-          <div class="form-group">
+          <div class="form-group full">
             <div class="form-label-row">
               <div class="form-label">Tone</div>
               <span class="label-action-link" onclick="openManageOptions('tones')">⚙ Manage</span>
             </div>
             <select class="form-select" id="adminAgentTone"></select>
-          </div>
-          <div class="form-group">
-            <div class="form-label-row">
-              <div class="form-label">Default language</div>
-              <span class="label-action-link" onclick="openManageOptions('languages')">⚙ Manage</span>
-            </div>
-            <select class="form-select" id="adminAgentLang"></select>
+            <div class="admin-helper">Language is mirrored from the user's question — no separate setting.</div>
           </div>
           <div class="form-group full">
-            <div class="form-label">Icon</div>
-            <div class="icon-picker" id="adminIconPicker">
-              <button class="icon-picker-btn selected" data-icon="🤖">🤖</button>
-              <button class="icon-picker-btn" data-icon="⚖️">⚖️</button>
-              <button class="icon-picker-btn" data-icon="📊">📊</button>
-              <button class="icon-picker-btn" data-icon="💼">💼</button>
-              <button class="icon-picker-btn" data-icon="🧑‍💼">🧑‍💼</button>
-              <button class="icon-picker-btn" data-icon="🔬">🔬</button>
-              <button class="icon-picker-btn" data-icon="📚">📚</button>
-              <button class="icon-picker-btn" data-icon="🛡️">🛡️</button>
-              <button class="icon-picker-btn" data-icon="🌱">🌱</button>
-              <button class="icon-picker-btn" data-icon="🏗️">🏗️</button>
-              <button class="icon-picker-btn" data-icon="📞">📞</button>
-              <button class="icon-picker-btn" data-icon="🎯">🎯</button>
-            </div>
+            <details class="icon-disclosure">
+              <summary>Customize icon <span style="color:var(--text-muted);font-size:11px">(optional — defaults to 🤖)</span></summary>
+              <div class="icon-picker" id="adminIconPicker">
+                <button class="icon-picker-btn selected" data-icon="🤖">🤖</button>
+                <button class="icon-picker-btn" data-icon="⚖️">⚖️</button>
+                <button class="icon-picker-btn" data-icon="📊">📊</button>
+                <button class="icon-picker-btn" data-icon="💼">💼</button>
+                <button class="icon-picker-btn" data-icon="🧑‍💼">🧑‍💼</button>
+                <button class="icon-picker-btn" data-icon="🔬">🔬</button>
+                <button class="icon-picker-btn" data-icon="📚">📚</button>
+                <button class="icon-picker-btn" data-icon="🛡️">🛡️</button>
+                <button class="icon-picker-btn" data-icon="🌱">🌱</button>
+                <button class="icon-picker-btn" data-icon="🏗️">🏗️</button>
+                <button class="icon-picker-btn" data-icon="📞">📞</button>
+                <button class="icon-picker-btn" data-icon="🎯">🎯</button>
+              </div>
+            </details>
           </div>
         </div>
       </section>
@@ -7988,6 +8151,10 @@ function updateGalleryCount() {
           <h2 class="cfg-section-title">Tools</h2>
           <p class="cfg-section-desc">Atomic capabilities the model can call directly — search, calculations, drafting, and so on.</p>
         </header>
+        <div class="layer-note">
+          <span class="layer-note-icon">ⓘ</span>
+          <span><b>Tools are single calls.</b> For multi-step flows that plan, fan out, and synthesize a cited answer (e.g. "Deep research"), see <b>Sub-agents</b> under Advanced.</span>
+        </div>
         <div class="form-section-title" style="margin-bottom:10px">Built-in tools</div>
         <div id="adminToolsList"></div>
       </section>
@@ -8124,29 +8291,31 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="access">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Access</h2>
-          <p class="cfg-section-desc">Who is allowed to use this colleague — and who owns its configuration.</p>
+          <p class="cfg-section-desc" id="accessSectionDesc">Who is allowed to use this colleague — and who owns its configuration.</p>
         </header>
-        <div class="form-section-title" style="margin-bottom:10px">Who can use this colleague?</div>
-        <div class="admin-helper" style="margin-bottom:8px">
+        <div class="form-section-title" id="accessSectionTitle" style="margin-bottom:10px">Who can use this colleague?</div>
+        <div class="admin-helper" id="accessSectionHelper" style="margin-bottom:8px">
           Access is granted by SSO group membership. Add the groups (or individual users)
           from your customer's identity provider that should be able to use this colleague.
         </div>
         <div class="chip-input" id="adminAccessInput">
           <input type="text" id="adminAccessSearch" placeholder="Add group or user from SSO...">
         </div>
-        <div class="sso-note" style="margin-top:8px">
+        <div class="sso-note" id="accessSsoNote" style="margin-top:8px">
           <span class="badge">SSO</span>
           Pulled from your customer's identity provider (Azure AD / Okta). Group composition
           changes take effect on the next sync — no manual reconciliation needed here.
         </div>
 
-        <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
-        <div class="admin-helper" style="margin-bottom:8px">
-          Owners are responsible for the colleague's configuration. Add multiple users or a
-          group (e.g. "Reeinvent"). Type to search the SSO directory.
-        </div>
-        <div class="chip-input" id="adminOwnersInput">
-          <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
+        <div id="accessOwnersBlock">
+          <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
+          <div class="admin-helper" style="margin-bottom:8px">
+            Owners are responsible for the colleague's configuration. Add multiple users or a
+            group (e.g. "Reeinvent"). Type to search the SSO directory.
+          </div>
+          <div class="chip-input" id="adminOwnersInput">
+            <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
+          </div>
         </div>
       </section>
 
@@ -8179,7 +8348,10 @@ function updateGalleryCount() {
         </div>
 
         <div class="form-section-title" style="margin: 22px 0 10px">Sub-agents</div>
-        <div class="admin-helper" style="margin-bottom:10px">Internal agents the colleague can route to (e.g. database access agent that validates SQL before execution).</div>
+        <div class="layer-note">
+          <span class="layer-note-icon">ⓘ</span>
+          <span><b>Sub-agents are multi-step.</b> They plan a task, call <b>tools</b> repeatedly, and return a synthesized answer with citations. Use them for research, validated DB access, or anything where one tool call isn't enough.</span>
+        </div>
         <div id="adminSubagentsList"></div>
 
         <div class="form-section-title" style="margin: 22px 0 10px">Safety</div>
