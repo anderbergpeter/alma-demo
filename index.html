@@ -7632,7 +7632,7 @@ function renderPricingCalculator() {
         <label>Pilot outcome</label>
         <div class="pc-radios">
           <label><input type="radio" name="pcPilot" value="success" checked> Success — €40,000 (one Specialist live in production after 60 days)</label>
-          <label><input type="radio" name="pcPilot" value="fail"> Did not deliver — €20,000 (capped pilot fee)</label>
+          <label><input type="radio" name="pcPilot" value="fail"> Did not deliver — €0 (for the first 3 customers)</label>
         </div>
       </div>
 
@@ -7650,7 +7650,7 @@ function calculatePricing() {
   const pilotOutcome = document.querySelector('input[name="pcPilot"]:checked').value;
 
   // Locked ALMA pricing model
-  const pilotFee        = pilotOutcome === 'success' ? 40000 : 20000;
+  const pilotFee        = pilotOutcome === 'success' ? 40000 : 0;
   const buildFees       = Math.max(specialistCount - 1, 0) * 30000;  // first Specialist comes via Pilot
   const onboardingFees  = includeOnboarding ? specialistCount * 10000 : 0;
   const monthlyPerSpec  = 4000;
@@ -7750,7 +7750,7 @@ function generateAgreement() {
       <table>
         <thead><tr><th>Item</th><th>Amount</th></tr></thead>
         <tbody>
-          <tr><td>Pilot — 60 days, one Specialist live (${r.pilotOutcome === 'success' ? 'delivered as agreed' : 'did not deliver — capped fee'})</td><td>${fmt(r.pilotFee)}</td></tr>
+          <tr><td>Pilot — 60 days, one Specialist live (${r.pilotOutcome === 'success' ? 'delivered as agreed' : 'did not deliver — €0 for the first 3 customers'})</td><td>${fmt(r.pilotFee)}</td></tr>
           ${r.buildFees > 0 ? `<tr><td>Build fee post-pilot (${r.specialistCount - 1} additional Specialist${r.specialistCount - 1 === 1 ? '' : 's'} × €30,000)</td><td>${fmt(r.buildFees)}</td></tr>` : ''}
           ${r.includeOnboarding ? `<tr><td>Onboarding (${r.specialistCount} × €10,000, recommended)</td><td>${fmt(r.onboardingFees)}</td></tr>` : ''}
           <tr class="pc-agreement-total-row"><td>Total one-times</td><td>${fmt(r.year1OneTimes)}</td></tr>
@@ -7777,7 +7777,7 @@ function generateAgreement() {
       </table>
 
       <h4>Terms</h4>
-      <p style="font-size:12px">12-month minimum commitment from pilot handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Pilot fee is €40,000 on successful delivery, €20,000 if Reeinvent does not deliver one Specialist live in production after 60 days. Each new Specialist beyond the pilot carries a one-time build fee of €30,000. Onboarding (€10,000 per Specialist) is optional but recommended. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin).</p>
+      <p style="font-size:12px">12-month minimum commitment from pilot handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Pilot fee is €40,000 on successful delivery; €0 for the first 3 customers if Reeinvent does not deliver one Specialist live in production after 60 days. Each new Specialist beyond the pilot carries a one-time build fee of €30,000. Onboarding (€10,000 per Specialist) is optional but recommended. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin).</p>
 
       <div class="pc-agreement-sig">
         <div>
@@ -8326,5 +8326,4 @@ function updateGalleryCount() {
             <input class="form-input" id="adminMaxTokens" type="number" value="2000">
           </div>
           <div class="form-group">
-            <div class="form-label">Latency target</div>
-            <selec
+            <div class="form-label
