@@ -4559,9 +4559,10 @@ const SIDEBAR_NAMES = {
 };
 
 /* Per-agent status badge shown next to the name in the sidebar.
-   Values: 'coming' (e.g. Ada, Q3 2026), 'free' (e.g. Evelyn — always free). */
+   Value: 'free' (e.g. Evelyn — bundled, no per-Specialist fee).
+   No roadmap/timeline badges per the ALMA check-in (15 May 2026) decision
+   to remove premature delivery expectations from the website. */
 const AGENT_STATUS = {
-  hr:     { type: 'coming', label: 'COMING' },
   evelyn: { type: 'free',   label: 'FREE'   },
 };
 
@@ -7631,9 +7632,10 @@ function renderPricingCalculator() {
       <div class="pc-field">
         <label>Pilot outcome</label>
         <div class="pc-radios">
-          <label><input type="radio" name="pcPilot" value="success" checked> Success — €40,000 (one Specialist live in production after 60 days)</label>
-          <label><input type="radio" name="pcPilot" value="fail"> Did not deliver — €0 (for the first 3 customers)</label>
+          <label><input type="radio" name="pcPilot" value="success" checked> Success — €40,000 total (€20k upfront + €20k on completion within 60 days)</label>
+          <label><input type="radio" name="pcPilot" value="fail"> Did not deliver — €0 (money-back guarantee, first 3 customers only)</label>
         </div>
+        <small>Pilot requires a Letter of Intent for a 12-month commitment from handover; otherwise the engagement runs as time-and-materials.</small>
       </div>
 
       <button class="pc-btn-primary" onclick="calculatePricing()">Calculate pricing →</button>
@@ -7777,7 +7779,7 @@ function generateAgreement() {
       </table>
 
       <h4>Terms</h4>
-      <p style="font-size:12px">12-month minimum commitment from pilot handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Pilot fee is €40,000 on successful delivery; €0 for the first 3 customers if Reeinvent does not deliver one Specialist live in production after 60 days. Each new Specialist beyond the pilot carries a one-time build fee of €30,000. Onboarding (€10,000 per Specialist) is optional but recommended. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin).</p>
+      <p style="font-size:12px">Pilot fee is €40,000 total, structured as €20,000 upfront and €20,000 on successful completion within 60 days. For the first three Reeinvent customers, the upfront €20,000 is refunded if Reeinvent does not deliver one Specialist live in production after 60 days (money-back guarantee). The pilot requires a Letter of Intent for a 12-month commitment from handover; without that commitment, the engagement is delivered as time-and-materials rather than the ALMA product. After handover, rolling monthly with 3-month termination notice. No price escalation during the contract term. Each new Specialist beyond the pilot carries a one-time build fee of €30,000. Onboarding (typically €10,000 per Specialist) is recommended; final scope is set case-by-case. Personal Assistant is priced separately on a seat-based model. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin).</p>
 
       <div class="pc-agreement-sig">
         <div>
@@ -8314,16 +8316,4 @@ function updateGalleryCount() {
             <div class="admin-helper">Caps cost — the Specialist will never escalate beyond this.</div>
           </div>
           <div class="form-group full">
-            <div class="form-label">Temperature <span id="tempVal">0.20</span></div>
-            <div class="range-row">
-              <input type="range" id="adminTemperature" min="0" max="100" value="20"
-                oninput="document.getElementById('tempVal').textContent=(this.value/100).toFixed(2)">
-              <span class="range-value" id="tempValBox">0.20</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-label">Max response tokens</div>
-            <input class="form-input" id="adminMaxTokens" type="number" value="2000">
-          </div>
-          <div class="form-group">
-            <div class="form-label
+            <div class="form-label">Temperatu
