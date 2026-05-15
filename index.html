@@ -115,7 +115,34 @@
       font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
       color: var(--text-muted); text-transform: uppercase;
       padding: 16px 18px 6px;
+      display: flex; align-items: center; gap: 6px;
     }
+    .section-label--solo { padding: 16px 18px 6px; }
+
+    /* Status badge inside a section label (e.g. BETA on Custom Specialists) */
+    .section-badge {
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 2px 6px; border-radius: 4px; line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .section-badge--beta { background: rgba(194,109,230,0.18); color: #d99cff; }
+
+    /* Status pill on individual agent items (LIVE / COMING / FREE) */
+    .agent-badge {
+      margin-left: auto;
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.04em;
+      padding: 2px 6px; border-radius: 4px; line-height: 1.1;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+    .agent-badge--coming { background: rgba(255,200,80,0.16); color: #ffcf6a; }
+    .agent-badge--free   { background: rgba(102,205,170,0.18); color: #8fe6c8; }
+    .agent-badge--live   { background: rgba(38,101,226,0.18); color: #8db4ff; }
+    .agent-item.active .agent-badge--coming,
+    .agent-item.active .agent-badge--free,
+    .agent-item.active .agent-badge--live { background: rgba(255,255,255,0.18); color: #fff; }
+    .agent-item.has-badge .agent-edit-btn { display: none; }
+    .sidebar.collapsed .agent-badge,
+    .sidebar.collapsed .section-badge { display: none; }
 
     .agent-item {
       display: flex; align-items: center; gap: 10px;
@@ -2960,20 +2987,20 @@
       <div class="rn-version">v1.4 · April 2026</div>
       <ul class="rn-items">
         <li>Multi-provider model selector — switch between OpenAI, Anthropic, Google &amp; Mistral</li>
-        <li>Board AI Colleague with investor metrics, equity overview and board pack generation</li>
-        <li>Leadership AI Colleague with OKR tracking, team pulse and strategic roadmap views</li>
-        <li>HR AI Colleague with headcount planning, onboarding status and culture survey insights</li>
+        <li>Board Specialist with investor metrics, equity overview and board pack generation</li>
+        <li>Leadership Specialist with OKR tracking, team pulse and strategic roadmap views</li>
+        <li>HR Specialist with headcount planning, onboarding status and culture survey insights</li>
       </ul>
       <div class="rn-version">v1.3 · March 2026</div>
       <ul class="rn-items">
-        <li>Marketing AI Colleague added with campaign performance and SEO analysis</li>
-        <li>Sales AI Colleague with new Prospecting task for finding lookalike customers</li>
-        <li>Custom AI Colleague Builder — create and configure your own AI Colleagues with MCP tools</li>
+        <li>Marketing Specialist added with campaign performance and SEO analysis</li>
+        <li>Sales Specialist with new Prospecting task for finding lookalike customers</li>
+        <li>Custom Specialist Builder — create and configure your own Specialists with MCP tools</li>
       </ul>
       <div class="rn-version">v1.2 · February 2026</div>
       <ul class="rn-items">
-        <li>Personal AI Colleague with calendar, email, vacation balance and document generation</li>
-        <li>Sustainability AI Colleague with carbon tracking and ESG reporting</li>
+        <li>Personal Assistant (James) with calendar, email, vacation balance and document generation</li>
+        <li>Sustainability Specialist with carbon tracking and ESG reporting</li>
         <li>Source pills — trace every answer back to its connected system</li>
       </ul>
     </div>
@@ -2992,15 +3019,18 @@
     <span class="nav-label">Learning ALMA</span>
   </div>
 
+  <div class="section-label section-label--solo">Personal Assistant</div>
+  <div id="personalList"></div>
+
   <div class="company-section-header">
-    <div class="section-label">Company AI Colleagues</div>
+    <div class="section-label">Specialists</div>
     <button class="browse-colleagues-btn" onclick="openGallery()">Browse</button>
   </div>
   <div id="agentList"></div>
 
   <div class="custom-section-header">
-    <div class="section-label">My AI Colleagues</div>
-    <button class="new-agent-btn" onclick="openGalleryCustom()" title="Browse and create AI Colleagues">+</button>
+    <div class="section-label">Custom Specialists <span class="section-badge section-badge--beta">BETA</span></div>
+    <button class="new-agent-btn" onclick="openGalleryCustom()" title="Browse and create Specialists">+</button>
   </div>
   <div id="customAgentList"></div>
 
@@ -3180,7 +3210,7 @@
       <div class="learning-card">
         <div class="learning-thumb">🤖</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">How to use AI Colleagues effectively</div>
+          <div class="learning-card-title">How to use Specialists effectively</div>
           <div class="learning-card-meta"><span>8 min</span><span>All employees</span></div>
         </div>
       </div>
@@ -3194,14 +3224,14 @@
       <div class="learning-card">
         <div class="learning-thumb">⚙️</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">Building your own Custom AI Colleague</div>
+          <div class="learning-card-title">Building your own Custom Specialist</div>
           <div class="learning-card-meta"><span>15 min</span><span>Power users</span></div>
         </div>
       </div>
       <div class="learning-card">
         <div class="learning-thumb">📊</div>
         <div class="learning-card-body">
-          <div class="learning-card-title">Finance AI Colleague deep-dive</div>
+          <div class="learning-card-title">Finance Specialist deep-dive</div>
           <div class="learning-card-meta"><span>10 min</span><span>Finance team</span></div>
         </div>
       </div>
@@ -3228,7 +3258,7 @@
         <div class="learning-doc-icon">📋</div>
         <div class="learning-doc-info">
           <div class="learning-doc-name">Prompt Engineering Best Practices</div>
-          <div class="learning-doc-desc">How to write effective prompts for your AI Colleagues · PDF · 8 pages</div>
+          <div class="learning-doc-desc">How to write effective prompts for your Specialists · PDF · 8 pages</div>
         </div>
         <span class="learning-doc-tag">Best practice</span>
       </div>
@@ -3261,12 +3291,12 @@
         <div class="faq-answer">All data stays within your company's cloud environment. ALMA does not send data to third-party AI providers without encryption and anonymisation. Conversations are stored in your own tenant for audit purposes only, and admins can configure retention policies.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What are AI Colleagues and how do I choose the right one? <span class="faq-chevron">▾</span></div>
-        <div class="faq-answer">AI Colleagues are pre-configured AI assistants tuned for specific departments or tasks — Finance, Sales, HR, Legal and more. Each AI Colleague has access to the relevant internal systems for that domain. Choose the one that matches your current task, or use James for general queries.</div>
+        <div class="faq-question">What are Specialists and how do I choose the right one? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Specialists are pre-configured AI assistants tuned for specific departments or tasks — Finance, Sales, HR, Legal and more. Each Specialist has access to the relevant internal systems for that domain. Choose the one that matches your current task, or use James for general queries.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Can I create my own AI Colleague? <span class="faq-chevron">▾</span></div>
-        <div class="faq-answer">Yes. Click the "+" next to "My AI Colleagues" in the sidebar. You can give it a name, description, instructions, and connect it to any available MCP tools. Watch the "Building your own Custom AI Colleague" video above for a step-by-step walkthrough.</div>
+        <div class="faq-question">Can I create my own Specialist? <span class="faq-chevron">▾</span></div>
+        <div class="faq-answer">Yes. Click the "+" next to "Custom Specialists" in the sidebar. You can give it a name, description, instructions, and connect it to any available MCP tools. Watch the "Building your own Custom Specialist" video above for a step-by-step walkthrough.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Which AI models does ALMA support? <span class="faq-chevron">▾</span></div>
@@ -3358,7 +3388,7 @@
 <!-- ─── AGENT EDIT MODAL ─── -->
 <div class="agent-edit-overlay" id="agentEditOverlay">
   <div class="agent-edit-modal">
-    <h3>Edit AI Colleague</h3>
+    <h3>Edit Specialist</h3>
     <div class="agent-edit-label">Display name</div>
     <input class="agent-edit-input" id="agentEditName" placeholder="e.g. Kalle (Personal)">
     <div class="agent-edit-label">Icon</div>
@@ -3385,7 +3415,7 @@
         <button class="mcp-back" onclick="closeMcpPanel()">‹</button>
         <h3>Enterprise MCP</h3>
       </div>
-      <p>Select the enterprise tools to connect to your AI Colleague.</p>
+      <p>Select the enterprise tools to connect to your Specialist.</p>
       <div class="mcp-empty">No enterprise MCP servers available</div>
       <div style="margin-top:16px;overflow:hidden">
         <div class="mcp-tools-count">0 tools selected</div>
@@ -3403,14 +3433,14 @@
 
         <div class="form-group">
           <div class="form-label">Name <span class="req">*</span> <span id="nameCount">0/50</span></div>
-          <input class="form-input" id="agentName" maxlength="50" placeholder="Name your AI Colleague"
+          <input class="form-input" id="agentName" maxlength="50" placeholder="Name your Specialist"
             oninput="onFormInput()">
         </div>
 
         <div class="form-group">
           <div class="form-label">Description <span class="req">*</span> <span id="descCount">0/200</span></div>
           <textarea class="form-textarea" id="agentDesc" maxlength="200"
-            placeholder="Add a short description about what this AI Colleague does"
+            placeholder="Add a short description about what this Specialist does"
             oninput="onFormInput()"></textarea>
         </div>
 
@@ -3653,7 +3683,7 @@ const agents = {
   },
   evelyn: {
     label: 'Value Intelligence',
-    subtitle: 'Continuously tracks, calibrates and surfaces ALMA\'s real ROI across your organization — connected to all AI Colleague activity.',
+    subtitle: 'Continuously tracks, calibrates and surfaces ALMA\'s real ROI across your organization — connected to all Specialist activity.',
     useCases: [
       { icon: '💰', title: 'Value this month', desc: 'Hours saved, realized value and ROI so far', prompt: 'Show me ALMA\'s value impact this month' },
       { icon: '👥', title: 'By team breakdown', desc: 'Hours saved per user across all departments', prompt: 'Show me value by team this month' },
@@ -4096,7 +4126,7 @@ const demoAnswers = {
     <strong>Methodology is one click away</strong> in every export. Numbers are traceable to source.
   </div>
 </div>
-<span class="source-pill">🔗 All AI Colleague activity logs · Calibration responses · Blended hourly rate: 850 SEK/h</span>`
+<span class="source-pill">🔗 All Specialist activity logs · Calibration responses · Blended hourly rate: 850 SEK/h</span>`
   },
 
   'Show me value by team this month': {
@@ -4111,7 +4141,7 @@ const demoAnswers = {
   <div class="team-card"><div class="adoption-badge low">33%</div><div class="team-card-name">IT</div><div class="team-card-hrs">8h<small>/user</small></div><div class="team-card-delta warn">untapped</div><div class="team-card-bar"><div class="team-card-bar-fill" style="width:33%;background:#f87171"></div></div></div>
 </div>
 <p>Finance leads at 34h/user — driven by Penny's cash flow, invoice, and anomaly detection tasks. Sales is showing a dip worth investigating. Should I pull the individual-level breakdown for Sales (anonymized)?</p>
-<span class="source-pill">🔗 All AI Colleague activity logs · Calibration responses · Org structure</span>`
+<span class="source-pill">🔗 All Specialist activity logs · Calibration responses · Org structure</span>`
   },
 
   'How do you calculate the value numbers?': {
@@ -4523,9 +4553,16 @@ const DEFAULT_ICONS = {
 };
 
 const SIDEBAR_NAMES = {
-  personal:'My Assistant', finance:'Finance', operations:'Operations',
+  personal:'Personal Assistant', finance:'Finance', operations:'Operations',
   commercial:'Sales', marketing:'Marketing', sustainability:'Sustainability',
   legal:'Legal', matching:'Procurement', hr:'HR', leadership:'Leadership', board:'Board', service:'Service', evelyn:'ALMA ROI'
+};
+
+/* Per-agent status badge shown next to the name in the sidebar.
+   Values: 'coming' (e.g. Ada, Q3 2026), 'free' (e.g. Evelyn — always free). */
+const AGENT_STATUS = {
+  hr:     { type: 'coming', label: 'COMING' },
+  evelyn: { type: 'free',   label: 'FREE'   },
 };
 
 function agentDisplayName(id) {
@@ -4538,16 +4575,26 @@ function agentDisplayIcon(id) {
 }
 
 function renderAgentSidebar() {
+  const personalList = document.getElementById('personalList');
   const list = document.getElementById('agentList');
+  if (personalList) personalList.innerHTML = '';
   list.innerHTML = '';
   agentOrder.forEach(id => {
     if (id !== 'personal' && !activeAgents.has(id)) return;
+    const status = AGENT_STATUS[id];
+    const badgeHtml = status
+      ? `<span class="agent-badge agent-badge--${status.type}">${status.label}</span>`
+      : `<button class="agent-edit-btn" onclick="event.stopPropagation();openAgentEdit('${id}')" title="Edit">✎</button>`;
     const div = document.createElement('div');
-    div.className = 'agent-item' + (currentAgent === id ? ' active' : '');
+    div.className = 'agent-item' + (currentAgent === id ? ' active' : '') + (status ? ' has-badge' : '');
     div.id = 'agent-' + id;
-    div.innerHTML = `<div class="agent-icon">${agentDisplayIcon(id)}</div><span>${agentDisplayName(id)}</span><button class="agent-edit-btn" onclick="event.stopPropagation();openAgentEdit('${id}')" title="Edit">✎</button>`;
+    div.innerHTML = `<div class="agent-icon">${agentDisplayIcon(id)}</div><span>${agentDisplayName(id)}</span>${badgeHtml}`;
     div.onclick = () => switchAgent(id);
-    list.appendChild(div);
+    if (id === 'personal' && personalList) {
+      personalList.appendChild(div);
+    } else {
+      list.appendChild(div);
+    }
   });
 }
 
@@ -4622,7 +4669,7 @@ Object.assign(agentOverrides, {
   sustainability:{ name: 'Ivy', icon: null },
   legal:         { name: 'Atticus', icon: null },
   matching:      { name: 'Barney', icon: null },
-  hr:            { name: 'Grace', icon: null },
+  hr:            { name: 'Ada', icon: null },
   leadership:    { name: 'Winston', icon: null },
   board:         { name: 'Charles', icon: null },
   service:       { name: 'Sofia', icon: null },
@@ -4631,7 +4678,7 @@ Object.assign(agentOverrides, {
 
 // Gallery state — must be defined before init
 const GALLERY_AGENT_IDS = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
-const activeAgents = new Set(['finance','evelyn']);
+const activeAgents = new Set(['finance','operations','commercial','sustainability','legal','matching','hr','evelyn']);
 
 // Init
 renderAgentSidebar();
@@ -5074,10 +5121,10 @@ const SSO_DIRECTORY = [
 let ownersSelected = [{ name:'Peter Anderberg', type:'user' }];
 let accessSelected = [{ name:'All employees', type:'group' }];
 
-/* Company colleagues — admin-side state, seeded from the runtime agents.
-   Each entry holds the form values shown in the Colleague Creator form. */
+/* Company Specialists — admin-side state, seeded from the runtime agents.
+   Each entry holds the form values shown in the Specialist Creator form. */
 const COMPANY_COLLEAGUE_SEED = [
-  { id:'personal',       name:'My Assistant',  icon:'✦',  role:'Assistant', tone:'Professional', desc:'Personal assistant — calendar, email, HR systems and documents.', status:'live',  builtin:true },
+  { id:'personal',       name:'Personal Assistant',  icon:'✦',  role:'Assistant', tone:'Professional', desc:'Personal assistant — calendar, email, HR systems and documents.', status:'live',  builtin:true },
   { id:'finance',        name:'Finance',       icon:'📊', role:'Analyst',   tone:'Professional', desc:'Cash flow, AR tracking, anomaly detection, group reporting and cost leakage — connected to your ERP.', status:'live' },
   { id:'operations',     name:'Operations',    icon:'⚙️', role:'Operator',  tone:'Professional', desc:'Maintenance prediction, production monitoring, inventory and supply chain risk — connected to your MES and TMS.', status:'live' },
   { id:'commercial',     name:'Sales',         icon:'🚀', role:'Specialist',tone:'Professional', desc:'Prospecting, pricing intelligence, key account expansion and churn prediction — connected to your CRM.', status:'live' },
@@ -5112,12 +5159,12 @@ function setAdminScope(scope) {
   const owners  = document.getElementById('accessOwnersBlock');
   const search  = document.getElementById('adminAccessSearch');
   if (desc)   desc.textContent   = isPersonal
-    ? 'Personal colleague — only you can see it. Optionally share with specific colleagues.'
-    : 'Who is allowed to use this colleague — and who owns its configuration.';
-  if (title)  title.textContent  = isPersonal ? 'Share with' : 'Who can use this colleague?';
+    ? 'Personal Specialist — only you can see it. Optionally share with specific Specialists.'
+    : 'Who is allowed to use this Specialist — and who owns its configuration.';
+  if (title)  title.textContent  = isPersonal ? 'Share with' : 'Who can use this Specialist?';
   if (helper) helper.textContent = isPersonal
-    ? 'By default only you can use this colleague. Add the people you want to share it with.'
-    : "Access is granted by SSO group membership. Add the groups (or individual users) from your customer's identity provider that should be able to use this colleague.";
+    ? 'By default only you can use this Specialist. Add the people you want to share it with.'
+    : "Access is granted by SSO group membership. Add the groups (or individual users) from your customer's identity provider that should be able to use this Specialist.";
   if (ssoNote) ssoNote.style.display = isPersonal ? 'none' : '';
   if (owners)  owners.style.display  = isPersonal ? 'none' : '';
   if (search)  search.placeholder    = isPersonal ? 'Add a person to share with...' : 'Add group or user from SSO...';
@@ -5210,9 +5257,9 @@ async function aiHelpFill(targetId, kind) {
   const btn = event.target;
   btn.classList.add('loading');
   btn.textContent = '✨ Generating…';
-  // mock: build content based on the colleague being edited
+  // mock: build content based on the Specialist being edited
   const c = companyColleagues.find(x => x.id === activeCompanyColleagueId);
-  const name = document.getElementById('adminAgentName').value || (c && c.name) || 'this colleague';
+  const name = document.getElementById('adminAgentName').value || (c && c.name) || 'this Specialist';
   const role = document.getElementById('adminAgentRole').value || 'Assistant';
   const tone = document.getElementById('adminAgentTone').value || 'Professional';
   await new Promise(r => setTimeout(r, 700));
@@ -5250,7 +5297,7 @@ function addDisallowedTemplate(id) {
   ta.value = (cur ? cur + '\n' : '') + t.text;
 }
 
-/* ─── Insert prompt from colleague ─── */
+/* ─── Insert prompt from Specialist ─── */
 function openInsertFromColleague() {
   const list = document.getElementById('insertFromList');
   const items = companyColleagues.filter(c => c.systemPrompt || c.id === activeCompanyColleagueId ? false : true);
@@ -5262,10 +5309,10 @@ function openInsertFromColleague() {
       <div class="conn-card-icon" style="font-size:16px">${c.icon || '🤖'}</div>
       <div class="conn-card-info">
         <div class="conn-card-name">${escapeHtml(c.name)}</div>
-        <div class="conn-card-desc">${escapeHtml(preview) || 'No prompt set yet — click to use this colleague\'s description.'}</div>
+        <div class="conn-card-desc">${escapeHtml(preview) || 'No prompt set yet — click to use this Specialist\'s description.'}</div>
       </div>
     </div>`;
-  }).join('') : `<div style="color:var(--text-muted);text-align:center;padding:20px">No other colleagues to copy from yet.</div>`;
+  }).join('') : `<div style="color:var(--text-muted);text-align:center;padding:20px">No other Specialists to copy from yet.</div>`;
   document.getElementById('insertFromOverlay').classList.add('show');
 }
 function closeInsertFromColleague() {
@@ -5430,12 +5477,12 @@ function priorityDragEnd(e) {
   _dragFrom = null;
 }
 
-/* ─── Company colleague list (left sidebar inside Colleague Creator) ─── */
+/* ─── Company Specialist list (left sidebar inside Specialist Creator) ─── */
 function renderCompanyColleagueList() {
   const list = document.getElementById('creatorColleagueList');
   if (!list) return;
   if (companyColleagues.length === 0) {
-    list.innerHTML = `<div class="creator-list-empty">No colleagues yet. Click "+ New colleague" to create one.</div>`;
+    list.innerHTML = `<div class="creator-list-empty">No Specialists yet. Click "+ New Specialist" to create one.</div>`;
     return;
   }
   const liveOnes  = companyColleagues.filter(c => c.status !== 'draft');
@@ -5490,8 +5537,8 @@ function newCompanyColleague() {
   document.getElementById('adminDisallowed').value = '';
   setAdminScope('company');
   document.querySelectorAll('#adminIconPicker .icon-picker-btn').forEach((b,i) => b.classList.toggle('selected', i === 0));
-  document.getElementById('creatorMainTitle').textContent = 'Create Company Colleague';
-  document.getElementById('adminDeployBtn').textContent = 'Deploy colleague';
+  document.getElementById('creatorMainTitle').textContent = 'Create Specialist';
+  document.getElementById('adminDeployBtn').textContent = 'Deploy Specialist';
   creatorTab = 'identity';
   applyCreatorTab();
   renderCompanyColleagueList();
@@ -5541,7 +5588,7 @@ function confirmDeleteColleague(id) {
   const c = companyColleagues.find(x => x.id === id);
   if (!c) return;
   openConfirmDialog({
-    title: 'Delete colleague?',
+    title: 'Delete Specialist?',
     desc: `"${c.name}" will be removed from the company. This can't be undone in the demo.`,
     onConfirm: () => {
       companyColleagues = companyColleagues.filter(x => x.id !== id);
@@ -5875,7 +5922,7 @@ function renderItemEditForm(listKey, d) {
     <div class="cap-toggle" style="margin-top:18px">
       <div class="cap-toggle-info">
         <span class="cap-toggle-icon">${d.enabled ? '✅' : '⚪️'}</span>
-        <span class="cap-toggle-text">Enabled by default for this colleague</span>
+        <span class="cap-toggle-text">Enabled by default for this Specialist</span>
       </div>
       <button class="toggle-switch ${d.enabled ? 'on' : ''}" id="ie_enabled"
         onclick="this.classList.toggle('on')"></button>
@@ -5984,9 +6031,9 @@ const SECTION_TITLES = {
   limits:      { title: 'Limits',      desc: 'Rate limits, execution timeout and cost guardrails.' },
   audit:       { title: 'Audit & sandboxing', desc: 'Logging, sandboxing and rollback support.' },
   connection:  { title: 'Connection',  desc: 'Endpoint, auth method and credentials.' },
-  actions:     { title: 'Available actions', desc: 'Which operations are exposed to the colleague.' },
+  actions:     { title: 'Available actions', desc: 'Which operations are exposed to the Specialist.' },
   definition:  { title: 'Skill definition', desc: 'Folder location and skill standard version.' },
-  triggers:    { title: 'Triggers',    desc: 'When and how the colleague should invoke this skill.' },
+  triggers:    { title: 'Triggers',    desc: 'When and how the Specialist should invoke this skill.' },
   io:          { title: 'Inputs & outputs', desc: 'Required inputs and the structured output format.' },
   source:      { title: 'Source',      desc: 'Where the data lives and how it is fetched.' },
   indexing:    { title: 'Indexing',    desc: 'Refresh interval, chunking and embeddings.' },
@@ -6074,7 +6121,7 @@ function renderItemFullEdit() {
     : `<span class="topbar-pill">Admin</span>
        <span class="crumb" onclick="closeItemFullEdit();openAdminHub()">Home</span>
        <span class="crumb-sep">/</span>
-       <span class="crumb" onclick="closeItemFullEdit();openColleagueCreatorAdmin()">Colleague Creator</span>
+       <span class="crumb" onclick="closeItemFullEdit();openColleagueCreatorAdmin()">Specialist Creator</span>
        <span class="crumb-sep">/</span>
        <span class="crumb" onclick="closeItemFullEdit();openColleagueCreatorAdmin()">${schema.breadcrumb}</span>
        <span class="crumb-sep">/</span>
@@ -6136,7 +6183,7 @@ function fullEditSectionHtml(listKey, section, d) {
             <div class="cap-toggle">
               <div class="cap-toggle-info">
                 <span class="cap-toggle-icon">${d.enabled ? '✅' : '⚪️'}</span>
-                <span class="cap-toggle-text">Enabled by default for this colleague</span>
+                <span class="cap-toggle-text">Enabled by default for this Specialist</span>
               </div>
               <button class="toggle-switch ${d.enabled ? 'on' : ''}" id="fe_enabled" onclick="this.classList.toggle('on');setFullEditStatus('dirty','Unsaved changes')"></button>
             </div>
@@ -6347,7 +6394,7 @@ function fullEditSectionHtml(listKey, section, d) {
   if (section === 'triggers') {
     return wrap(`
       <div class="form-group">
-        <div class="form-label">When should the colleague invoke this skill?</div>
+        <div class="form-label">When should the Specialist invoke this skill?</div>
         <textarea class="form-textarea" id="fe_trigger" placeholder="e.g. When the user says 'help me prepare a presentation' or uploads a topic outline.">${d.trigger||''}</textarea>
       </div>`);
   }
@@ -6468,7 +6515,7 @@ function fullEditSectionHtml(listKey, section, d) {
         <textarea class="form-textarea tall" id="fe_steps" placeholder="1. LLM proposes a query
 2. Runtime validates
 3. Runtime executes against database
-4. Result returned to colleague" style="height:140px">${d.steps||''}</textarea>
+4. Result returned to Specialist" style="height:140px">${d.steps||''}</textarea>
       </div>`);
   }
 
@@ -6572,7 +6619,7 @@ function fullEditSectionHtml(listKey, section, d) {
           <div class="form-label">Stale-data behavior</div>
           <select class="form-select" id="fe_stale">
             <option ${d.stale==='warn'?'selected':''} value="warn">Warn the user</option>
-            <option ${d.stale==='block'?'selected':''} value="block">Block the colleague</option>
+            <option ${d.stale==='block'?'selected':''} value="block">Block the Specialist</option>
             <option ${d.stale==='ignore'?'selected':''} value="ignore">Ignore</option>
           </select>
         </div>
@@ -7547,7 +7594,7 @@ const BLUEPRINT_OPTIONS = [
   { id: 'marketing',      name: 'Madison',  domain: 'Marketing' },
   { id: 'sustainability', name: 'Ivy',      domain: 'Sustainability' },
   { id: 'legal',          name: 'Atticus',  domain: 'Legal' },
-  { id: 'hr',             name: 'Grace',    domain: 'HR' },
+  { id: 'hr',             name: 'Ada',      domain: 'HR' },
   { id: 'service',        name: 'Sofia',    domain: 'Service' },
 ];
 
@@ -7564,7 +7611,7 @@ function renderPricingCalculator() {
       </div>
 
       <div class="pc-field">
-        <label>Blueprint AI Colleagues — pick the ones the client wants</label>
+        <label>Blueprint Specialists — pick the ones the client wants</label>
         <div class="pc-checkbox-grid" id="pcBlueprintList">
           ${BLUEPRINT_OPTIONS.map((bp, i) =>
             `<label><input type="checkbox" class="pc-blueprint-cb" value="${bp.id}" data-name="${bp.name}" data-domain="${bp.domain}" ${i===0?'checked':''}> ${bp.name} <span style="color:var(--text-muted);font-size:12px;">— ${bp.domain}</span></label>`
@@ -7574,7 +7621,7 @@ function renderPricingCalculator() {
       </div>
 
       <div class="pc-field">
-        <label>Shared Custom AI Colleagues (built by employees, in the gallery)</label>
+        <label>Shared Custom Specialists (built by employees, in the gallery)</label>
         <input class="pc-input" type="number" id="pcShared" value="5" min="0" max="50">
         <small>€100/month each. Up to 5 included in Activation.</small>
       </div>
@@ -7636,7 +7683,7 @@ function calculatePricing() {
   const fmt = n => '€' + n.toLocaleString('en-US');
   const blueprintLines = blueprints.length
     ? blueprints.map(b => `<div class="pc-breakdown-row"><span>· ${b.name} (${b.domain})</span><span>€2,500/mo</span></div>`).join('')
-    : `<div class="pc-breakdown-row" style="color:var(--text-muted)"><span>No Blueprint Colleagues selected</span><span>€0</span></div>`;
+    : `<div class="pc-breakdown-row" style="color:var(--text-muted)"><span>No Blueprint Specialists selected</span><span>€0</span></div>`;
 
   const html = `
     <div class="pricing-calc">
@@ -7652,7 +7699,7 @@ function calculatePricing() {
         <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Monthly recurring breakdown</div>
         <div class="pc-breakdown-row"><span>Platform floor (James + Evelyn, ${employees.toLocaleString('en-US')} users)</span><span>${fmt(platformFloor)}</span></div>
         ${blueprintLines}
-        <div class="pc-breakdown-row"><span>Shared Custom AI Colleagues (${shared} × €100)</span><span>${fmt(sharedMonthly)}</span></div>
+        <div class="pc-breakdown-row"><span>Shared Custom Specialists (${shared} × €100)</span><span>${fmt(sharedMonthly)}</span></div>
         ${acpMonthly > 0 ? `<div class="pc-breakdown-row"><span>ACP ${acpLabel}</span><span>${fmt(acpMonthly)}</span></div>` : `<div class="pc-breakdown-row" style="color:var(--text-muted)"><span>ACP Essentials</span><span>bundled</span></div>`}
         <div class="pc-breakdown-row total"><span>Total monthly recurring</span><span>${fmt(monthlyRecurring)}</span></div>
       </div>
@@ -7683,7 +7730,7 @@ function generateAgreement() {
   const propId = 'ALMA-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(Math.random()*900+100);
 
   const blueprintRows = r.blueprints.map(b =>
-    `<tr><td>${b.name} (${b.domain}) — Blueprint AI Colleague</td><td>€2,500 / month</td></tr>`
+    `<tr><td>${b.name} (${b.domain}) — Blueprint Specialist</td><td>€2,500 / month</td></tr>`
   ).join('');
 
   const html = `
@@ -7702,7 +7749,7 @@ function generateAgreement() {
       </div>
 
       <h2>Subscription Proposal — ALMA Platform</h2>
-      <p>This proposal sets out the commercial terms for licensing the ALMA platform, including James (personal AI assistant for every employee), Evelyn (Value Intelligence with monthly CFO-verifiable Value Report), and the AI Colleagues selected below, for a workforce of <strong>${r.employees.toLocaleString('en-US')} users</strong>.</p>
+      <p>This proposal sets out the commercial terms for licensing the ALMA platform, including James (personal AI assistant for every employee), Evelyn (Value Intelligence with monthly CFO-verifiable Value Report), and the Specialists selected below, for a workforce of <strong>${r.employees.toLocaleString('en-US')} users</strong>.</p>
 
       <h4>Configuration</h4>
       <table>
@@ -7710,7 +7757,7 @@ function generateAgreement() {
         <tbody>
           <tr><td>Platform floor — James + Evelyn (${r.employees.toLocaleString('en-US')} users)</td><td>${fmt(r.platformFloor)} / month</td></tr>
           ${blueprintRows}
-          ${r.shared > 0 ? `<tr><td>Shared Custom AI Colleagues (${r.shared} × €100, available in Internal Gallery)</td><td>${fmt(r.sharedMonthly)} / month</td></tr>` : ''}
+          ${r.shared > 0 ? `<tr><td>Shared Custom Specialists (${r.shared} × €100, available in Internal Gallery)</td><td>${fmt(r.sharedMonthly)} / month</td></tr>` : ''}
           ${r.acpMonthly > 0 ? `<tr><td>AI Capability Program — ${r.acpLabel}</td><td>${fmt(r.acpMonthly)} / month</td></tr>` : `<tr><td>AI Capability Program — Essentials</td><td>bundled</td></tr>`}
           <tr class="pc-agreement-total-row"><td>Total monthly recurring (from handover)</td><td>${fmt(r.monthlyRecurring)} / month</td></tr>
         </tbody>
@@ -7728,7 +7775,7 @@ function generateAgreement() {
       </table>
 
       <h4>Terms</h4>
-      <p style="font-size:12px">12-month minimum commitment from handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin). Up to 5 Shared Custom AI Colleagues are included in Activation; additional Blueprints carry a separate one-time build fee outside ARR.</p>
+      <p style="font-size:12px">12-month minimum commitment from handover, then rolling monthly with 3-month termination notice. No price escalation during the contract term. Cloud hosting and LLM token usage are paid by the client directly to their providers (estimated €5–10 per user per month, no Reeinvent margin). Up to 5 Shared Custom Specialists are included in Activation; additional Blueprints carry a separate one-time build fee outside ARR.</p>
 
       <div class="pc-agreement-sig">
         <div>
@@ -7854,8 +7901,8 @@ function renderGallery() {
     createCard.className = 'gallery-create-card';
     createCard.innerHTML = `
       <div class="gallery-create-icon">＋</div>
-      <div class="gallery-create-name">Create new colleague</div>
-      <div class="gallery-create-desc">Build a custom AI Colleague for your team — define its name, focus area and tasks.</div>`;
+      <div class="gallery-create-name">Create new Specialist</div>
+      <div class="gallery-create-desc">Build a custom Specialist for your team — define its name, focus area and tasks.</div>`;
     createCard.onclick = () => { closeGallery(); openAgentBuilder(); };
     grid.appendChild(createCard);
 
@@ -7865,7 +7912,7 @@ function renderGallery() {
     if (filteredCustom.length === 0 && customAgents.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'gallery-empty';
-      empty.textContent = 'No custom colleagues yet. Create one to get started.';
+      empty.textContent = 'No custom Specialists yet. Create one to get started.';
       grid.appendChild(empty);
     } else if (filteredCustom.length === 0) {
       const empty = document.createElement('div');
@@ -7885,7 +7932,7 @@ function renderGallery() {
             <span class="gallery-pill active">✓ Active</span>
           </div>
           <div class="gallery-card-name">${a.name}</div>
-          <div class="gallery-card-desc">${a.desc || 'Custom AI Colleague'}</div>
+          <div class="gallery-card-desc">${a.desc || 'Custom Specialist'}</div>
           <div style="margin-top:8px">${authorBadge}</div>`;
         card.onclick = () => { closeGallery(); switchCustomAgent(a.id, a.name, a.desc); };
         grid.appendChild(card);
@@ -7911,7 +7958,7 @@ function updateGalleryCount() {
   const custom = customAgents.length;
   const total = active + custom;
   document.getElementById('galleryCount').textContent =
-    `${total} colleague${total !== 1 ? 's' : ''} active`;
+    `${total} Specialist${total !== 1 ? 's' : ''} active`;
   document.getElementById('tabCustomCount').textContent = custom;
 }
 </script>
@@ -7930,15 +7977,15 @@ function updateGalleryCount() {
       <div class="admin-header">
         <div>
           <div class="admin-title">Admin</div>
-          <div class="admin-subtitle">Configure colleagues and external connections for your organization.</div>
+          <div class="admin-subtitle">Configure Specialists and external connections for your organization.</div>
         </div>
       </div>
       <div class="admin-body">
         <div class="admin-cards">
           <div class="admin-card" onclick="openColleagueCreatorAdmin()">
             <div class="admin-card-icon">🧑‍💼</div>
-            <div class="admin-card-name">Colleague Creator Admin Panel</div>
-            <div class="admin-card-desc">Create and configure new company AI Colleagues — identity, prompts, tools, MCPs, skills, data sources, model bounds and access control.</div>
+            <div class="admin-card-name">Specialist Creator Admin Panel</div>
+            <div class="admin-card-desc">Create and configure new company Specialists — identity, prompts, tools, MCPs, skills, data sources, model bounds and access control.</div>
           </div>
           <div class="admin-card" onclick="openConnections()">
             <div class="admin-card-icon">🔌</div>
@@ -7958,32 +8005,32 @@ function updateGalleryCount() {
       <span class="topbar-pill">Admin</span>
       <span class="crumb" onclick="backToAdminHub()">Home</span>
       <span class="crumb-sep">/</span>
-      <span class="crumb current">Colleague Creator</span>
+      <span class="crumb current">Specialist Creator</span>
     </div>
     <button class="admin-page-close" onclick="closeColleagueCreatorAdmin()" title="Close admin">✕</button>
   </div>
   <div class="creator-layout">
-    <!-- Left: list of existing colleagues -->
+    <!-- Left: list of existing Specialists -->
     <aside class="creator-sidebar">
       <div class="creator-sidebar-header">
-        <div class="creator-sidebar-title">Company Colleagues</div>
+        <div class="creator-sidebar-title">Specialists</div>
         <button class="creator-new-btn" onclick="newCompanyColleague()">
-          <span style="font-size:14px">＋</span> New colleague
+          <span style="font-size:14px">＋</span> New Specialist
         </button>
       </div>
       <div class="creator-list" id="creatorColleagueList"></div>
       <div class="creator-sidebar-hint">
         <b>How this works</b><br>
-        <kbd>＋ New colleague</kbd> opens a draft. <b>Deploy colleague</b> in the footer makes it live; until then it sits under <b>Drafts</b>.<br>
-        Hover any row above to <b>duplicate</b> ⧉ or <b>delete</b> 🗑 — deleting a live colleague removes it for everyone with access.
+        <kbd>＋ New Specialist</kbd> opens a draft. <b>Deploy Specialist</b> in the footer makes it live; until then it sits under <b>Drafts</b>.<br>
+        Hover any row above to <b>duplicate</b> ⧉ or <b>delete</b> 🗑 — deleting a live Specialist removes it for everyone with access.
       </div>
     </aside>
 
-    <!-- Right: editor for the selected colleague -->
+    <!-- Right: editor for the selected Specialist -->
     <div class="creator-main admin-creator">
     <div class="creator-main-header">
       <div class="admin-creator-title-wrap">
-        <div class="admin-creator-title" id="creatorMainTitle">Create Company Colleague</div>
+        <div class="admin-creator-title" id="creatorMainTitle">Create Specialist</div>
       </div>
     </div>
 
@@ -8041,7 +8088,7 @@ function updateGalleryCount() {
       <section class="admin-creator-section active" data-section="identity">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Identity</h2>
-          <p class="cfg-section-desc">How this colleague is named, presented and recognised in the chat surface.</p>
+          <p class="cfg-section-desc">How this Specialist is named, presented and recognised in the chat surface.</p>
         </header>
 
         <div class="form-group full" style="margin-bottom:18px">
@@ -8050,15 +8097,15 @@ function updateGalleryCount() {
             <button type="button" class="scope-option active" data-scope="company" onclick="setAdminScope('company')">
               <div class="scope-icon">🏢</div>
               <div class="scope-info">
-                <div class="scope-title">Company colleague</div>
+                <div class="scope-title">Company Specialist</div>
                 <div class="scope-desc">Available across the organization. Access is granted by SSO group.</div>
               </div>
             </button>
             <button type="button" class="scope-option" data-scope="personal" onclick="setAdminScope('personal')">
               <div class="scope-icon">👤</div>
               <div class="scope-info">
-                <div class="scope-title">Personal colleague</div>
-                <div class="scope-desc">Private to you. Optionally share with specific colleagues.</div>
+                <div class="scope-title">Personal Specialist</div>
+                <div class="scope-desc">Private to you. Optionally share with specific Specialists.</div>
               </div>
             </button>
           </div>
@@ -8082,7 +8129,7 @@ function updateGalleryCount() {
               <button class="ai-help-btn" onclick="aiHelpFill('adminAgentDesc','description')">✨ AI help</button>
             </div>
             <textarea class="form-textarea" id="adminAgentDesc" maxlength="200"
-              placeholder="A short explanation of what this colleague does"></textarea>
+              placeholder="A short explanation of what this Specialist does"></textarea>
           </div>
           <div class="form-group full">
             <div class="form-label-row">
@@ -8118,19 +8165,19 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="prompt">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Prompt</h2>
-          <p class="cfg-section-desc">The system prompt and refusal rules that define the colleague's behaviour.</p>
+          <p class="cfg-section-desc">The system prompt and refusal rules that define the Specialist's behaviour.</p>
         </header>
         <div class="form-group">
           <div class="form-label-row">
             <div class="form-label"><span class="req">*</span>System prompt</div>
             <span class="form-label-actions">
-              <span class="label-action-link" onclick="openInsertFromColleague()">↧ Insert from colleague</span>
+              <span class="label-action-link" onclick="openInsertFromColleague()">↧ Insert from Specialist</span>
               <button class="ai-help-btn" onclick="aiHelpFill('adminSystemPrompt','systemPrompt')">✨ AI help</button>
             </span>
           </div>
           <textarea class="form-textarea tall" id="adminSystemPrompt" maxlength="8000"
             placeholder="You are a [role] working at [company]. Your responsibility is to..." style="height:200px"></textarea>
-          <div class="admin-helper">Defines the colleague's perspective, behavior rules and reasoning style. Pick a starting template:</div>
+          <div class="admin-helper">Defines the Specialist's perspective, behavior rules and reasoning style. Pick a starting template:</div>
           <div class="chip-row" id="promptTemplateChips" style="margin-top:8px"></div>
         </div>
         <div class="form-group" style="margin-top:18px">
@@ -8139,7 +8186,7 @@ function updateGalleryCount() {
             <button class="ai-help-btn" onclick="aiHelpFill('adminDisallowed','disallowed')">✨ AI help</button>
           </div>
           <textarea class="form-textarea" id="adminDisallowed"
-            placeholder="What this colleague should refuse to do (e.g. give binding legal advice, approve contracts)"></textarea>
+            placeholder="What this Specialist should refuse to do (e.g. give binding legal advice, approve contracts)"></textarea>
           <div class="admin-helper" style="margin-top:6px">Common patterns:</div>
           <div class="chip-row" id="disallowedTemplateChips" style="margin-top:6px"></div>
         </div>
@@ -8163,7 +8210,7 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="skills">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Skills</h2>
-          <p class="cfg-section-desc">Reusable procedural workflows the colleague can invoke (e.g. "interview-for-presentation"). Follows the skills spec.</p>
+          <p class="cfg-section-desc">Reusable procedural workflows the Specialist can invoke (e.g. "interview-for-presentation"). Follows the skills spec.</p>
         </header>
         <div class="form-section-title" style="margin-bottom:10px">Available skills</div>
         <div id="adminSkillsList"></div>
@@ -8174,12 +8221,12 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="data">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Data sources</h2>
-          <p class="cfg-section-desc">RAG knowledge bases, customer databases and MCPs this colleague is allowed to use.</p>
+          <p class="cfg-section-desc">RAG knowledge bases, customer databases and MCPs this Specialist is allowed to use.</p>
         </header>
         <div class="admin-helper" style="margin-bottom:14px">
           Data sources for this customer are configured centrally in
           <a class="label-action-link" style="display:inline" onclick="closeColleagueCreatorAdmin();openConnections()">Admin → Connections ↗</a>.
-          Pick which of those sources this colleague is allowed to use.
+          Pick which of those sources this Specialist is allowed to use.
         </div>
 
         <div class="form-section-title" style="margin-bottom:10px">RAG knowledge bases</div>
@@ -8188,7 +8235,7 @@ function updateGalleryCount() {
         <div class="cap-toggle" style="margin-top:10px">
           <div class="cap-toggle-info">
             <span class="cap-toggle-icon">⬆️</span>
-            <span class="cap-toggle-text">Allow users to upload knowledge from this colleague
+            <span class="cap-toggle-text">Allow users to upload knowledge from this Specialist
               <span style="font-weight:400;color:var(--text-muted);font-size:11px">(subject to user access level)</span></span>
           </div>
           <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
@@ -8251,7 +8298,7 @@ function updateGalleryCount() {
               <option>Gemini 2.5 Flash</option>
               <option>Gemini 2.5 Pro</option>
             </select>
-            <div class="admin-helper">Lowest model the colleague is allowed to run on.</div>
+            <div class="admin-helper">Lowest model the Specialist is allowed to run on.</div>
           </div>
           <div class="form-group">
             <div class="form-label">Maximum model capability</div>
@@ -8262,7 +8309,7 @@ function updateGalleryCount() {
               <option selected>Claude Opus 4.7</option>
               <option>Gemini 2.5 Pro</option>
             </select>
-            <div class="admin-helper">Caps cost — the colleague will never escalate beyond this.</div>
+            <div class="admin-helper">Caps cost — the Specialist will never escalate beyond this.</div>
           </div>
           <div class="form-group full">
             <div class="form-label">Temperature <span id="tempVal">0.20</span></div>
@@ -8291,12 +8338,12 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="access">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">Access</h2>
-          <p class="cfg-section-desc" id="accessSectionDesc">Who is allowed to use this colleague — and who owns its configuration.</p>
+          <p class="cfg-section-desc" id="accessSectionDesc">Who is allowed to use this Specialist — and who owns its configuration.</p>
         </header>
-        <div class="form-section-title" id="accessSectionTitle" style="margin-bottom:10px">Who can use this colleague?</div>
+        <div class="form-section-title" id="accessSectionTitle" style="margin-bottom:10px">Who can use this Specialist?</div>
         <div class="admin-helper" id="accessSectionHelper" style="margin-bottom:8px">
           Access is granted by SSO group membership. Add the groups (or individual users)
-          from your customer's identity provider that should be able to use this colleague.
+          from your customer's identity provider that should be able to use this Specialist.
         </div>
         <div class="chip-input" id="adminAccessInput">
           <input type="text" id="adminAccessSearch" placeholder="Add group or user from SSO...">
@@ -8310,7 +8357,7 @@ function updateGalleryCount() {
         <div id="accessOwnersBlock">
           <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
           <div class="admin-helper" style="margin-bottom:8px">
-            Owners are responsible for the colleague's configuration. Add multiple users or a
+            Owners are responsible for the Specialist's configuration. Add multiple users or a
             group (e.g. "Reeinvent"). Type to search the SSO directory.
           </div>
           <div class="chip-input" id="adminOwnersInput">
@@ -8375,9 +8422,9 @@ function updateGalleryCount() {
       <section class="admin-creator-section" data-section="overrides">
         <header class="cfg-section-header">
           <h2 class="cfg-section-title">User overrides</h2>
-          <p class="cfg-section-desc">What end-users (and super-users) are allowed to change about this colleague at runtime.</p>
+          <p class="cfg-section-desc">What end-users (and super-users) are allowed to change about this Specialist at runtime.</p>
         </header>
-        <div class="admin-helper" style="margin-bottom:14px">Decide what end-users (and super-users) are allowed to change for this colleague.</div>
+        <div class="admin-helper" style="margin-bottom:14px">Decide what end-users (and super-users) are allowed to change for this Specialist.</div>
         <div class="cap-toggles">
           <div class="cap-toggle">
             <div class="cap-toggle-info"><span class="cap-toggle-icon">🔒</span><span class="cap-toggle-text">Lock all configuration <span class="lock-badge">Strict</span></span></div>
@@ -8419,7 +8466,7 @@ function updateGalleryCount() {
         <button class="btn-cancel" onclick="closeColleagueCreatorAdmin()">Cancel</button>
         <button class="btn-cancel" id="adminPrevBtn" onclick="prevCreatorTab()">Back</button>
         <button class="btn-create ready" id="adminNextBtn" onclick="nextCreatorTab()">Next</button>
-        <button class="btn-deploy" id="adminDeployBtn" onclick="deployAdminColleague()">Deploy colleague</button>
+        <button class="btn-deploy" id="adminDeployBtn" onclick="deployAdminColleague()">Deploy Specialist</button>
       </div>
     </div>
     </div><!-- /.creator-main -->
@@ -8447,11 +8494,11 @@ function updateGalleryCount() {
   </div>
 </div>
 
-<!-- Insert prompt from colleague -->
+<!-- Insert prompt from Specialist -->
 <div id="insertFromOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeInsertFromColleague()">
   <div class="item-edit-modal" style="width:480px">
     <div class="item-edit-header">
-      <div class="item-edit-title">Insert prompt from colleague</div>
+      <div class="item-edit-title">Insert prompt from Specialist</div>
       <button class="gallery-close" onclick="closeInsertFromColleague()">✕</button>
     </div>
     <div class="item-edit-body" id="insertFromList"></div>
@@ -8554,7 +8601,7 @@ function updateGalleryCount() {
 <div id="galleryOverlay" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
   <div class="gallery-modal">
     <div class="gallery-header">
-      <div class="gallery-title">Browse AI Colleagues</div>
+      <div class="gallery-title">Browse Specialists</div>
       <button class="gallery-close" onclick="closeGallery()">✕</button>
     </div>
     <div class="gallery-tabs">
@@ -8565,7 +8612,7 @@ function updateGalleryCount() {
         Custom <span class="gallery-tab-count" id="tabCustomCount">0</span>
       </button>
       <div class="gallery-tab-spacer"></div>
-      <input class="gallery-search-input" id="gallerySearchInput" placeholder="Search colleagues…" oninput="renderGallery()" autocomplete="off">
+      <input class="gallery-search-input" id="gallerySearchInput" placeholder="Search Specialists…" oninput="renderGallery()" autocomplete="off">
     </div>
     <div class="gallery-body">
       <div class="gallery-grid" id="galleryGrid"></div>
