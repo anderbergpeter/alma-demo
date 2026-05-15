@@ -4568,6 +4568,8 @@ const AGENT_STATUS = {
 function agentDisplayName(id) {
   const custom = agentOverrides[id] && agentOverrides[id].name;
   const base = SIDEBAR_NAMES[id] || agents[id].label;
+  // Personal Assistant section header already labels the role, so just show "James"
+  if (id === 'personal') return custom || base;
   return custom ? `${custom} (${base})` : base;
 }
 function agentDisplayIcon(id) {
