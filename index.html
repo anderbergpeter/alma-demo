@@ -8316,4 +8316,317 @@ function updateGalleryCount() {
             <div class="admin-helper">Caps cost — the Specialist will never escalate beyond this.</div>
           </div>
           <div class="form-group full">
-            <div class="form-label">Temperatu
+            <div class="form-label">Temperature <span id="tempVal">0.20</span></div>
+            <div class="range-row">
+              <input type="range" id="adminTemperature" min="0" max="100" value="20"
+                oninput="document.getElementById('tempVal').textContent=(this.value/100).toFixed(2)">
+              <span class="range-value" id="tempValBox">0.20</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Max response tokens</div>
+            <input class="form-input" id="adminMaxTokens" type="number" value="2000">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Latency target</div>
+            <select class="form-select" id="adminLatency">
+              <option>Optimize for speed</option>
+              <option selected>Balanced</option>
+              <option>Optimize for quality</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. ACCESS -->
+      <section class="admin-creator-section" data-section="access">
+        <header class="cfg-section-header">
+          <h2 class="cfg-section-title">Access</h2>
+          <p class="cfg-section-desc" id="accessSectionDesc">Who is allowed to use this Specialist — and who owns its configuration.</p>
+        </header>
+        <div class="form-section-title" id="accessSectionTitle" style="margin-bottom:10px">Who can use this Specialist?</div>
+        <div class="admin-helper" id="accessSectionHelper" style="margin-bottom:8px">
+          Access is granted by SSO group membership. Add the groups (or individual users)
+          from your customer's identity provider that should be able to use this Specialist.
+        </div>
+        <div class="chip-input" id="adminAccessInput">
+          <input type="text" id="adminAccessSearch" placeholder="Add group or user from SSO...">
+        </div>
+        <div class="sso-note" id="accessSsoNote" style="margin-top:8px">
+          <span class="badge">SSO</span>
+          Pulled from your customer's identity provider (Azure AD / Okta). Group composition
+          changes take effect on the next sync — no manual reconciliation needed here.
+        </div>
+
+        <div id="accessOwnersBlock">
+          <div class="form-section-title" style="margin: 22px 0 10px">Owners</div>
+          <div class="admin-helper" style="margin-bottom:8px">
+            Owners are responsible for the Specialist's configuration. Add multiple users or a
+            group (e.g. "Reeinvent"). Type to search the SSO directory.
+          </div>
+          <div class="chip-input" id="adminOwnersInput">
+            <input type="text" id="adminOwnerSearch" placeholder="Add owner — user or group...">
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. ADVANCED -->
+      <section class="admin-creator-section" data-section="advanced">
+        <header class="cfg-section-header">
+          <h2 class="cfg-section-title">Advanced</h2>
+          <p class="cfg-section-desc">Self-evaluation loops, internal sub-agents and safety controls.</p>
+        </header>
+        <div class="form-section-title" style="margin-bottom:10px">Self-evaluation (ReAct loops)</div>
+        <div class="admin-section-grid">
+          <div class="form-group">
+            <div class="form-label">Self-evaluation before responding</div>
+            <select class="form-select" id="adminReact">
+              <option value="0">Disabled</option>
+              <option value="1">Single-pass review</option>
+              <option value="2" selected>Up to 2 loops</option>
+              <option value="3">Up to 3 loops</option>
+              <option value="5">Up to 5 loops</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Confidence threshold</div>
+            <select class="form-select" id="adminConfidence">
+              <option>Low — answer optimistically</option>
+              <option selected>Medium — flag uncertainty</option>
+              <option>High — escalate when below</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Sub-agents</div>
+        <div class="layer-note">
+          <span class="layer-note-icon">ⓘ</span>
+          <span><b>Sub-agents are multi-step.</b> They plan a task, call <b>tools</b> repeatedly, and return a synthesized answer with citations. Use them for research, validated DB access, or anything where one tool call isn't enough.</span>
+        </div>
+        <div id="adminSubagentsList"></div>
+
+        <div class="form-section-title" style="margin: 22px 0 10px">Safety</div>
+        <div class="cap-toggles">
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🔍</span><span class="cap-toggle-text">PII detection &amp; masking</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🛡️</span><span class="cap-toggle-text">Prompt-injection defense</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">📝</span><span class="cap-toggle-text">Audit logging</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. USER OVERRIDES -->
+      <section class="admin-creator-section" data-section="overrides">
+        <header class="cfg-section-header">
+          <h2 class="cfg-section-title">User overrides</h2>
+          <p class="cfg-section-desc">What end-users (and super-users) are allowed to change about this Specialist at runtime.</p>
+        </header>
+        <div class="admin-helper" style="margin-bottom:14px">Decide what end-users (and super-users) are allowed to change for this Specialist.</div>
+        <div class="cap-toggles">
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🔒</span><span class="cap-toggle-text">Lock all configuration <span class="lock-badge">Strict</span></span></div>
+            <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🤖</span><span class="cap-toggle-text">Users may switch model (within min/max)</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🌡️</span><span class="cap-toggle-text">Users may adjust temperature</span></div>
+            <button class="toggle-switch" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🎭</span><span class="cap-toggle-text">Users may change tone</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">📚</span><span class="cap-toggle-text">Users may attach own knowledge files</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="cap-toggle">
+            <div class="cap-toggle-info"><span class="cap-toggle-icon">🛠️</span><span class="cap-toggle-text">Super-users may toggle tools</span></div>
+            <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.admin-creator-body -->
+    </div><!-- /.cfg-content-inner -->
+    </div><!-- /.cfg-content -->
+    </div><!-- /.creator-main-body -->
+
+    <div class="admin-creator-footer">
+      <div class="admin-foot-left">
+        <span class="admin-step-indicator" id="adminStepIndicator">Step 1 of 10 — Identity</span>
+      </div>
+      <div class="footer-right">
+        <button class="btn-cancel" onclick="closeColleagueCreatorAdmin()">Cancel</button>
+        <button class="btn-cancel" id="adminPrevBtn" onclick="prevCreatorTab()">Back</button>
+        <button class="btn-create ready" id="adminNextBtn" onclick="nextCreatorTab()">Next</button>
+        <button class="btn-deploy" id="adminDeployBtn" onclick="deployAdminColleague()">Deploy Specialist</button>
+      </div>
+    </div>
+    </div><!-- /.creator-main -->
+  </div><!-- /.creator-layout -->
+</div>
+
+<!-- Manage options modal (Roles / Tones / Languages) -->
+<div id="manageOptionsOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeManageOptions()">
+  <div class="item-edit-modal" style="width:480px">
+    <div class="item-edit-header">
+      <div class="item-edit-title" id="manageOptionsTitle">Manage</div>
+      <button class="gallery-close" onclick="closeManageOptions()">✕</button>
+    </div>
+    <div class="item-edit-body">
+      <div class="options-list" id="manageOptionsList"></div>
+      <button class="options-add-btn" onclick="addManageOption()">＋ Add option</button>
+    </div>
+    <div class="item-edit-footer">
+      <div></div>
+      <div class="footer-right" style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeManageOptions()">Cancel</button>
+        <button class="btn-create ready" onclick="saveManageOptions()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Insert prompt from Specialist -->
+<div id="insertFromOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeInsertFromColleague()">
+  <div class="item-edit-modal" style="width:480px">
+    <div class="item-edit-header">
+      <div class="item-edit-title">Insert prompt from Specialist</div>
+      <button class="gallery-close" onclick="closeInsertFromColleague()">✕</button>
+    </div>
+    <div class="item-edit-body" id="insertFromList"></div>
+    <div class="item-edit-footer">
+      <div></div>
+      <div><button class="btn-cancel" onclick="closeInsertFromColleague()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm delete dialog -->
+<div id="confirmOverlay" class="confirm-overlay" onclick="if(event.target===this)closeConfirmDialog()">
+  <div class="confirm-modal">
+    <div class="confirm-title" id="confirmTitle">Delete?</div>
+    <div class="confirm-desc" id="confirmDesc"></div>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirmDialog()">Cancel</button>
+      <button class="btn-confirm-danger" id="confirmDangerBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONNECTIONS (full page) ─── -->
+<div id="connectionsOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs">
+      <span class="topbar-pill">Admin</span>
+      <span class="crumb" onclick="backToAdminHubFromConnections()">Home</span>
+      <span class="crumb-sep">/</span>
+      <span class="crumb current">Connections</span>
+    </div>
+    <button class="admin-page-close" onclick="closeConnections()" title="Close admin">✕</button>
+  </div>
+  <div class="admin-page-content">
+    <div class="admin-page-inner">
+      <div class="admin-header">
+        <div>
+          <div class="admin-title">Connections</div>
+          <div class="admin-subtitle">External data sources and customer databases. Access is configured per group and user.</div>
+        </div>
+      </div>
+      <div class="admin-body">
+        <div class="conn-list" id="connList"></div>
+        <button class="conn-add-btn" style="margin-top:14px" onclick="openConnectionEdit(null)">＋ Add new connection</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ITEM FULL-EDIT PAGE (deep editor) ─── -->
+<div id="itemFullEditOverlay" class="admin-overlay">
+  <div class="admin-page-topbar">
+    <div class="breadcrumbs" id="fullEditBreadcrumbs"></div>
+    <div class="full-edit-toolbar">
+      <span class="full-edit-status saved" id="fullEditStatus"><span class="dot"></span><span id="fullEditStatusLabel">Saved</span></span>
+      <button class="btn-delete" id="fullEditDelete" onclick="deleteFromFullEdit()">Delete</button>
+      <button class="btn-cancel" onclick="closeItemFullEdit()">Cancel</button>
+      <button class="btn-create ready" onclick="saveFromFullEdit()">Save</button>
+      <button class="admin-page-close" onclick="closeItemFullEdit()" title="Close">✕</button>
+    </div>
+  </div>
+  <div class="admin-page-content">
+    <div class="admin-page-inner">
+      <div class="admin-header">
+        <div>
+          <div class="admin-title" id="fullEditTitle">Edit item</div>
+          <div class="admin-subtitle" id="fullEditSubtitle"></div>
+        </div>
+      </div>
+      <div class="full-edit-layout">
+        <nav class="full-edit-nav" id="fullEditNav"></nav>
+        <div class="full-edit-content" id="fullEditContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ITEM EDIT MODAL (generic) ─── -->
+<div id="itemEditOverlay" class="item-edit-overlay" onclick="if(event.target===this)closeItemEdit()">
+  <div class="item-edit-modal">
+    <div class="item-edit-header">
+      <div class="item-edit-title" id="itemEditTitle">Edit item</div>
+      <button class="gallery-close" onclick="closeItemEdit()">✕</button>
+    </div>
+    <div class="item-edit-body" id="itemEditBody"></div>
+    <div class="item-edit-footer">
+      <div>
+        <button class="btn-delete" id="itemEditDelete" onclick="deleteCurrentItem()">Delete</button>
+      </div>
+      <div class="footer-right" style="display:flex;align-items:center;gap:10px">
+        <span class="item-edit-link"><a onclick="openItemFullEditFromModal()">Open in full editor →</a></span>
+        <button class="btn-cancel" onclick="closeItemEdit()">Cancel</button>
+        <button class="btn-create ready" onclick="saveCurrentItem()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery modal -->
+<div id="galleryOverlay" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
+  <div class="gallery-modal">
+    <div class="gallery-header">
+      <div class="gallery-title">Browse Specialists</div>
+      <button class="gallery-close" onclick="closeGallery()">✕</button>
+    </div>
+    <div class="gallery-tabs">
+      <button class="gallery-tab active" id="tabCompany" onclick="switchGalleryTab('company')">
+        Company <span class="gallery-tab-count" id="tabCompanyCount">12</span>
+      </button>
+      <button class="gallery-tab" id="tabCustom" onclick="switchGalleryTab('custom')">
+        Custom <span class="gallery-tab-count" id="tabCustomCount">0</span>
+      </button>
+      <div class="gallery-tab-spacer"></div>
+      <input class="gallery-search-input" id="gallerySearchInput" placeholder="Search Specialists…" oninput="renderGallery()" autocomplete="off">
+    </div>
+    <div class="gallery-body">
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+    <div class="gallery-footer">
+      <span class="gallery-footer-count" id="galleryCount"></span>
+      <button class="gallery-done-btn" onclick="closeGallery()">Done</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
