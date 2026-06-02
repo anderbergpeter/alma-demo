@@ -4943,6 +4943,67 @@ let ADMIN_WORKFLOWS = [
       { type:'tool', name:'jira_create_issues' },
     ]
   },
+  { id: 'wf_prospecting', icon: '🔍', name: 'Prospecting',
+    desc: 'Find new prospects that look like your best existing customers.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'crm_top_accounts_tool' },
+      { type:'llm',  name:'build_icp_profile' },
+      { type:'tool', name:'prospect_search_tool' },
+      { type:'tool', name:'company_enrichment_tool' },
+      { type:'llm',  name:'rank_lookalike_prospects' },
+    ]
+  },
+  { id: 'wf_pricing', icon: '💲', name: 'Pricing Intelligence',
+    desc: 'Recommend pricing based on demand signals and margin data.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'demand_signals_tool' },
+      { type:'tool', name:'margin_data_tool' },
+      { type:'llm',  name:'pricing_recommendation' },
+      { type:'tool', name:'answer_format_tool' },
+    ]
+  },
+  { id: 'wf_expansion', icon: '📈', name: 'Key Account Expansion',
+    desc: 'Surface upsell and cross-sell opportunities in key accounts.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'crm_account_lookup_tool' },
+      { type:'tool', name:'product_usage_tool' },
+      { type:'llm',  name:'identify_upsell_signals' },
+      { type:'llm',  name:'draft_expansion_plan' },
+    ]
+  },
+  { id: 'wf_churn', icon: '👋', name: 'Customer Churn Signals',
+    desc: 'Detect early signs of customer disengagement and score churn risk.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'engagement_data_tool' },
+      { type:'tool', name:'support_history_tool' },
+      { type:'llm',  name:'churn_risk_scoring' },
+      { type:'tool', name:'answer_format_tool' },
+    ]
+  },
+  { id: 'wf_sales_perf', icon: '🌍', name: 'Sales Performance',
+    desc: 'Sales summary by market, product and region with a chart.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'sql_generate_tool' },
+      { type:'tool', name:'sql_execute_tool' },
+      { type:'llm',  name:'performance_summary' },
+      { type:'tool', name:'chart_render_tool' },
+    ]
+  },
+  { id: 'wf_meeting_brief', icon: '🤝', name: 'Meeting Brief Generator',
+    desc: 'Auto-prepare for your next client meeting from CRM, news and calendar.',
+    enabled: true, registerAsTool: true,
+    steps: [
+      { type:'tool', name:'calendar_lookup_tool' },
+      { type:'tool', name:'crm_account_lookup_tool' },
+      { type:'tool', name:'news_search_tool' },
+      { type:'llm',  name:'draft_meeting_brief' },
+    ]
+  },
 ];
 let ADMIN_SKILLS = [
   { id: 'interview',  icon: '🎤', name: 'Interview-for-presentation', desc: 'Conduct an interview to gather material for a business presentation', enabled: true },
