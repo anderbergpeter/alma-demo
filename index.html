@@ -3707,6 +3707,159 @@ const agents = {
 };
 
 const demoAnswers = {
+  'Visa min säljutveckling de senaste sex månaderna som en graf, visa topp 20-säljarna och var jag ligger för att skapa motivation.': {
+    badge: '🚀 Sales',
+    html: `<p>Här är din <strong>säljutveckling</strong> de senaste sex månaderna, jämfört med snittet för topp 20:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Din ranking</div><div class="value pos">#7</div><div class="delta pos">av 48 · upp 3 platser</div></div>
+  <div class="kpi"><div class="label">Försäljning 6 mån</div><div class="value">4,2 Mkr</div><div class="delta pos">+14% mot förra halvåret</div></div>
+  <div class="kpi"><div class="label">Gap till topp 5</div><div class="value warn">380 tkr</div><div class="delta">~2 månaders tempo</div></div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;margin:14px 0;padding:14px;background:rgba(255,255,255,0.03);border-radius:10px">
+  <svg width="280" height="70" viewBox="0 0 280 70">
+    <polyline fill="none" stroke="#6ee7a8" stroke-width="2.5" points="0,52 47,48 94,40 140,34 187,24 234,12"/>
+    <polyline fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="4 3" points="0,46 47,44 94,42 140,40 187,37 234,34"/>
+    <circle cx="234" cy="12" r="3.5" fill="#6ee7a8"/>
+  </svg>
+  <div style="font-size:12px;line-height:1.8">
+    <div><span style="color:#6ee7a8">●</span> Du — stadig uppgång</div>
+    <div><span style="color:rgba(255,255,255,0.6)">●</span> Snitt topp 20</div>
+  </div>
+</div>
+<table><thead><tr><th>#</th><th>Säljare</th><th>6 mån</th><th>Trend</th></tr></thead><tbody>
+<tr><td>1</td><td>Anna Wikström</td><td>5,9 Mkr</td><td class="pos">▲</td></tr>
+<tr><td>2</td><td>Markus Ek</td><td>5,4 Mkr</td><td class="pos">▲</td></tr>
+<tr><td>3</td><td>Sofia Lund</td><td>4,8 Mkr</td><td class="warn">▬</td></tr>
+<tr style="background:rgba(110,231,168,0.10)"><td><strong>7</strong></td><td><strong>Du</strong></td><td><strong>4,2 Mkr</strong></td><td class="pos">▲</td></tr>
+</tbody></table>
+<p>Du klättrar snabbast i topp 10. Med nuvarande tempo passerar du plats 5 inom två månader. Vill du se vilka tre affärer som skulle stänga gapet?</p>
+<span class="source-pill">🔗 Salesforce · ERP orderdata · Säljmål</span>`
+  },
+
+  'Analysera vad som ökar och minskar i min försäljning, till exempel om yxor minskar med 2 procent per månad. Jämför mina trender med snittet för alla säljare och resonera om möjliga orsaker.': {
+    badge: '🚀 Sales',
+    html: `<p>Här är vad som <strong>rör sig</strong> i din försäljning, jämfört med säljarsnittet:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Starkast tillväxt</div><div class="value pos">Skyddsskor</div><div class="delta pos">+9% /månad</div></div>
+  <div class="kpi"><div class="label">Störst tapp</div><div class="value neg">Yxor −2%</div><div class="delta neg">/månad i 4 mån</div></div>
+  <div class="kpi"><div class="label">Mot snittet</div><div class="value pos">+5pp</div><div class="delta pos">du växer snabbare</div></div>
+</div>
+<table><thead><tr><th>Kategori</th><th>Din trend</th><th>Snitt alla</th><th>Kommentar</th></tr></thead><tbody>
+<tr><td>Skyddsskor (Solid Gear)</td><td class="pos">+9%</td><td class="pos">+4%</td><td>Du tar andelar</td></tr>
+<tr><td>Arbetskläder (Snickers)</td><td class="pos">+3%</td><td class="pos">+3%</td><td>I linje</td></tr>
+<tr><td>Handverktyg</td><td class="warn">0%</td><td class="pos">+2%</td><td>Släpar mot snittet</td></tr>
+<tr><td>Yxor (Hultafors)</td><td class="neg">−2%</td><td class="neg">−1%</td><td>Säsong + lager hos 2 kunder</td></tr>
+</tbody></table>
+<p><strong>Alma resonerar:</strong> Yxtappet följer ett säsongsmönster men förstärks av att två stora återförsäljare drog ner sina lager i Q1. Skyddsskor lyfter tack vare tre nya kedjeavtal. Handverktyg ligger efter snittet och är värt en riktad kampanj. Vill du att jag tar fram en återhämtningsplan för yxor?</p>
+<span class="source-pill">🔗 ERP orderdata · Salesforce · Marknadstrender</span>`
+  },
+
+  'Utgå från mina befintliga kunder och hitta liknande potentiella kunder på marknaden. Bevaka nya butiker, kedjor och återförsäljare och lista dem efter störst potential.': {
+    badge: '🚀 Sales',
+    html: `<p>Jag matchade dina bästa kunder mot marknaden och hittade <strong>23 nya prospekt</strong>:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Nya prospekt</div><div class="value">23</div><div class="delta pos">6 med hög potential</div></div>
+  <div class="kpi"><div class="label">Est. årsvärde</div><div class="value pos">3,1 Mkr</div><div class="delta">samlad potential</div></div>
+  <div class="kpi"><div class="label">Nya etableringar</div><div class="value pos">4</div><div class="delta pos">öppnat senaste 30 dgr</div></div>
+</div>
+<table><thead><tr><th>Prospekt</th><th>Typ</th><th>Likhet</th><th>Est. värde/år</th><th>Signal</th></tr></thead><tbody>
+<tr><td>ByggMax Syd</td><td>Kedja</td><td class="pos">94%</td><td>620 tkr</td><td>Ny butik i Malmö</td></tr>
+<tr><td>Verktygsboden Online</td><td>E-handel</td><td class="pos">89%</td><td>540 tkr</td><td>Utökar B2B</td></tr>
+<tr><td>Nordic Workwear AB</td><td>Återförsäljare</td><td class="pos">86%</td><td>410 tkr</td><td>Söker leverantör</td></tr>
+<tr><td>Proffsmagasinet</td><td>Kedja</td><td class="warn">78%</td><td>300 tkr</td><td>Liknar din topp 3-kund</td></tr>
+</tbody></table>
+<p>De fyra högst rankade liknar dina mest lönsamma kunder och visar köpsignaler just nu. Vill du att jag förbereder kontaktunderlag för de tre hetaste?</p>
+<span class="source-pill">🔗 Webbevakning · Salesforce · Branschregister · Allabolag</span>`
+  },
+
+  'Sammanställ alla mina kundkontakter som besök, mail, samtal och videomöten och identifiera vilka typer av aktiviteter som oftast leder till affärer över tid.': {
+    badge: '🚀 Sales',
+    html: `<p>Jag analyserade dina <strong>kontaktpunkter</strong> mot stängda affärer senaste 12 månaderna:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Bäst konvertering</div><div class="value pos">Fysiskt besök</div><div class="delta pos">31% → affär</div></div>
+  <div class="kpi"><div class="label">Snabbast väg</div><div class="value">Besök + video</div><div class="delta pos">26 dgr i snitt</div></div>
+  <div class="kpi"><div class="label">Underutnyttjat</div><div class="value warn">Videomöte</div><div class="delta">du kör få</div></div>
+</div>
+<table><thead><tr><th>Aktivitet</th><th>Antal</th><th>Konvertering</th><th>Tid till affär</th></tr></thead><tbody>
+<tr><td>Fysiskt besök</td><td>64</td><td class="pos">31%</td><td>34 dgr</td></tr>
+<tr><td>Videomöte</td><td>22</td><td class="pos">24%</td><td>26 dgr</td></tr>
+<tr><td>Telefonsamtal</td><td>180</td><td class="warn">9%</td><td>52 dgr</td></tr>
+<tr><td>Mail</td><td>410</td><td class="neg">4%</td><td>71 dgr</td></tr>
+</tbody></table>
+<p><strong>Alma resonerar:</strong> Affärer som inleds med ett fysiskt besök och följs upp med ett videomöte stänger nästan dubbelt så ofta och 40% snabbare. Du kör mycket mail och telefon men få videomöten. Vill du att jag föreslår fem konton där ett videomöte gör störst skillnad?</p>
+<span class="source-pill">🔗 Salesforce-aktiviteter · Google Calendar · Gmail · Teams</span>`
+  },
+
+  'Bevaka när mina befintliga kunder nämns på nätet, i nyheter eller andra källor och ge mig signaler när något händer som kan skapa en anledning att ta kontakt.': {
+    badge: '🚀 Sales',
+    html: `<p>Jag bevakar dina kunder och fångade <strong>5 nya signaler</strong> den här veckan:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Nya signaler</div><div class="value">5</div><div class="delta pos">2 heta</div></div>
+  <div class="kpi"><div class="label">Bevakade kunder</div><div class="value">38</div><div class="delta">av dina 41</div></div>
+  <div class="kpi"><div class="label">Bäst tajming</div><div class="value pos">Nu</div><div class="delta pos">agera inom 48h</div></div>
+</div>
+<table><thead><tr><th>Kund</th><th>Händelse</th><th>Källa</th><th>Föreslagen åtgärd</th></tr></thead><tbody>
+<tr><td>Bygma Group</td><td class="pos">Öppnar 3 nya butiker</td><td>Pressmeddelande</td><td>Grattis + sortimentsförslag</td></tr>
+<tr><td>Ahlsell</td><td class="pos">Ny inköpschef tillträder</td><td>LinkedIn</td><td>Boka intromöte</td></tr>
+<tr><td>Skanska</td><td class="warn">Vinner stort infraprojekt</td><td>Nyheter</td><td>Behov av skydd + verktyg</td></tr>
+<tr><td>Dahl Sverige</td><td>Hållbarhetsrapport publicerad</td><td>Webb</td><td>Matcha mot grönt sortiment</td></tr>
+</tbody></table>
+<p>De två heta signalerna ger en naturlig anledning att höra av sig redan idag. Vill du att jag draftar ett kort mejl för Bygma och Ahlsell?</p>
+<span class="source-pill">🔗 Nyhetsbevakning · LinkedIn · Webb · Salesforce</span>`
+  },
+
+  'Lista kunder där flera säljare från samma företag har haft kontakt, så vi undviker dubbelarbete, intern konkurrens och kannibalisering, och tydliggör vem som äger kundrelationen.': {
+    badge: '🚀 Sales',
+    html: `<p>Jag hittade <strong>4 konton</strong> där flera säljare varit i kontakt med samma företag:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Överlappande konton</div><div class="value warn">4</div><div class="delta neg">risk för dubbelarbete</div></div>
+  <div class="kpi"><div class="label">Berörda säljare</div><div class="value">7</div><div class="delta">på 3 team</div></div>
+  <div class="kpi"><div class="label">Oklart ägarskap</div><div class="value neg">2</div><div class="delta neg">bör tilldelas</div></div>
+</div>
+<table><thead><tr><th>Kund</th><th>Säljare</th><th>Senaste kontakt</th><th>Föreslagen ägare</th></tr></thead><tbody>
+<tr><td>Ahlsell</td><td>Du, M. Ek</td><td>Båda denna vecka</td><td class="warn">Du (störst historik)</td></tr>
+<tr><td>Bygma Group</td><td>S. Lund, A. Wikström</td><td>2 + 9 dgr sedan</td><td class="neg">Ej satt</td></tr>
+<tr><td>Dahl Sverige</td><td>Du, P. Holm</td><td>5 + 12 dgr sedan</td><td class="pos">Du</td></tr>
+</tbody></table>
+<p>För Bygma saknas tydlig ägare och två säljare jobbar parallellt. Vill du att jag föreslår en fördelning och meddelar berörda säljare i CRM:et?</p>
+<span class="source-pill">🔗 Salesforce-aktivitetslogg · Kontoägarskap · Team-struktur</span>`
+  },
+
+  'Analysera vilka produkter och varumärken under Hultafors-paraplyet som passar ihop hos samma kund och ge mig förslag på merförsäljning, till exempel: kunden köper redan brand A men borde även vara relevant för brand B och C.': {
+    badge: '🚀 Sales',
+    html: `<p>Jag korsanalyserade dina kunders inköp mot <strong>Hultafors Group-portföljen</strong>:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Korsförsäljning</div><div class="value pos">12</div><div class="delta pos">tydliga möjligheter</div></div>
+  <div class="kpi"><div class="label">Est. mervärde</div><div class="value pos">1,4 Mkr</div><div class="delta">/år</div></div>
+  <div class="kpi"><div class="label">Bäst matchning</div><div class="value">Snickers → Solid Gear</div><div class="delta pos">87% fit</div></div>
+</div>
+<table><thead><tr><th>Kund</th><th>Köper idag</th><th>Förslag</th><th>Motivering</th></tr></thead><tbody>
+<tr><td>Ahlsell</td><td>Snickers Workwear</td><td class="pos">Solid Gear + Hellberg</td><td>Samma slutkund, kompletterande skydd</td></tr>
+<tr><td>Bygma Group</td><td>Hultafors Tools</td><td class="pos">Snickers + Solid Gear</td><td>Byggsegment köper helhet</td></tr>
+<tr><td>Dahl Sverige</td><td>Solid Gear</td><td class="warn">Wibe Ladders</td><td>VVS-montörer behöver stege</td></tr>
+</tbody></table>
+<p>Starkast möjlighet: Ahlsell köper redan Snickers men inget skydd — Solid Gear och Hellberg passar samma slutkund. Vill du att jag bygger ett paketförslag för Ahlsell?</p>
+<span class="source-pill">🔗 ERP orderhistorik · Produktkatalog · Hultafors Group-portfölj</span>`
+  },
+
+  'Visa nya, växande och trendande produkter kopplade till kundtyp, historisk försäljning och marknadstrender, med konkreta idéer till nästa säljsamtal.': {
+    badge: '🚀 Sales',
+    html: `<p>Här är <strong>produkter som rör på sig</strong> just nu, matchade mot dina kundtyper:</p>
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Trendande</div><div class="value pos">3</div><div class="delta pos">starkt momentum</div></div>
+  <div class="kpi"><div class="label">Snabbast växande</div><div class="value">Skyddsskor</div><div class="delta pos">+18% YoY</div></div>
+  <div class="kpi"><div class="label">Nyheter i sortiment</div><div class="value">7</div><div class="delta">senaste kvartalet</div></div>
+</div>
+<table><thead><tr><th>Produkt</th><th>Kategori</th><th>Trend</th><th>Passar kundtyp</th></tr></thead><tbody>
+<tr><td>Solid Gear Phoenix</td><td>Skyddsskor</td><td class="pos">▲ Het</td><td>Bygg, industri</td></tr>
+<tr><td>Snickers FlexiWork</td><td>Arbetskläder</td><td class="pos">▲ Växande</td><td>Hantverkare</td></tr>
+<tr><td>Hellberg Secure</td><td>Hörselskydd</td><td class="pos">▲ Ny</td><td>Industri, infra</td></tr>
+<tr><td>Hultafors Pro</td><td>Handverktyg</td><td class="warn">▬ Stabil</td><td>Bygg, VVS</td></tr>
+</tbody></table>
+<p><strong>Idé till nästa samtal:</strong> Dina byggkunder köper redan arbetskläder — Solid Gear Phoenix och Hellberg Secure trendar i exakt det segmentet. Vill du att jag tar fram en kort pitch per kundtyp?</p>
+<span class="source-pill">🔗 Produktkatalog · Försäljningsdata · Marknadstrender</span>`
+  },
+
   'Give me a headcount overview by department and location': {
     badge: '👥 HR',
     html: `<p>Here's your current <strong>headcount overview</strong> as of today:</p>
