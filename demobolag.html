@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALMA · Specialists</title>
+<style>
+  :root{
+    --bg:#070b14; --bg2:#0a0f1c; --panel:#0e1525; --panel2:#121a2c; --line:#1d2942;
+    --txt:#e8eef7; --muted:#7e8aa3; --accent:#6f8dff; --accent2:#9b6dff;
+    --green:#36d07a; --blue:#5b8cff; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(900px 500px at 80% -10%,rgba(155,109,255,.10),transparent),var(--bg);color:var(--txt);font-size:14px;line-height:1.55;min-height:100vh}
+  a{color:var(--accent);text-decoration:none}
+  .hide{display:none!important}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  .btn{border:1px solid var(--line);background:var(--panel2);color:var(--txt);padding:9px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+  .btn:hover{border-color:#2c3c5e}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;box-shadow:0 6px 20px rgba(111,141,255,.25)}
+  .btn.sm{padding:6px 12px;font-size:12px}
+  .icon-btn{background:transparent;border:none;width:28px;height:28px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:14px}
+  .icon-btn:hover{color:var(--txt);background:var(--panel2)}
+
+  /* ---------- LANDING (companies) ---------- */
+  .wrap{max-width:900px;margin:0 auto;padding:48px 28px}
+  .co-wrap{max-width:1000px;margin:0 auto;padding:30px 40px 80px}
+  .co-md{min-height:62vh;font-size:13px;line-height:1.6}
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px}
+  .top .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+  .top h1{font-size:18px;margin:0;letter-spacing:.4px}
+  .top small{color:var(--muted);font-size:11.5px;letter-spacing:1px;text-transform:uppercase}
+
+  .co-list{display:flex;flex-direction:column;gap:10px}
+  .co{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:.15s}
+  .co:hover{border-color:#34487a;transform:translateY(-1px)}
+  .co .badge{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
+  .co .info{flex:1}
+  .co .info b{font-size:15px}
+  .co .info small{color:var(--muted);display:block}
+  .co .count{color:var(--muted);font-size:13px}
+  .co .arrow{color:var(--muted);font-size:18px}
+
+  /* ---------- WORKSPACE (sidebar + editor) ---------- */
+  .ws{display:flex;min-height:100vh}
+  .side{width:266px;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .side-head{display:flex;align-items:center;gap:11px;padding:18px 18px 16px}
+  .side-head .logo{width:30px;height:30px;font-size:14px}
+  .side-head .t{font-size:12px;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;font-weight:700}
+  .back{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12.5px;padding:0 18px 12px;cursor:pointer}
+  .back:hover{color:var(--txt)}
+  .new-spec{margin:0 14px 14px;padding:12px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:600;text-align:center;cursor:pointer;font-size:13px;box-shadow:0 6px 20px rgba(111,141,255,.25)}
+  .spec-list{padding:4px 12px;overflow:auto;flex:1}
+  .spec-item{display:flex;align-items:center;gap:11px;padding:12px;border-radius:11px;cursor:pointer;margin-bottom:4px}
+  .spec-item:hover{background:var(--panel)}
+  .spec-item.active{background:var(--panel);box-shadow:inset 2px 0 0 var(--accent)}
+  .spec-item .stat{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .spec-item .stat.off{background:transparent;border:1.5px solid var(--muted)}
+  .spec-item .nm{flex:1}
+  .spec-item .nm b{font-size:13.5px}
+  .spec-item .nm small{color:var(--muted);display:block;font-size:11.5px}
+
+  .editor{flex:1;min-width:0;padding:30px 40px 80px;max-width:1000px}
+  .ed-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .ed-head .kicker{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .ed-title{display:flex;align-items:center;gap:12px;margin:4px 0 26px}
+  .ed-title h2{font-size:24px;margin:0}
+  .pill{font-size:11.5px;padding:4px 11px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .pill.live{color:#7df0ab;background:rgba(54,208,122,.12);border:1px solid #1f5a39}
+  .pill.live .d{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .pill.tenant{color:#a9c0ff;background:rgba(91,140,255,.12);border:1px solid #2c3f6e}
+  .pill.ov{color:#a9c0ff;background:transparent;border:1px solid #2c3f6e;font-weight:600;font-size:10.5px;padding:2px 9px}
+  .req{color:var(--accent2);font-size:11px;font-weight:700;margin-left:6px}
+
+  /* setup card */
+  .cards{margin-bottom:30px;max-width:460px}
+  .nav-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .nav-card .lbl{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:14px}
+  .nav-row{display:flex;align-items:center;gap:12px;padding:8px 6px;border-radius:9px;cursor:pointer;font-weight:600;font-size:14px}
+  .nav-row:hover{background:var(--panel2)}
+  .nav-row.active{background:var(--panel2)}
+  .nav-row .marker{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+  .marker.num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+  .marker.done{background:rgba(54,208,122,.15);color:var(--green);border:1px solid #1f5a39}
+  .marker.todo{background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+
+  .sec-intro{color:var(--muted);margin:0 0 22px;font-size:13.5px}
+  .fld{margin-bottom:24px}
+  .fld .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .fld .head .l{display:flex;align-items:center;gap:9px;font-weight:700;font-size:13.5px}
+  .fld .head .l .key{color:var(--muted);font-weight:500;font-size:12px}
+  .fld .count{color:var(--muted);font-size:11.5px}
+  input,textarea{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--txt);padding:13px 15px;font-size:13.5px;font-family:inherit;line-height:1.55}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{resize:vertical}
+  .fld .help{color:var(--muted);font-size:12px;margin-top:7px}
+  .divider{border-top:1px solid var(--line);margin:30px 0 24px}
+  .sub-label{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+  .sub-intro{color:var(--muted);font-size:12.5px;margin-bottom:20px;max-width:640px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .chip{font-size:12px;padding:6px 13px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:#bcd0ff;cursor:pointer}
+  .chip:hover{border-color:var(--accent)}
+
+  /* workflows / tasks */
+  .task{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .task .ic{width:38px;height:38px;border-radius:10px;background:var(--panel2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .task .tx{flex:1}
+  .task .tx b{font-size:14px}
+  .task .tx small{color:var(--muted);display:block}
+
+  .save-bar{position:sticky;bottom:0;display:flex;justify-content:flex-end;gap:12px;padding:16px 0 0;margin-top:30px;background:linear-gradient(transparent,var(--bg) 40%)}
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:30;align-items:center;justify-content:center}
+  .overlay.open{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:440px;max-width:92vw;padding:22px}
+  .modal h3{margin:0 0 18px;font-size:16px}
+  .modal .fld{margin-bottom:16px}
+  .modal label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px}
+  .icon-pick{width:46px;height:46px;border-radius:11px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#1d7a44;color:#fff;padding:11px 20px;border-radius:11px;font-size:13px;opacity:0;transition:.3s;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;border-bottom:1px solid var(--line);background:var(--bg2)">
+  <div style="display:flex;align-items:center;gap:12px;font-size:13px">
+    <span style="font-size:11px;letter-spacing:1.2px;color:var(--accent2);font-weight:700;text-transform:uppercase;border:1px solid #34306a;border-radius:20px;padding:3px 10px">Admin</span>
+    <span style="color:var(--muted)">/ Demo-bolag</span>
+  </div>
+  <a href="index.html" class="icon-btn" title="Stäng" style="text-decoration:none;font-size:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">✕</a>
+</div>
+<!-- ===================== LANDING: COMPANIES ===================== -->
+<div id="landing">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div><h1>ALMA</h1><small>Admin · Demo-bolag</small></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn" id="newCoBtn">+ Nytt bolag</button>
+        <button class="btn primary" id="uploadBtn">⬆ Ladda upp bolag (.md)</button>
+      </div>
+    </div>
+    <div class="co-list" id="coList"></div>
+    <input type="file" id="fileInput" accept=".md" multiple class="hide">
+  </div>
+</div>
+
+<!-- ===================== WORKSPACE ===================== -->
+<div id="workspace" class="ws hide">
+  <aside class="side">
+    <div class="side-head">
+      <div class="logo">A</div>
+      <div class="t">Specialists</div>
+    </div>
+    <div class="back" id="backBtn">← <span id="backName">Alla bolag</span></div>
+    <div class="new-spec" id="newSpec">+ New specialist</div>
+    <div class="spec-list" id="specList"></div>
+  </aside>
+
+  <main class="editor" id="editor"></main>
+</div>
+
+<!-- ===================== COMPANY EDITOR (full page) ===================== -->
+<div id="companyEditor" class="hide">
+  <div class="co-wrap">
+    <div class="back" id="coBack" style="padding:0 0 18px">← <span>Alla bolag</span></div>
+    <div class="ed-head"><div class="kicker">Bolag</div></div>
+    <div class="ed-title"><h2 id="coTitle">Redigera bolag</h2></div>
+    <div class="fld" style="max-width:520px">
+      <div class="head"><div class="l">Bolagsnamn</div></div>
+      <input id="coName" placeholder="Bolagsnamn">
+    </div>
+    <div class="fld" style="max-width:520px">
+      <div class="head"><div class="l">Beskrivning</div></div>
+      <input id="coDesc" placeholder="Kort beskrivning">
+    </div>
+    <div class="fld">
+      <div class="head"><div class="l">Innehåll (.md)</div><div class="count" id="coMdCount"></div></div>
+      <textarea id="coMd" class="mono co-md" placeholder="# Faktablad..."></textarea>
+      <div class="help">Hela faktabladet/datafilen för bolaget. Redigera direkt här och spara.</div>
+    </div>
+    <div class="save-bar">
+      <button class="btn" id="coCancel">Avbryt</button>
+      <button class="btn primary" id="coSave">Spara</button>
+    </div>
+  </div>
+</div>
+
+<!-- New task modal -->
+<div class="overlay" id="taskOverlay">
+  <div class="modal">
+    <h3>New task</h3>
+    <div class="fld"><label>Icon</label><div class="icon-pick" id="taskIcon">📄</div></div>
+    <div class="fld"><label>Title</label><input id="taskTitle" placeholder="e.g. Weekly Summary"></div>
+    <div class="fld"><label>Description</label><input id="taskDesc" placeholder="Short description..."></div>
+    <div class="fld"><label>Prompt</label><textarea id="taskPrompt" rows="3" placeholder="The prompt sent to the Specialist when clicked (defaults to title)"></textarea></div>
+    <div class="modal-foot">
+      <button class="btn" id="taskCancel">Cancel</button>
+      <button class="btn primary" id="taskAdd">Add</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---------------- Data ----------------
+const companies = [
+  {id:"hg", code:"HG", color:"#c4622d", name:"Hultafors Group", desc:"House of brands · 17 varumärken",
+   md:`# Hultafors Group — Faktablad\n\n*Version 1.1 · 2026-06-26*\n\n## 1. Bolagsöversikt\n\n| Uppgift | Värde |\n|---|---|\n| Bolag | Hultafors Group AB |\n| Huvudkontor | Bollebygd, Sverige |\n| Ägare | Investment AB Latour (helägt) |\n| VD | Anders Hülse |\n| CFO | Ida Saalman |\n| Antal varumärken | 17 |\n| Affärsmodell | House of brands, decentraliserad |\n\n## 2. Varumärkesportfölj\n\nWorkwear (~48%): Snickers, Fristads, Kansas, Leijona, EripioWear, Lyngsøe\nFootwear (~14%): Solid Gear, EMMA\nHand tools (~18%): Hultafors, Johnson Level, Martinez, CLC, Kuny's\nPersonal Protection (~7%): Hellberg Safety\nEquipment (~13%): Scangrip, Telesteps, W.steps\n\n## 3. Ekonomi\n\nNettoomsättning 2025: ca 9 800 MSEK, EBITA-marginal 14,1%.`},
+  {id:"stv",code:"ST", color:"#2d7dc4", name:"Stenvik", desc:"Industri · demobolag",
+   md:`# Stenvik — Faktablad\n\n*Version 1.0*\n\nIndustribolag (demobolag). Tillverkar komponenter.\nNettoomsättning ca 2 400 MSEK.\nVD: (TBD). CFO: (TBD).`},
+  {id:"sc", code:"SC", color:"#b14fb0", name:"Scandinavian Cosmetics", desc:"Distribution · pilot",
+   md:`# Scandinavian Cosmetics — Faktablad\n\n*Version 1.0*\n\nDistributör av premiumkosmetik i Norden.\n23 kunder konsoliderade i masterdata.`},
+  {id:"bje",code:"BE", color:"#3fae8f", name:"Bjärsdal Energi", desc:"Energi · demobolag",
+   md:`# Bjärsdal Energi — Faktablad\n\n*Version 1.0*\n\nRegionalt energibolag (demobolag).`},
+];
+
+const presets = ["Finance analyst","Legal reviewer","HR helper","Support triage","Sales rep","Marketing copywriter","Research analyst","Tutor / onboarding","Engineering buddy","Start blank"];
+
+function mkSpec(o){return Object.assign({
+  displayName:"", tagline:"", greeting:"",
+  basePrompt:"", prePrompt:"", tone:"", safety:"",
+  webHint:"", thinkHint:"", researchHint:"",
+  tasks:[], live:true, role:"specialist"
+},o);}
+
+const specialists = {
+  hg:[
+    mkSpec({id:1,name:"Penny (Financial)",role:"analytics",live:true,
+      displayName:"Penny (Financial)",
+      tagline:"Real-time data analytics and forecasting",
+      greeting:"Hi! I'm Penny, your financial analytics specialist. What would you like to analyse today?",
+      basePrompt:"You are Penny, a senior financial analyst at ALMA. Your responsibility is to turn raw financial data into clear, decision-ready insight for executives and operators. Work from the numbers provided, reason transparently, and surface the assumption behind every projection.",
+      prePrompt:"Prioritise the current fiscal quarter. When a figure is uncertain, state the confidence level rather than rounding it away.",
+      tone:"Respond in a concise, executive-friendly style. Lead with the headline number, then the supporting detail. Avoid jargon and keep paragraphs short.",
+      safety:"Do not provide specific investment advice. Do not speculate beyond the available data. Flag any figure below medium confidence.",
+      webHint:"Prefer sources from the last 12 months. Cite the publication and date alongside every external figure.",
+      thinkHint:"Break multi-part forecasting questions into explicit steps before answering.",
+      researchHint:"Investigate across filings, market data and internal reports, then cite each source inline.",
+      tasks:[
+        {icon:"📊",title:"Pipeline value in kr",desc:"Konsoliderat och per brand/region",prompt:"Sätt kronvärde på pipeline, konsoliderat och per brand."},
+        {icon:"📈",title:"Run-rate & forecast",desc:"Rullande 12 mån, tre scenarier",prompt:"Visa run-rate och rullande forecast i tre scenarier."},
+      ]}),
+    mkSpec({id:2,name:"Harvey",role:"sales",live:true,
+      displayName:"Harvey",tagline:"Sälj-motor över och inom varumärken",
+      greeting:"Hej! Jag är Harvey. Vad vill du driva i sälj idag?",
+      basePrompt:"Du är Harvey, sälj-specialist hos Hultafors Group. Du driver topline inom och mellan varumärken.",
+      prePrompt:"Var konkret i kronor och åtgärder. Hänvisa till Miras fit-scores som evidens.",
+      tone:"Action-fokuserad. Lista nästa steg tydligt.", safety:"Hitta aldrig på kunder eller intäkter.",
+      tasks:[{icon:"🎯",title:"Topp 20-ranking",desc:"Säljare över vald period",prompt:"Rangordna säljare med gap till topp-20."}]}),
+    mkSpec({id:3,name:"Mira",role:"pattern",live:true,
+      displayName:"Mira",tagline:"Köpmönster & fit-scores",
+      greeting:"Hej, jag är Mira. Vilket mönster vill du utforska?",
+      basePrompt:"Du är Mira, pattern/insight-specialist. Du letar köpmönster som kan kopieras eller stärkas.",
+      prePrompt:"Var transparent med metodik: modell, population, confidence.",
+      tone:"Evidensdriven. Visa n och confidence.", safety:"Producera mönster, inte exekvering.",
+      tasks:[]}),
+    mkSpec({id:4,name:"James",role:"personal",live:false,
+      displayName:"James",tagline:"Personal assistant (M365)",
+      greeting:"Hi! I'm James. How can I help today?",
+      basePrompt:"You are James, a personal assistant working across Microsoft 365.",
+      prePrompt:"Be concise and helpful.", tone:"Friendly, brief.", safety:"Respect data access levels.",
+      tasks:[]}),
+  ],
+  stv:[
+    mkSpec({id:5,name:"Winston",role:"analyst",live:true,displayName:"Winston",tagline:"Operations insight",greeting:"Hej, jag är Winston.",basePrompt:"Du är Winston, operations-specialist.",tasks:[]}),
+    mkSpec({id:6,name:"Evelyn",role:"sales",live:true,displayName:"Evelyn",tagline:"Offert & värdebevis",greeting:"Hej, jag är Evelyn.",basePrompt:"Du är Evelyn. Du genererar offerter.",tasks:[]}),
+  ],
+  sc:[ mkSpec({id:7,name:"Penny (Financial)",role:"analytics",live:true,displayName:"Penny (Financial)",tagline:"Financial analytics",greeting:"Hi! I'm Penny.",basePrompt:"You are Penny, financial analyst.",tasks:[]}) ],
+  bje:[],
+};
+
+let currentCompany=null, currentSpec=null, activeSection="identity";
+
+// ---------------- Toast ----------------
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2000);}
+
+// ---------------- Landing ----------------
+function renderLanding(){
+  const el=document.getElementById("coList");el.innerHTML="";
+  companies.forEach(c=>{
+    const n=(specialists[c.id]||[]).length;
+    const d=document.createElement("div");d.className="co";
+    d.innerHTML=`<div class="badge" style="background:${c.color}">${c.code}</div>
+      <div class="info"><b>${c.name}</b><small>${c.desc}</small></div>
+      <div class="count">${n} specialist${n===1?"":"er"}</div>
+      <button class="icon-btn" data-edit title="Redigera bolag">✎</button>
+      <button class="icon-btn" data-del title="Ta bort bolag">🗑</button>
+      <div class="arrow">›</div>`;
+    d.querySelector("[data-edit]").addEventListener("click",e=>{e.stopPropagation();openCompanyModal(c.id);});
+    d.querySelector("[data-del]").addEventListener("click",e=>{e.stopPropagation();
+      if(confirm("Ta bort "+c.name+" och dess specialister?")){
+        const i=companies.findIndex(x=>x.id===c.id);companies.splice(i,1);delete specialists[c.id];renderLanding();toast(c.name+" borttaget");
+      }});
+    d.addEventListener("click",()=>openCompany(c.id));
+    el.appendChild(d);
+  });
+}
+document.getElementById("uploadBtn").addEventListener("click",()=>document.getElementById("fileInput").click());
+document.getElementById("fileInput").addEventListener("change",()=>toast("Bolag tolkat och importerat ✓"));
+
+// ---------------- Create / edit company (full page) ----------------
+let editingCompany=null, creatingCompany=false;
+const coMd=document.getElementById("coMd");
+const coPalette=["#c4622d","#2d7dc4","#b14fb0","#3fae8f","#5b8cff","#7c5cff","#d29922","#3fb950"];
+function showCompanyEditor(){
+  updateMdCount();
+  document.getElementById("landing").classList.add("hide");
+  document.getElementById("companyEditor").classList.remove("hide");
+  window.scrollTo(0,0);
+}
+function openCompanyModal(cid){   // edit existing
+  creatingCompany=false;
+  editingCompany=companies.find(c=>c.id===cid);
+  document.getElementById("coTitle").textContent="Redigera — "+editingCompany.name;
+  document.getElementById("coName").value=editingCompany.name;
+  document.getElementById("coDesc").value=editingCompany.desc;
+  coMd.value=editingCompany.md||"";
+  showCompanyEditor();
+}
+function openCompanyCreate(){     // create new
+  creatingCompany=true;editingCompany=null;
+  document.getElementById("coTitle").textContent="Nytt bolag";
+  document.getElementById("coName").value="";
+  document.getElementById("coDesc").value="";
+  coMd.value="";
+  showCompanyEditor();
+}
+document.getElementById("newCoBtn").addEventListener("click",openCompanyCreate);
+function closeCompanyEditor(){
+  document.getElementById("companyEditor").classList.add("hide");
+  document.getElementById("landing").classList.remove("hide");
+  renderLanding();
+}
+function updateMdCount(){document.getElementById("coMdCount").textContent=coMd.value.length+" tecken";}
+coMd.addEventListener("input",updateMdCount);
+document.getElementById("coBack").addEventListener("click",closeCompanyEditor);
+document.getElementById("coCancel").addEventListener("click",closeCompanyEditor);
+document.getElementById("coSave").addEventListener("click",()=>{
+  const nm=document.getElementById("coName").value.trim();
+  const desc=document.getElementById("coDesc").value.trim();
+  if(creatingCompany){
+    if(!nm){document.getElementById("coName").focus();return;}
+    const id="c"+Date.now();
+    const code=nm.replace(/[^A-Za-zÅÄÖåäö ]/g,"").split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase()||"NY";
+    const color=coPalette[companies.length%coPalette.length];
+    companies.push({id,code,color,name:nm,desc,md:coMd.value});
+    specialists[id]=[];
+    toast(nm+" skapat ✓");
+  } else {
+    editingCompany.name=nm||editingCompany.name;
+    editingCompany.desc=desc;
+    editingCompany.md=coMd.value;
+    toast(editingCompany.name+" sparat ✓");
+  }
+  closeCompanyEditor();
+});
+
+// ---------------- Workspace ----------------
+function openCompany(cid){
+  currentCompany=cid;
+  document.getElementById("landing").classList.add("hide");
+  document.getElementById("workspace").classList.remove("hide");
+  document.getElementById("backName").textContent=companies.find(c=>c.id===cid).name;
+  renderSpecList();
+  const list=specialists[cid]||[];
+  if(list.length){openSpec(list[0].id);}else{document.getElementById("editor").innerHTML='<div style="color:var(--muted);padding:60px 0">Inga specialister för det här bolaget än. Klicka <b>+ New specialist</b>.</div>';}
+  window.scrollTo(0,0);
+}
+document.getElementById("backBtn").addEventListener("click",()=>{
+  document.getElementById("workspace").classList.add("hide");
+  document.getElementById("landing").classList.remove("hide");
+  renderLanding();
+});
+
+function renderSpecList(){
+  const el=document.getElementById("specList");el.innerHTML="";
+  (specialists[currentCompany]||[]).forEach(s=>{
+    const d=document.createElement("div");d.className="spec-item"+(currentSpec&&s.id===currentSpec.id?" active":"");
+    d.innerHTML=`<span class="stat ${s.live?"":"off"}"></span>
+      <div class="nm"><b>${s.displayName||s.name}</b><small>${s.role}</small></div>
+      <button class="icon-btn" title="Redigera">✎</button>
+      <button class="icon-btn" title="Ta bort">🗑</button>`;
+    const [edit,del]=d.querySelectorAll(".icon-btn");
+    edit.addEventListener("click",e=>{e.stopPropagation();openSpec(s.id);});
+    del.addEventListener("click",e=>{e.stopPropagation();if(confirm("Ta bort "+(s.displayName||s.name)+"?")){specialists[currentCompany]=specialists[currentCompany].filter(x=>x.id!==s.id);renderSpecList();const l=specialists[currentCompany];if(l.length)openSpec(l[0].id);else document.getElementById("editor").innerHTML="";}});
+    d.addEventListener("click",()=>openSpec(s.id));
+    el.appendChild(d);
+  });
+}
+document.getElementById("newSpec").addEventListener("click",()=>{
+  const ids=Object.values(specialists).flat().map(s=>s.id);
+  const id=Math.max(0,...ids)+1;
+  const ns=mkSpec({id,name:"New specialist",role:"specialist",live:false,displayName:"New specialist",greeting:"Hi! How can I help?"});
+  specialists[currentCompany].push(ns);renderSpecList();openSpec(id);activeSection="identity";renderEditor();
+});
+
+// ---------------- Editor ----------------
+function openSpec(id){
+  currentSpec=(specialists[currentCompany]||[]).find(s=>s.id===id);
+  activeSection="identity";
+  renderSpecList();renderEditor();window.scrollTo(0,0);
+}
+
+function navCards(){
+  const item=(sec,markerHtml,label)=>`<div class="nav-row ${activeSection===sec?"active":""}" data-sec="${sec}"><div class="marker ${markerHtml.cls}">${markerHtml.txt}</div>${label}</div>`;
+  const m=(sec,num)=>activeSection===sec?{cls:"num",txt:num}:{cls:"done",txt:"✓"};
+  return `<div class="cards">
+    <div class="nav-card">
+      <div class="lbl">Setup</div>
+      ${item("identity",m("identity","1"),"Identity")}
+      ${item("prompt",m("prompt","2"),"Prompt")}
+      ${item("workflows",m("workflows","3"),"Workflows")}
+    </div>
+  </div>`;
+}
+
+function field(label,key,val,count,help,opts={}){
+  const ov=opts.req?`<span class="req">Required</span>`:"";
+  const keytag=opts.key?`<span class="key mono">${opts.key}</span>`:"";
+  const tag=opts.input
+    ? `<input data-key="${key}" value="${(val||"").replace(/"/g,"&quot;")}">`
+    : `<textarea data-key="${key}" rows="${opts.rows||3}">${val||""}</textarea>`;
+  return `<div class="fld">
+    <div class="head"><div class="l">${label}${ov} ${keytag}</div><div class="count" data-count="${key}">${(val||"").length} / ${count}</div></div>
+    ${tag}
+    ${help?`<div class="help">${help}</div>`:""}
+  </div>`;
+}
+
+function renderEditor(){
+  const s=currentSpec;if(!s){document.getElementById("editor").innerHTML="";return;}
+  let body="";
+  if(activeSection==="identity"){
+    body=`<p class="sec-intro">How this specialist is named, presented, and recognised in the chat surface.</p>
+      ${field("Display Name","displayName",s.displayName,200,"Shown as the specialist name throughout the app.",{input:true,req:true})}
+      ${field("Tagline","tagline",s.tagline,200,"Shown as the subtitle in the chat specialist picker.",{input:true})}
+      ${field("Greeting Message","greeting",s.greeting,300,"Shown to the user when a conversation with this specialist opens.",{rows:2})}`;
+  } else if(activeSection==="prompt"){
+    body=`<p class="sec-intro">The prompts, tone, and contextual hints that define how this specialist reasons and responds.</p>
+      ${field("Base Prompt","basePrompt",s.basePrompt,8000,"Foundational system prompt. Leave empty to fall back to the system default.",{rows:4})}
+      ${field("Pre-Prompt (Description)","prePrompt",s.prePrompt,1000,"Appended after the base prompt for tenant-specific context.",{rows:2})}
+      <div class="chips" id="presetChips">${presets.map(p=>`<span class="chip" data-preset="${p}">${p}</span>`).join("")}</div>
+      <div style="height:18px"></div>
+      ${field("Business Tone","tone",s.tone,8000,"Shapes the communication style of responses.",{rows:2})}
+      ${field("Safety Constraints","safety",s.safety,8000,"Refusal and constraint rules that limit scope.",{rows:2})}
+      <div class="divider"></div>
+      <div class="sub-label">Contextual tool hints</div>
+      <p class="sub-intro">Injected as extra context only when the matching tool is activated — per-specialist tuning without changing the global tool definitions.</p>
+      ${field("Web Search Hint","webHint",s.webHint,8000,"",{rows:2,key:"webSearchHint"})}
+      ${field("Think Deeper Hint","thinkHint",s.thinkHint,8000,"",{rows:2,key:"thinkDeeperHint"})}
+      ${field("Deep Research Hint","researchHint",s.researchHint,8000,"",{rows:2,key:"deepResearchHint"})}`;
+  } else {
+    const tasks=s.tasks.map((t,i)=>`<div class="task">
+        <div class="ic">${t.icon||"📄"}</div>
+        <div class="tx"><b>${t.title}</b><small>${t.desc||t.prompt||""}</small></div>
+        <button class="icon-btn" data-edittask="${i}" title="Redigera">✎</button>
+        <button class="icon-btn" data-deltask="${i}" title="Ta bort">🗑</button>
+      </div>`).join("");
+    body=`<p class="sec-intro">Tasks shown as one-click prompts in the chat surface for this specialist.</p>
+      ${tasks||'<div style="color:var(--muted);margin-bottom:14px">Inga tasks än.</div>'}
+      <button class="btn sm" id="addTask" style="margin-top:6px">+ New task</button>`;
+  }
+
+  document.getElementById("editor").innerHTML=`
+    <div class="ed-head"><div class="kicker">Specialist Creator</div></div>
+    <div class="ed-title">
+      <h2>Edit — ${s.displayName||s.name}</h2>
+    </div>
+    ${navCards()}
+    ${body}
+    <div class="save-bar">
+      <button class="btn" id="cancelBtn">Avbryt</button>
+      <button class="btn primary" id="saveBtn">Spara</button>
+    </div>`;
+
+  // wire section nav
+  document.querySelectorAll(".nav-row").forEach(r=>r.addEventListener("click",()=>{collect();activeSection=r.dataset.sec;renderEditor();}));
+  // live counters
+  document.querySelectorAll("[data-key]").forEach(inp=>{
+    inp.addEventListener("input",()=>{const c=document.querySelector(`[data-count="${inp.dataset.key}"]`);if(c)c.textContent=inp.value.length+" / "+c.textContent.split("/")[1].trim();});
+  });
+  // presets
+  const pc=document.getElementById("presetChips");
+  if(pc)pc.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
+    const ta=document.querySelector('[data-key="prePrompt"]');
+    const map={"Finance analyst":"Prioritise the current fiscal quarter. State confidence when a figure is uncertain.","Start blank":""};
+    ta.value=map[ch.dataset.preset]!==undefined?map[ch.dataset.preset]:("Act as a "+ch.dataset.preset.toLowerCase()+".");
+    ta.dispatchEvent(new Event("input"));
+  }));
+  // tasks
+  const at=document.getElementById("addTask");if(at)at.addEventListener("click",()=>openTaskModal());
+  document.querySelectorAll("[data-edittask]").forEach(b=>b.addEventListener("click",()=>openTaskModal(+b.dataset.edittask)));
+  document.querySelectorAll("[data-deltask]").forEach(b=>b.addEventListener("click",()=>{s.tasks.splice(+b.dataset.deltask,1);renderEditor();}));
+  // save / cancel
+  document.getElementById("saveBtn").addEventListener("click",()=>{collect();renderSpecList();toast((s.displayName||s.name)+" sparad ✓");});
+  document.getElementById("cancelBtn").addEventListener("click",()=>openSpec(s.id));
+}
+
+function collect(){
+  if(!currentSpec)return;
+  document.querySelectorAll("[data-key]").forEach(inp=>{currentSpec[inp.dataset.key]=inp.value;});
+  currentSpec.name=currentSpec.displayName||currentSpec.name;
+}
+
+// ---------------- Task modal ----------------
+const tOverlay=document.getElementById("taskOverlay");let editingTaskIndex=null;
+function openTaskModal(index){
+  editingTaskIndex=(typeof index==="number")?index:null;
+  const t=editingTaskIndex!==null?currentSpec.tasks[editingTaskIndex]:{icon:"📄",title:"",desc:"",prompt:""};
+  tOverlay.querySelector("h3").textContent=editingTaskIndex!==null?"Edit task":"New task";
+  document.getElementById("taskIcon").textContent=t.icon||"📄";
+  document.getElementById("taskTitle").value=t.title||"";
+  document.getElementById("taskDesc").value=t.desc||"";
+  document.getElementById("taskPrompt").value=t.prompt||"";
+  document.getElementById("taskAdd").textContent=editingTaskIndex!==null?"Spara":"Add";
+  tOverlay.classList.add("open");
+}
+function closeTaskModal(){tOverlay.classList.remove("open");}
+document.getElementById("taskCancel").addEventListener("click",closeTaskModal);
+tOverlay.addEventListener("click",e=>{if(e.target===tOverlay)closeTaskModal();});
+document.getElementById("taskAdd").addEventListener("click",()=>{
+  const title=document.getElementById("taskTitle").value.trim();
+  if(!title){document.getElementById("taskTitle").focus();return;}
+  const data={icon:document.getElementById("taskIcon").textContent,title,desc:document.getElementById("taskDesc").value.trim(),prompt:document.getElementById("taskPrompt").value.trim()};
+  if(editingTaskIndex!==null){currentSpec.tasks[editingTaskIndex]=data;toast("Task uppdaterad");}
+  else{currentSpec.tasks.push(data);toast("Task tillagd");}
+  closeTaskModal();renderEditor();
+});
+
+// ---------------- Init ----------------
+renderLanding();
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
