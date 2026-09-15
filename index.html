@@ -572,24 +572,124 @@
       margin-bottom: 24px; margin-top: 4px;
       transition: border-color 0.2s;
       flex-shrink: 0;
+      position: relative;
     }
     .home-input-wrap:focus-within { border-color: rgba(194,109,230,0.4); }
-    .home-input-plus {
-      color: var(--text-muted); font-size: 18px; flex-shrink: 0;
-      line-height: 1; margin-right: 2px;
-    }
-    .home-input-field {
-      flex: 1; background: none; border: none; outline: none;
-      color: var(--text-primary); font-size: 14px; font-family: inherit;
-    }
-    .home-input-field::placeholder { color: var(--text-muted); }
-    .home-input-icon-btn {
+    .home-input-attach-btn {
       background: none; border: none; color: var(--text-muted);
       cursor: pointer; padding: 4px; border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
       transition: color 0.15s; flex-shrink: 0;
     }
-    .home-input-icon-btn:hover { color: rgba(255,255,255,0.8); }
+    .home-input-attach-btn:hover { color: rgba(255,255,255,0.8); }
+    .home-input-field {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text-primary); font-size: 14px; font-family: inherit;
+    }
+    .home-input-field::placeholder { color: var(--text-muted); }
+    .home-input-file-chip {
+      display: none; align-items: center; gap: 6px; flex-shrink: 0;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text-secondary); font-size: 11.5px;
+      padding: 4px 6px 4px 9px; border-radius: 20px; max-width: 140px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .home-input-file-chip.show { display: flex; }
+    .home-input-file-chip .file-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .home-input-file-chip .file-chip-remove {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 12px; padding: 0 2px; flex-shrink: 0;
+      line-height: 1;
+    }
+    .home-input-file-chip .file-chip-remove:hover { color: rgba(255,255,255,0.85); }
+    /* Web search — toned down at rest so it clearly reads as off; only turns bold once active */
+    .home-input-websearch-btn {
+      display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+      background: none; border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted); font-size: 12px; font-family: inherit;
+      cursor: pointer; padding: 6px 12px; border-radius: 20px;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .home-input-websearch-btn svg { flex-shrink: 0; }
+    .home-input-websearch-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: rgba(255,255,255,0.75); }
+    .home-input-websearch-btn.active { background: rgba(38,101,226,0.22); color: #7ba8ff; border-color: rgba(123,168,255,0.55); }
+    .home-input-websearch-btn .wsck { display: none; font-size: 11px; }
+    .home-input-websearch-btn.active .wsck { display: inline; }
+
+    /* Subtle mode selector — low-contrast so it doesn't compete with Web search */
+    .home-mode-wrap { position: relative; flex-shrink: 0; }
+    .home-mode-btn {
+      display: flex; align-items: center; gap: 4px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 12px; font-family: inherit; cursor: pointer;
+      padding: 5px 6px; border-radius: 7px; white-space: nowrap;
+      transition: color 0.15s, background 0.15s;
+    }
+    .home-mode-btn:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+
+    .home-mode-panel {
+      display: none; position: absolute;
+      bottom: calc(100% + 10px); right: 0;
+      background: #131830; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 12px; width: 220px;
+      z-index: 60; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .home-mode-panel.show { display: block; }
+    .home-mode-slider {
+      width: 100%; margin: 4px 0 6px; accent-color: #2665E2;
+    }
+    .home-mode-ticks {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--text-muted); padding: 0 1px 10px;
+    }
+    .home-mode-ticks span.active { color: var(--text-primary); font-weight: 500; }
+    .home-advanced-toggle {
+      display: flex; align-items: center; gap: 4px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 12px; font-family: inherit; cursor: pointer;
+      padding: 4px 2px; width: 100%;
+    }
+    .home-advanced-toggle:hover { color: rgba(255,255,255,0.85); }
+    .home-advanced-toggle svg { transition: transform 0.15s; }
+    .home-advanced-toggle.open svg { transform: rotate(180deg); }
+    .home-advanced-body { display: none; padding-top: 6px; }
+    .home-advanced-body.show { display: block; }
+    .home-adv-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 8px; border-radius: 8px; cursor: pointer;
+      font-size: 12px; color: var(--text-secondary);
+      transition: background 0.15s;
+    }
+    .home-adv-row:hover { background: rgba(255,255,255,0.06); }
+    .home-adv-row-value { display: flex; align-items: center; gap: 4px; color: var(--text-muted); }
+
+    .home-model-flyout {
+      display: none; position: absolute;
+      left: calc(100% + 8px); bottom: 0;
+      background: #131830; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 6px; width: 190px;
+      z-index: 61; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .home-model-flyout.show { display: block; }
+    .home-model-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; border-radius: 8px; cursor: pointer;
+      font-size: 12.5px; color: var(--text-primary);
+      transition: background 0.15s;
+    }
+    .home-model-option:hover { background: rgba(255,255,255,0.06); }
+    .home-model-option .check { color: #7ba8ff; font-size: 12px; visibility: hidden; }
+    .home-model-option.active .check { visibility: visible; }
+
+    .home-input-send-btn {
+      background: #fff; border: none; border-radius: 50%;
+      width: 30px; height: 30px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: opacity 0.15s; padding: 0;
+      color: #0d0f1a;
+    }
+    .home-input-send-btn:hover { opacity: 0.85; }
 
     /* Onboarding video */
     .onboarding-section {
@@ -785,6 +885,65 @@
     .uc-edit-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
 
     /* ─── CHAT MESSAGES ─── */
+    /* ─── OTC REPORT VIEW ─── */
+    .report-view {
+      flex: 1; overflow-y: auto; display: none;
+      padding: 28px 40px 40px; position: relative; z-index: 5;
+    }
+    .report-view.show { display: block; }
+    .rv-inner { max-width: 1400px; margin: 0 auto; }
+    .rv-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .rv-sub { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+    .rv-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 18px;
+    }
+    .rv-card-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 12px; }
+    .rv-filters { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .rv-filter label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+    .rv-filter select {
+      background: #0d0f1a; color: var(--text-primary); border: 1px solid var(--input-border);
+      border-radius: 7px; padding: 7px 28px 7px 10px; font-size: 13px; font-family: inherit;
+      outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238891b5' stroke-width='2.5'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat; background-position: right 9px center;
+    }
+    .rv-filter select:focus { border-color: rgba(194,109,230,0.5); }
+    .rv-dl-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #16a34a; color: #fff; border: none; border-radius: 7px;
+      padding: 8px 14px; font-size: 12.5px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .rv-dl-btn:hover { background: #15803d; }
+    .rv-crumb { font-size: 12px; color: var(--text-muted); margin: -4px 0 16px; }
+    .rv-table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
+    .rv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .rv-table th {
+      text-align: right; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 600; padding: 9px 12px;
+      background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08);
+      white-space: nowrap;
+    }
+    .rv-table th:first-child, .rv-table td:first-child { text-align: left; }
+    .rv-table td {
+      padding: 8px 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .rv-table td:first-child { color: #fff; font-weight: 600; }
+    .rv-table tbody tr:hover td { background: rgba(255,255,255,0.025); }
+    .rv-table tr.rv-total td { font-weight: 700; color: #fff; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: none; background: rgba(255,255,255,0.02); }
+    .rv-up { color: #22c55e !important; font-weight: 600; }
+    .rv-down { color: #f87171 !important; font-weight: 600; }
+    .rv-na { color: var(--text-muted) !important; }
+    .rv-toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #131830; border: 1px solid rgba(255,255,255,0.14); color: var(--text-primary);
+      padding: 10px 16px; border-radius: 10px; font-size: 13px; z-index: 200;
+      opacity: 0; transition: all 0.25s; pointer-events: none; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .rv-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     .chat-messages {
       flex: 1;
       overflow-y: auto;
@@ -907,15 +1066,17 @@
     }
 
     .cap-btn {
-      display: flex; align-items: center; gap: 5px;
-      background: none; border: none;
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: 1px solid rgba(255,255,255,0.14);
       color: var(--text-muted); font-size: 12px;
-      cursor: pointer; padding: 5px 9px; border-radius: 20px;
-      transition: background 0.15s, color 0.15s;
+      cursor: pointer; padding: 7px 12px; border-radius: 20px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
-    .cap-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-secondary); }
-    .cap-btn.active { background: rgba(38,101,226,0.2); color: #7ba8ff; }
+    .cap-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-secondary); border-color: rgba(255,255,255,0.24); }
+    .cap-btn.active { background: rgba(38,101,226,0.2); color: #7ba8ff; border-color: rgba(123,168,255,0.5); }
     .cap-btn .cap-icon { font-size: 13px; }
+    .cap-btn .cap-check { display: none; font-size: 11px; margin-left: -2px; }
+    .cap-btn.active .cap-check { display: inline; }
 
     .input-actions {
       display: flex; align-items: center; gap: 6px;
@@ -3140,14 +3301,64 @@
 
     <!-- Home chat input -->
     <div class="home-input-wrap">
-      <span class="home-input-plus">+</span>
-      <input class="home-input-field" id="homeInput" placeholder="New chat with James…"
-        onkeydown="if(event.key==='Enter'&&this.value.trim()){sendPrompt(this.value.trim());this.value='';}">
-      <button class="home-input-icon-btn" title="Voice">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <button class="home-input-attach-btn" type="button" title="Attach files" onclick="document.getElementById('homeFileInput').click()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.2 9.19a1.5 1.5 0 0 1-2.12-2.12l8.49-8.48"/></svg>
       </button>
-      <button class="home-input-icon-btn" title="Search">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <input type="file" id="homeFileInput" style="display:none" onchange="onHomeFileSelected(this)">
+      <input class="home-input-field" id="homeInput" placeholder="How can I help you today? (AI Agent)"
+        onkeydown="if(event.key==='Enter'&&this.value.trim()){sendPrompt(this.value.trim());this.value='';}">
+      <span class="home-input-file-chip" id="homeFileChip">
+        <span class="file-chip-name" id="homeFileChipName"></span>
+        <button class="file-chip-remove" type="button" title="Remove file" onclick="clearHomeFile(event)">✕</button>
+      </span>
+
+      <button class="home-input-websearch-btn" type="button" id="homeWebSearchBtn"
+        onclick="toggleHomeWebSearch(this,event)"
+        title="Off by default — turn on to search the live web for up-to-date information">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>
+        Web search <span class="wsck">✓</span>
+      </button>
+
+      <div class="home-mode-wrap">
+        <button class="home-mode-btn" type="button" onclick="toggleHomeModePanel(event)" title="Response mode and model">
+          <span id="homeModeLabel">Fast</span>
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <div class="home-mode-panel" id="homeModePanel">
+          <input type="range" class="home-mode-slider" id="homeModeSlider" min="0" max="2" step="1" value="0"
+            oninput="onHomeModeSlide(this.value)">
+          <div class="home-mode-ticks">
+            <span class="active" data-mode="Fast">Fast</span>
+            <span data-mode="Thinking">Thinking</span>
+            <span data-mode="Research">Research</span>
+          </div>
+
+          <button class="home-advanced-toggle" type="button" id="homeAdvancedToggle" onclick="toggleHomeAdvanced(event)">
+            Advanced
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="home-advanced-body" id="homeAdvancedBody">
+            <div class="home-adv-row" onclick="toggleHomeModelFlyout(event)">
+              <span>Model</span>
+              <span class="home-adv-row-value">
+                <span id="homeModelLabel">GPT-5.4</span>
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <div class="home-model-flyout" id="homeModelFlyout">
+            <div class="home-model-option active" onclick="selectHomeModel(this,'GPT-5.4')">GPT-5.4 <span class="check">✓</span></div>
+            <div class="home-model-option" onclick="selectHomeModel(this,'Claude Opus 4.6')">Claude Opus 4.6 <span class="check">✓</span></div>
+            <div class="home-model-option" onclick="selectHomeModel(this,'Gemini 2.5 Pro')">Gemini 2.5 Pro <span class="check">✓</span></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="home-input-send-btn" type="button" title="Press Enter to send" onclick="sendHomePrompt()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
       </button>
     </div>
 
@@ -3310,31 +3521,34 @@
 
   </div>
 
+  <!-- Report view (opened from a task, e.g. OTC report) -->
+  <div class="report-view" id="reportView"></div>
+
   <!-- Chat messages -->
   <div class="chat-messages" id="chatMessages"></div>
 
   <!-- Input -->
   <div class="input-area">
-    <div class="input-box">
+    <div class="input-box" onclick="focusChatInput(event)">
       <input class="input-field" id="chatInput" placeholder="How can I help you today?"
         onkeydown="if(event.key==='Enter') sendMessage()">
       <div class="input-controls">
         <div class="input-caps">
-          <button class="cap-btn" onclick="this.classList.toggle('active')">
-            <span class="cap-icon">🌐</span> Web search
+          <button class="cap-btn" title="Turn on to search the live web for up-to-date information" onclick="toggleCap(this,event)">
+            <span class="cap-icon">🌐</span> Web search <span class="cap-check">✓</span>
           </button>
-          <button class="cap-btn" onclick="this.classList.toggle('active')">
-            <span class="cap-icon">◎</span> Think deeper
+          <button class="cap-btn" title="Turn on to let ALMA take more time reasoning through a complex question" onclick="toggleCap(this,event)">
+            <span class="cap-icon">◎</span> Think deeper <span class="cap-check">✓</span>
           </button>
-          <button class="cap-btn" onclick="this.classList.toggle('active')">
-            <span class="cap-icon">👤</span> Deep research
+          <button class="cap-btn" title="Turn on to plan and run multiple web searches, then return a structured, cited report" onclick="toggleCap(this,event)">
+            <span class="cap-icon">👤</span> Deep research <span class="cap-check">✓</span>
           </button>
         </div>
         <div class="input-actions">
-          <button class="action-btn" title="Attach">📎</button>
-          <button class="action-btn" title="Sparkle">✨</button>
-          <button class="action-btn" title="Share">↗</button>
-          <button class="send-btn" onclick="sendMessage()">↑</button>
+          <button class="action-btn" title="Attach a file">📎</button>
+          <button class="action-btn" title="Improve this prompt">✨</button>
+          <button class="action-btn" title="Share this conversation">↗</button>
+          <button class="send-btn" onclick="sendMessage()" title="Send message">↑</button>
         </div>
       </div>
     </div>
@@ -3575,6 +3789,7 @@ const agents = {
     label: 'Sales',
     subtitle: 'Prospecting, pricing intelligence, key account expansion and churn prediction — connected to your CRM.',
     useCases: [
+      { icon: '📑', title: 'OTC report', desc: 'Top 15 brands and category sales per chain, store and month', prompt: 'Open the OTC report', view: 'otc' },
       { icon: '📈', title: 'Säljartrend och ranking', desc: 'Din utveckling över tid och din placering på topplistan', prompt: 'Visa min säljutveckling de senaste sex månaderna som en graf, visa topp 20-säljarna och var jag ligger för att skapa motivation.' },
       { icon: '📊', title: 'Mina trender jämfört med andra', desc: 'Vad går upp eller ner i min försäljning jämfört med snittet', prompt: 'Analysera vad som ökar och minskar i min försäljning, till exempel om yxor minskar med 2 procent per månad. Jämför mina trender med snittet för alla säljare och resonera om möjliga orsaker.' },
       { icon: '🔭', title: 'Nya potentiella kunder', desc: 'Hitta liknande kunder och nya återförsäljare efter potential', prompt: 'Utgå från mina befintliga kunder och hitta liknande potentiella kunder på marknaden. Bevaka nya butiker, kedjor och återförsäljare och lista dem efter störst potential.' },
@@ -4374,6 +4589,7 @@ function switchAgent(id) {
   const agent = agents[id];
 
   // Reset to welcome/use-case view
+  closeReportView();
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('centerArea').style.display = 'flex';
@@ -4404,8 +4620,7 @@ function switchAgent(id) {
   document.getElementById('agentSubtitle').textContent = agent.subtitle || '';
 
   // Update home input placeholder
-  const agentDisplayLabel = agentOverrides[id]?.name || SIDEBAR_NAMES[id] || agent.label;
-  document.getElementById('homeInput').placeholder = `New chat with ${agentDisplayLabel}…`;
+  document.getElementById('homeInput').placeholder = 'How can I help you today? (AI Agent)';
 
   // Hide bottom input on home screen
   document.querySelector('.input-area').style.display = 'none';
@@ -4422,6 +4637,7 @@ function switchAgent(id) {
 }
 
 function newChat() {
+  closeReportView();
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('centerArea').style.display = 'flex';
@@ -4495,6 +4711,84 @@ function skipCalibration(el) {
   if (card) card.style.display = 'none';
 }
 
+function toggleHomeWebSearch(btn, event) {
+  event.stopPropagation();
+  btn.classList.toggle('active');
+}
+
+const HOME_MODES = ['Fast', 'Thinking', 'Research'];
+
+function toggleHomeModePanel(event) {
+  event.stopPropagation();
+  document.getElementById('homeModePanel').classList.toggle('show');
+}
+
+function onHomeModeSlide(value) {
+  const mode = HOME_MODES[value] || 'Fast';
+  document.getElementById('homeModeLabel').textContent = mode;
+  document.querySelectorAll('.home-mode-ticks span').forEach(s => {
+    s.classList.toggle('active', s.dataset.mode === mode);
+  });
+}
+
+function toggleHomeAdvanced(event) {
+  event.stopPropagation();
+  document.getElementById('homeAdvancedToggle').classList.toggle('open');
+  document.getElementById('homeAdvancedBody').classList.toggle('show');
+}
+
+function toggleHomeModelFlyout(event) {
+  event.stopPropagation();
+  document.getElementById('homeModelFlyout').classList.toggle('show');
+}
+
+function selectHomeModel(el, name) {
+  el.closest('.home-model-flyout').querySelectorAll('.home-model-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('homeModelLabel').textContent = name;
+  document.getElementById('selectedModelLabel').textContent = name; // keep header selector in sync
+  document.getElementById('homeModelFlyout').classList.remove('show');
+}
+
+function sendHomePrompt() {
+  const inp = document.getElementById('homeInput');
+  const text = inp.value.trim();
+  if (!text) return;
+  sendPrompt(text);
+  inp.value = '';
+}
+
+function onHomeFileSelected(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  document.getElementById('homeFileChipName').textContent = file.name;
+  document.getElementById('homeFileChip').classList.add('show');
+}
+
+function clearHomeFile(event) {
+  event.stopPropagation();
+  document.getElementById('homeFileInput').value = '';
+  document.getElementById('homeFileChip').classList.remove('show');
+}
+
+function focusChatInput(event) {
+  // Clicking anywhere in the input box (not on a button) focuses the text field,
+  // so people don't have to aim precisely at the thin input line.
+  if (event.target.closest('button')) return;
+  document.getElementById('chatInput').focus();
+}
+
+function toggleCap(btn, event) {
+  event.stopPropagation();
+  const wasActive = btn.classList.contains('active');
+  // Deep research already implies live web search + extra reasoning time,
+  // so keep only one mode active at a time to avoid confusing combinations.
+  if (!wasActive) {
+    btn.parentElement.querySelectorAll('.cap-btn.active').forEach(b => b.classList.remove('active'));
+  }
+  btn.classList.toggle('active', !wasActive);
+}
+
 function sendMessage() {
   const inp = document.getElementById('chatInput');
   const text = inp.value.trim();
@@ -4502,6 +4796,7 @@ function sendMessage() {
   inp.value = '';
 
   // Switch to chat view
+  closeReportView();
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('onboardingVideo').style.display = 'none';
   document.querySelector('.input-area').style.display = '';
@@ -4679,6 +4974,7 @@ function saveUCEdit() {
   const prompt = document.getElementById('ucEditPrompt').value.trim();
   if (!title) return;
   const uc = { icon: ucEditIcon, title, desc, prompt };
+  if (ucEditIndex !== null && agents[ucEditAgentId].useCases[ucEditIndex] && agents[ucEditAgentId].useCases[ucEditIndex].view) uc.view = agents[ucEditAgentId].useCases[ucEditIndex].view;
   if (ucEditIndex === null) {
     agents[ucEditAgentId].useCases.push(uc);
   } else {
@@ -4844,12 +5140,178 @@ Object.assign(agentOverrides, {
 const GALLERY_AGENT_IDS = ['finance','operations','commercial','marketing','sustainability','legal','matching','hr','leadership','board','service','evelyn'];
 const activeAgents = new Set(['finance','operations','commercial','sustainability','legal','matching','hr','evelyn']);
 
+/* ─── OTC REPORT VIEW ─── */
+const OTC_CHAINS = {
+  'Fredrik & Louisa': ['105 - Holmen', '112 - Nordstan', '118 - Emporia', '124 - Mall of Scandinavia'],
+  'Åhléns':           ['201 - City Stockholm', '207 - Göteborg', '214 - Malmö'],
+  'KICKS':            ['301 - Täby Centrum', '308 - Nordstan', '312 - Triangeln'],
+  'Lyko':             ['401 - Online', '405 - Sickla'],
+};
+const OTC_MONTHS = ['Aug 2026', 'Jul 2026', 'Jun 2026', 'May 2026', 'Apr 2026', 'Mar 2026'];
+// Base data: Fredrik & Louisa · 105 - Holmen · Jun 2026
+const OTC_BASE_BRANDS = [
+  ['Shiseido',        73087, 103, 865810, 245],
+  ['Dolce & Gabbana', 20680,  76, 139156, 238],
+  ['Hugo Boss',       12725, 309, 130372, 3164],
+  ['Versace',          7865,  48, 123858, 210],
+  ['Gucci',            6578, null, 57031, null],
+  ['Bondi Sands',      4529,  87,  21520, 140],
+  ['Burberry',         3402, 155,  65861, 2994],
+  ['Marc Jacobs',      3091, 241,  62310, 4848],
+  ['Clarins',          1834,   2, 427690, 108],
+  ['Clean',            1420, null,  2900, null],
+  ['Tweezerman',       1324,  97,  19147, 215],
+  ['Michael Kors',     1135, null,  4689, null],
+  ['Escada',           1132, null, 13606, null],
+  ['Lancaster',         515, null,  5103, null],
+  ['Caudalie',          140,  16,   8013, 218],
+];
+const OTC_BASE_CATS = [
+  ['Counter Brand',  93283,  95, 1007594, 245],
+  ['Fragrance',      34030, 132,  448215, 525],
+  ['Makeup',           889,   5,  137641, 106],
+  ['Miscellaneous',   8976,  60,  114530, 205],
+  ['Skincare',        1085,   2,  243212, 107],
+];
+const OTC_BASE_TOTAL = [138263, 66, 1951193, 215];
+let otcState = { chain: 'Fredrik & Louisa', store: '105 - Holmen', month: 'Jun 2026' };
+
+function otcHash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function otcRand(seed) { let s = seed || 1; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+function otcFmt(n) { return Math.round(n).toLocaleString('sv-SE').replace(/ /g, ' '); }
+function otcIdx(v) {
+  if (v === null || v === undefined) return '<span class="rv-na">-</span>';
+  const cls = v >= 100 ? 'rv-up' : 'rv-down';
+  return `<span class="${cls}">${otcFmt(v)}%</span>`;
+}
+
+function otcBuildData(chain, store, month) {
+  const isBase = chain === 'Fredrik & Louisa' && store === '105 - Holmen' && month === 'Jun 2026';
+  const rnd = otcRand(otcHash(chain + '|' + store + '|' + month));
+  const storeF = isBase ? 1 : 0.45 + rnd() * 1.4;
+  const mi = OTC_MONTHS.indexOf(month);
+  const ytdF = isBase ? 1 : Math.max(0.35, 1 + (2 - mi) * 0.16) * storeF; // YTD grows through the year
+  const jitter = (base) => isBase ? base : base * (0.8 + rnd() * 0.45);
+  const jIdx = (base) => (base === null || isBase) ? base : Math.max(1, Math.round(base * (0.75 + rnd() * 0.55)));
+  const brands = OTC_BASE_BRANDS.map(([n, s, i, y, yi]) => ({
+    name: n, sales: Math.round(jitter(s) * storeF), idx: jIdx(i), ytd: Math.round(jitter(y) * ytdF), ytdIdx: jIdx(yi)
+  })).sort((a, b) => b.sales - a.sales);
+  const cats = OTC_BASE_CATS.map(([n, s, i, y, yi]) => ({
+    name: n, sales: Math.round(jitter(s) * storeF), idx: jIdx(i), ytd: Math.round(jitter(y) * ytdF), ytdIdx: jIdx(yi)
+  }));
+  const total = isBase
+    ? { sales: OTC_BASE_TOTAL[0], idx: OTC_BASE_TOTAL[1], ytd: OTC_BASE_TOTAL[2], ytdIdx: OTC_BASE_TOTAL[3] }
+    : { sales: cats.reduce((a, c) => a + c.sales, 0), idx: jIdx(OTC_BASE_TOTAL[1]), ytd: cats.reduce((a, c) => a + c.ytd, 0), ytdIdx: jIdx(OTC_BASE_TOTAL[3]) };
+  return { brands, cats, total };
+}
+
+function otcTable(title, firstCol, rows, total) {
+  const row = (r) => `<tr><td>${r.name}</td><td>${otcFmt(r.sales)}</td><td>${otcIdx(r.idx)}</td><td>${otcFmt(r.ytd)}</td><td>${otcIdx(r.ytdIdx)}</td></tr>`;
+  return `
+  <div class="rv-card">
+    <div class="rv-card-title">${title}</div>
+    <div class="rv-table-wrap">
+      <table class="rv-table">
+        <thead><tr><th>${firstCol}</th><th>Sales - Month</th><th>Index vs LY - Month</th><th>Sales YTD</th><th>Index vs LY - YTD</th></tr></thead>
+        <tbody>${rows.map(row).join('')}
+          <tr class="rv-total"><td>Total</td><td>${otcFmt(total.sales)}</td><td>${otcIdx(total.idx)}</td><td>${otcFmt(total.ytd)}</td><td>${otcIdx(total.ytdIdx)}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function openOtcReport() {
+  closeReportView();
+  document.getElementById('centerArea').style.display = 'none';
+  document.getElementById('onboardingVideo').style.display = 'none';
+  document.getElementById('chatMessages').classList.remove('active');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.querySelector('.input-area').style.display = 'none';
+  document.getElementById('learningPage').classList.remove('show');
+  document.getElementById('searchPage').classList.remove('show');
+  const rv = document.getElementById('reportView');
+  rv.classList.add('show');
+  renderOtcReport();
+}
+
+function closeReportView() {
+  const rv = document.getElementById('reportView');
+  if (!rv) return;
+  rv.classList.remove('show');
+  rv.innerHTML = '';
+}
+
+function otcSetFilter(key, val) {
+  otcState[key] = val;
+  if (key === 'chain') otcState.store = OTC_CHAINS[val][0];
+  renderOtcReport();
+}
+
+function renderOtcReport() {
+  const { chain, store, month } = otcState;
+  const d = otcBuildData(chain, store, month);
+  const opt = (arr, sel) => arr.map(v => `<option value="${v.replace(/"/g, '&quot;')}"${v === sel ? ' selected' : ''}>${v}</option>`).join('');
+  document.getElementById('reportView').innerHTML = `
+  <div class="rv-inner">
+    <div class="rv-title">OTC report</div>
+    <div class="rv-sub">Top 15 brands and category sales for a chosen chain, store and month.<br>Download the full report as an Excel file.</div>
+    <div class="rv-card">
+      <div class="rv-card-title">Filters</div>
+      <div class="rv-filters">
+        <div class="rv-filter"><label>Chain / Account</label>
+          <select onchange="otcSetFilter('chain', this.value)">${opt(Object.keys(OTC_CHAINS), chain)}</select></div>
+        <div class="rv-filter"><label>Door / Store</label>
+          <select onchange="otcSetFilter('store', this.value)">${opt(OTC_CHAINS[chain], store)}</select></div>
+        <div class="rv-filter"><label>Month</label>
+          <select onchange="otcSetFilter('month', this.value)">${opt(OTC_MONTHS, month)}</select></div>
+        <button class="rv-dl-btn" onclick="otcDownload()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Excel
+        </button>
+      </div>
+    </div>
+    <div class="rv-crumb">${chain} · ${store.replace(' - ', ' – ')} · ${month}</div>
+    ${otcTable('Top 15 Brands', 'Brand', d.brands, d.total)}
+    ${otcTable('Category', 'Category', d.cats, d.total)}
+  </div>`;
+  document.getElementById('reportView').scrollTop = 0;
+}
+
+function otcDownload() {
+  const { chain, store, month } = otcState;
+  const d = otcBuildData(chain, store, month);
+  const idx = (v) => v === null ? '' : v + '%';
+  const lines = [];
+  lines.push(['OTC report', chain, store, month].join(';'));
+  lines.push('');
+  lines.push(['Brand', 'Sales - Month', 'Index vs LY - Month', 'Sales YTD', 'Index vs LY - YTD'].join(';'));
+  d.brands.forEach(r => lines.push([r.name, r.sales, idx(r.idx), r.ytd, idx(r.ytdIdx)].join(';')));
+  lines.push(['Total', d.total.sales, idx(d.total.idx), d.total.ytd, idx(d.total.ytdIdx)].join(';'));
+  lines.push('');
+  lines.push(['Category', 'Sales - Month', 'Index vs LY - Month', 'Sales YTD', 'Index vs LY - YTD'].join(';'));
+  d.cats.forEach(r => lines.push([r.name, r.sales, idx(r.idx), r.ytd, idx(r.ytdIdx)].join(';')));
+  lines.push(['Total', d.total.sales, idx(d.total.idx), d.total.ytd, idx(d.total.ytdIdx)].join(';'));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `OTC_report_${chain}_${store.split(' - ')[0]}_${month.replace(' ', '')}.csv`.replace(/[^\w.\-åäöÅÄÖ&]+/g, '_');
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  let t = document.getElementById('rvToast');
+  if (!t) { t = document.createElement('div'); t.id = 'rvToast'; t.className = 'rv-toast'; document.body.appendChild(t); }
+  t.textContent = 'Excel report downloaded';
+  t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
 // Init
 renderAgentSidebar();
 switchAgent('personal');
 
 /* ─── SEARCH PAGE ─── */
 function openSearch() {
+  closeReportView();
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
@@ -4897,6 +5359,7 @@ function setSearchTab(el, tab) {
 
 /* ─── LEARNING PAGE ─── */
 function openLearning() {
+  closeReportView();
   document.getElementById('centerArea').style.display = 'none';
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('chatMessages').innerHTML = '';
@@ -4975,7 +5438,7 @@ function renderTasksDrawer(id) {
   document.getElementById('tasksDrawerLabel').textContent = domainLabel + ' Tasks';
   const body = document.getElementById('tasksDrawerBody');
   body.innerHTML = agent.useCases.map((uc, i) => `
-    <div class="drawer-task-item" onclick="sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')"
+    <div class="drawer-task-item" onclick="${uc.view === 'otc' ? 'openOtcReport()' : `sendPrompt('${uc.prompt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')`}"
       data-tip-title="${uc.title.replace(/"/g,'&quot;')}" data-tip-desc="${uc.desc.replace(/"/g,'&quot;')}"
       onmouseenter="showDrawerTooltip(this)" onmouseleave="hideDrawerTooltip()">
       <div class="drawer-task-icon">${uc.icon}</div>
@@ -5014,8 +5477,11 @@ function toggleModelDropdown() {
 function selectModel(el, modelId, provider) {
   document.querySelectorAll('.model-option').forEach(o => o.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('selectedModelLabel').textContent = el.querySelector('.model-name').textContent;
+  const name = el.querySelector('.model-name').textContent;
+  document.getElementById('selectedModelLabel').textContent = name;
   document.getElementById('modelDropdown').classList.remove('show');
+  const homeLabel = document.getElementById('homeModelLabel');
+  if (homeLabel) homeLabel.textContent = name; // keep the home input's subtle selector in sync
 }
 
 document.addEventListener('click', function(e) {
@@ -5024,6 +5490,12 @@ document.addEventListener('click', function(e) {
   }
   if (!e.target.closest('#userRow') && !e.target.closest('#profileMenu')) {
     document.getElementById('profileMenu').classList.remove('show');
+  }
+  if (!e.target.closest('.home-mode-wrap')) {
+    document.getElementById('homeModePanel')?.classList.remove('show');
+    document.getElementById('homeModelFlyout')?.classList.remove('show');
+    document.getElementById('homeAdvancedBody')?.classList.remove('show');
+    document.getElementById('homeAdvancedToggle')?.classList.remove('open');
   }
 });
 
