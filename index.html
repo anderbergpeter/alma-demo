@@ -3560,6 +3560,14 @@ html[data-theme="light"] .cal-opt.skip:hover{background: #eeeff5}
     .st-textarea.big { transition: min-height .24s ease; }
     .st-help-panel.open ~ .st-textarea.big { min-height: 130px; height: 130px; }
 
+    .st-guide { padding: 18px 22px 20px; border: 1px solid var(--border); border-radius: 12px; background: rgba(38,101,226,0.06); }
+    .st-guide p { font-size: 13.5px; line-height: 1.65; color: var(--text-secondary); max-width: 860px; }
+    .st-guide-h { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); margin: 18px 0 8px; }
+    .st-quote { font-size: 13.5px; line-height: 1.65; color: var(--text-primary); padding: 12px 16px; border-left: 3px solid #2665E2; border-radius: 4px 10px 10px 4px; background: rgba(255,255,255,0.05); user-select: text; }
+    html[data-theme="light"] .st-quote { background: #f2f5fc; }
+    .st-guide-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .st-guide p { margin-bottom: 10px; }
+
   </style>
 </head>
 <body>
@@ -5954,17 +5962,6 @@ function stLoad() { try { return JSON.parse(localStorage.getItem(ST_KEY) || '{}'
 function stStore(patch) { try { var s = stLoad(); for (var k in patch) s[k] = patch[k]; localStorage.setItem(ST_KEY, JSON.stringify(s)); } catch (e) {} }
 function stEsc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
 
-var ST_EXAMPLES = [
-  { name: 'Short and to the point', desc: 'For busy people who want the answer, not the essay.',
-    lines: ['Start with the answer or recommendation, then the reasoning.', 'Keep answers short, a few sentences unless I ask for more.', 'No filler, flattery or long introductions.'] },
-  { name: 'Friendly colleague', desc: 'Warm, simple and easy to read.',
-    lines: ['Use a warm, friendly tone.', 'Avoid jargon and explain terms simply.', 'Give balanced answers: enough detail to act on, nothing more.', 'If something is unclear, ask me one short question before you answer.'] },
-  { name: 'Analyst', desc: 'Thorough, structured and open about uncertainty.',
-    lines: ['Give detailed, thorough answers with the reasoning.', 'Use tables when comparing options.', 'State your assumptions, and say clearly when you are unsure.'] },
-  { name: 'Swedish, plain writing', desc: 'Swedish replies in clean paragraphs.',
-    lines: ['Always reply in Swedish.', 'Never use dashes.', 'Write in plain paragraphs, not lists.', 'Be direct and to the point.'] }
-];
-
 function stLines() {
   return document.getElementById('stInstr').value.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
 }
@@ -5980,16 +5977,24 @@ function stOnInput() {
   c.className = 'st-count' + (len > 1200 ? ' warn' : '');
   document.getElementById('stSaved').classList.remove('show');
 }
-function stRenderExamples() {
-  document.getElementById('stExamples').innerHTML = ST_EXAMPLES.map(function (e, i) {
-    return '<button class="st-example" onclick="stUseExample(' + i + ')"><b>' + stEsc(e.name) + '</b><span>' + stEsc(e.desc) + '</span><em>Use this example</em></button>';
-  }).join('');
+function stUseExample() {
+  var ta = document.getElementById('stInstr');
+  var text = document.getElementById('stExampleText').textContent.trim();
+  ta.value = ta.value.trim() ? ta.value.trim() + '\n\n' + text : text;
+  stOnInput();
+  ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
 }
-function stUseExample(i) {
-  var lines = stLines();
-  ST_EXAMPLES[i].lines.forEach(function (l) { if (lines.indexOf(l) < 0) lines.push(l); });
-  stSetLines(lines);
-  var ta = document.getElementById('stInstr'); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+function stAskText() { return document.getElementById('stAskText').textContent.trim(); }
+function stCopyAsk() {
+  var b = document.getElementById('stCopyAsk');
+  var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy request'; }, 1600); };
+  try { navigator.clipboard.writeText(stAskText()).then(done, done); } catch (e) { done(); }
+}
+function stAskJames() {
+  closeSettings();
+  switchAgent('personal');
+  var inp = document.getElementById('homeInput');
+  if (inp) { inp.value = stAskText(); inp.focus(); }
 }
 function stRenderScope() {
   var saved = (stLoad().instr || '').trim();
@@ -6079,7 +6084,6 @@ function stShow(p) {
 }
 function openSettings(pane) {
   closeProfileMenu();
-  stRenderExamples();
   document.getElementById('stInstr').value = stLoad().instr || '';
   stOnInput(); stRenderScope(); stRenderMcp(); stRenderDefault(); stApplyTheme(stLoad().theme);
   stToggleHelp(false);
@@ -9924,25 +9928,19 @@ function updateGalleryCount() {
             </div>
             <div class="st-help-panel" id="stHelpPanel">
               <div class="st-help-inner">
-                <div class="st-help-cols">
-                  <div>
-                    <div class="st-help-intro">Write it like a short brief to a new colleague. No technical knowledge needed.</div>
-                    <ul class="st-tips">
-                      <li><b>Be specific.</b> "Max 5 sentences" works better than "be brief".</li>
-                      <li><b>Say what to do</b>, not only what to avoid. "Write in plain paragraphs" beats "no lists".</li>
-                      <li><b>One preference per line.</b> Easier to follow and to change later.</li>
-                      <li><b>Add context about you.</b> Your role and who you write for helps ALMA pitch the answer right.</li>
-                      <li><b>Keep it short.</b> Five to ten lines is plenty.</li>
-                      <li><b>Try it, then adjust.</b> Change a line when an answer misses.</li>
-                    </ul>
-                    <div class="st-compare">
-                      <div class="bad"><small>Vague</small>Be nice and not too long.</div>
-                      <div class="good"><small>Specific</small>Use a warm tone. Keep answers to 5 sentences unless I ask for more.</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="st-card-title">Start from an example</div>
-                    <div class="st-examples" id="stExamples"></div>
+                <div class="st-guide">
+                  <p>A personal instruction is a short text about who you are and how you want ALMA to answer. ALMA reads it before every conversation, with every Specialist. Write it the way you would brief a new colleague: what you do, who you write for and how you like answers to look. Concrete wording works best. "Keep answers to five sentences" tells ALMA far more than "be brief", and it helps to say what you want, not only what you want to avoid. Five to ten sentences is plenty, and you can change it whenever an answer misses.</p>
+
+                  <div class="st-guide-h">A complete example</div>
+                  <div class="st-quote" id="stExampleText">I work as a Product Owner at a consulting company, where I spend most of my day planning, prioritising and writing for developers and customers. Always answer in the language I write in. Start with the answer or recommendation and give the reasoning after. Keep answers to five sentences unless I ask for more, and use bullet points only when I compare options. Use a direct, professional tone and skip filler, flattery and long introductions. Never use dashes. If something is unclear, ask me one short question before you answer.</div>
+                  <div class="st-guide-actions"><button class="st-btn" onclick="stUseExample()">Use this example</button></div>
+
+                  <div class="st-guide-h">Not sure where to start? Let ALMA help you</div>
+                  <p>Ask James, your Personal Assistant, to interview you and write the instruction for you. Send the request below, answer a few questions and paste the result here.</p>
+                  <div class="st-quote" id="stAskText">Help me write a personal instruction for ALMA. Ask me a few short questions, one at a time, about my role, who I write for, the tone I prefer, how long answers should be and anything I do not want to see. Then write the finished instruction as one short text of five to ten sentences that I can paste into Settings.</div>
+                  <div class="st-guide-actions">
+                    <button class="st-btn" id="stCopyAsk" onclick="stCopyAsk()">Copy request</button>
+                    <button class="st-btn primary" onclick="stAskJames()">Ask James now</button>
                   </div>
                 </div>
               </div>
