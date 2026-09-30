@@ -3586,6 +3586,11 @@ html[data-theme="light"] .cal-opt.skip:hover{background: #eeeff5}
     .cn-btn.danger:hover { background: rgba(239,68,68,0.24); }
     html[data-theme="light"] .cn-btn.danger { color: #dc2626; border-color: rgba(220,38,38,0.5); background: rgba(239,68,68,0.08); }
 
+.st-fieldlabel{display:block;font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
+.st-fielddesc{font-size:13px;line-height:1.5;color:#8a90b0;margin-bottom:12px}
+html[data-theme="light"] .st-fieldlabel{color:#141a33}
+html[data-theme="light"] .st-fielddesc{color:#5a6280}
+
   </style>
 </head>
 <body>
@@ -5995,25 +6000,6 @@ function stOnInput() {
   c.className = 'st-count' + (len > 1200 ? ' warn' : '');
   document.getElementById('stSaved').classList.remove('show');
 }
-function stUseExample() {
-  var ta = document.getElementById('stInstr');
-  var text = document.getElementById('stExampleText').textContent.trim();
-  ta.value = ta.value.trim() ? ta.value.trim() + '\n\n' + text : text;
-  stOnInput();
-  ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
-}
-function stAskText() { return document.getElementById('stAskText').textContent.trim(); }
-function stCopyAsk() {
-  var b = document.getElementById('stCopyAsk');
-  var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy request'; }, 1600); };
-  try { navigator.clipboard.writeText(stAskText()).then(done, done); } catch (e) { done(); }
-}
-function stAskJames() {
-  closeSettings();
-  switchAgent('personal');
-  var inp = document.getElementById('homeInput');
-  if (inp) { inp.value = stAskText(); inp.focus(); }
-}
 function stRenderScope() {
   var saved = (stLoad().instr || '').trim();
   var n = Object.keys(agents).length;
@@ -6090,15 +6076,8 @@ function openSettings(pane) {
   closeProfileMenu();
   document.getElementById('stInstr').value = stLoad().instr || '';
   stOnInput(); stRenderScope(); stRenderMcp(); stRenderDefault(); stApplyTheme(stLoad().theme);
-  stToggleHelp(false);
   stShow(pane || 'instr');
   document.getElementById('settingsOverlay').classList.add('show');
-}
-function stToggleHelp(force) {
-  var p = document.getElementById('stHelpPanel'), b = document.getElementById('stHelpToggle');
-  var open = typeof force === 'boolean' ? force : !p.classList.contains('open');
-  p.classList.toggle('open', open);
-  b.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 function closeSettings() { document.getElementById('settingsOverlay').classList.remove('show'); }
 document.addEventListener('keydown', function (e) {
@@ -9923,32 +9902,11 @@ function updateGalleryCount() {
         <!-- Personal instructions -->
         <section class="st-pane show" id="stPane-instr">
           <div class="st-h">Personal instructions</div>
-          <div class="st-sub">Tell ALMA once how you like to work. Every Specialist follows this in every conversation, whichever one you use.</div>
+          <div class="st-sub">What ALMA should know about you and how you like answers.</div>
 
           <div class="st-card">
-            <div class="st-card-head">
-              <div class="st-card-title">Your instruction</div>
-              <button class="st-link" id="stHelpToggle" aria-expanded="false" onclick="stToggleHelp()">How to write a good instruction <span class="st-chev">▾</span></button>
-            </div>
-            <div class="st-help-panel" id="stHelpPanel">
-              <div class="st-help-inner">
-                <div class="st-guide">
-                  <p>A personal instruction is a short text about who you are and how you want ALMA to answer. ALMA reads it before every conversation, with every Specialist. Write it the way you would brief a new colleague: what you do, who you write for and how you like answers to look. Concrete wording works best. "Keep answers to five sentences" tells ALMA far more than "be brief", and it helps to say what you want, not only what you want to avoid. Five to ten sentences is plenty, and you can change it whenever an answer misses.</p>
-
-                  <div class="st-guide-h">A complete example</div>
-                  <div class="st-quote" id="stExampleText">I work as a Product Owner at a consulting company, where I spend most of my day planning, prioritising and writing for developers and customers. Always answer in the language I write in. Start with the answer or recommendation and give the reasoning after. Keep answers to five sentences unless I ask for more, and use bullet points only when I compare options. Use a direct, professional tone and skip filler, flattery and long introductions. Never use dashes. If something is unclear, ask me one short question before you answer.</div>
-                  <div class="st-guide-actions"><button class="st-btn" onclick="stUseExample()">Use this example</button></div>
-
-                  <div class="st-guide-h">Not sure where to start? Let ALMA help you</div>
-                  <p>Ask James, your Personal Assistant, to interview you and write the instruction for you. Send the request below, answer a few questions and paste the result here.</p>
-                  <div class="st-quote" id="stAskText">Help me write a personal instruction for ALMA. Ask me a few short questions, one at a time, about my role, who I write for, the tone I prefer, how long answers should be and anything I do not want to see. Then write the finished instruction as one short text of five to ten sentences that I can paste into Settings.</div>
-                  <div class="st-guide-actions">
-                    <button class="st-btn" id="stCopyAsk" onclick="stCopyAsk()">Copy request</button>
-                    <button class="st-btn primary" onclick="stAskJames()">Ask James now</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <label class="st-fieldlabel" for="stInstr">Instructions for ALMA</label>
+            <div class="st-fielddesc">ALMA will keep these in mind across all Specialists and chats, within your organisation's guidelines.</div>
             <textarea class="st-textarea big" id="stInstr" maxlength="1500" oninput="stOnInput()"
               placeholder="Example:&#10;Keep answers short, a few sentences unless I ask for more.&#10;Start with the answer, then the reasoning.&#10;Never use dashes.&#10;I am a Product Owner, so skip basic explanations of agile terms."></textarea>
             <div class="st-action-row">
