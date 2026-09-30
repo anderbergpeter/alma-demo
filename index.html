@@ -3543,6 +3543,23 @@ html[data-theme="light"] .cal-opt.skip:hover{background: #eeeff5}
       .st-examples { grid-template-columns: 1fr; }
     }
 
+    /* ─── INLINE COLLAPSIBLE GUIDE ─── */
+    .st-help-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s ease, margin .24s ease; margin-bottom: 0; }
+    .st-help-panel.open { grid-template-rows: 1fr; margin-bottom: 16px; }
+    .st-help-inner { overflow: hidden; min-height: 0; }
+    .st-help-cols { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); gap: 24px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: rgba(38,101,226,0.06); }
+    .st-help-cols .st-help-intro { margin-top: 0; margin-bottom: 12px; font-size: 13px; }
+    .st-help-cols .st-examples { grid-template-columns: 1fr; gap: 8px; }
+    .st-help-cols .st-example { padding: 9px 12px; }
+    .st-help-cols .st-example span { font-size: 11.5px; }
+    .st-help-cols .st-example em { margin-top: 4px; }
+    .st-chev { display: inline-block; transition: transform .2s; text-decoration: none; }
+    .st-link[aria-expanded="true"] .st-chev { transform: rotate(180deg); }
+    .st-textarea.big { min-height: 250px; }
+    @media (max-width: 760px) { .st-help-cols { grid-template-columns: 1fr; } }
+    .st-textarea.big { transition: min-height .24s ease; }
+    .st-help-panel.open ~ .st-textarea.big { min-height: 130px; height: 130px; }
+
   </style>
 </head>
 <body>
@@ -5972,7 +5989,6 @@ function stUseExample(i) {
   var lines = stLines();
   ST_EXAMPLES[i].lines.forEach(function (l) { if (lines.indexOf(l) < 0) lines.push(l); });
   stSetLines(lines);
-  stCloseHelp();
   var ta = document.getElementById('stInstr'); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
 }
 function stRenderScope() {
@@ -6066,16 +6082,19 @@ function openSettings(pane) {
   stRenderExamples();
   document.getElementById('stInstr').value = stLoad().instr || '';
   stOnInput(); stRenderScope(); stRenderMcp(); stRenderDefault(); stApplyTheme(stLoad().theme);
+  stToggleHelp(false);
   stShow(pane || 'instr');
   document.getElementById('settingsOverlay').classList.add('show');
 }
-function stOpenHelp() { document.getElementById('stHelpOverlay').classList.add('show'); }
-function stCloseHelp() { document.getElementById('stHelpOverlay').classList.remove('show'); }
+function stToggleHelp(force) {
+  var p = document.getElementById('stHelpPanel'), b = document.getElementById('stHelpToggle');
+  var open = typeof force === 'boolean' ? force : !p.classList.contains('open');
+  p.classList.toggle('open', open);
+  b.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
 function closeSettings() { document.getElementById('settingsOverlay').classList.remove('show'); }
 document.addEventListener('keydown', function (e) {
   if (e.key !== 'Escape') return;
-  var h = document.getElementById('stHelpOverlay');
-  if (h && h.classList.contains('show')) { stCloseHelp(); return; }
   var o = document.getElementById('settingsOverlay'); if (o && o.classList.contains('show')) closeSettings();
 });
 function stApplyOnLoad() {
@@ -9901,7 +9920,32 @@ function updateGalleryCount() {
           <div class="st-card">
             <div class="st-card-head">
               <div class="st-card-title">Your instruction</div>
-              <button class="st-link" onclick="stOpenHelp()">How to write a good instruction</button>
+              <button class="st-link" id="stHelpToggle" aria-expanded="false" onclick="stToggleHelp()">How to write a good instruction <span class="st-chev">▾</span></button>
+            </div>
+            <div class="st-help-panel" id="stHelpPanel">
+              <div class="st-help-inner">
+                <div class="st-help-cols">
+                  <div>
+                    <div class="st-help-intro">Write it like a short brief to a new colleague. No technical knowledge needed.</div>
+                    <ul class="st-tips">
+                      <li><b>Be specific.</b> "Max 5 sentences" works better than "be brief".</li>
+                      <li><b>Say what to do</b>, not only what to avoid. "Write in plain paragraphs" beats "no lists".</li>
+                      <li><b>One preference per line.</b> Easier to follow and to change later.</li>
+                      <li><b>Add context about you.</b> Your role and who you write for helps ALMA pitch the answer right.</li>
+                      <li><b>Keep it short.</b> Five to ten lines is plenty.</li>
+                      <li><b>Try it, then adjust.</b> Change a line when an answer misses.</li>
+                    </ul>
+                    <div class="st-compare">
+                      <div class="bad"><small>Vague</small>Be nice and not too long.</div>
+                      <div class="good"><small>Specific</small>Use a warm tone. Keep answers to 5 sentences unless I ask for more.</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="st-card-title">Start from an example</div>
+                    <div class="st-examples" id="stExamples"></div>
+                  </div>
+                </div>
+              </div>
             </div>
             <textarea class="st-textarea big" id="stInstr" maxlength="1500" oninput="stOnInput()"
               placeholder="Example:&#10;Keep answers short, a few sentences unless I ask for more.&#10;Start with the answer, then the reasoning.&#10;Never use dashes.&#10;I am a Product Owner, so skip basic explanations of agile terms."></textarea>
@@ -9954,38 +9998,6 @@ function updateGalleryCount() {
           </div>
         </section>
 
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Help window for personal instructions -->
-<div id="stHelpOverlay" class="st-overlay st-help-overlay" onclick="if(event.target===this)stCloseHelp()">
-  <div class="st-modal st-help" role="dialog" aria-label="How to write a good instruction">
-    <div class="st-modal-head">
-      <div class="st-modal-title">How to write a good instruction</div>
-      <button class="admin-page-close" onclick="stCloseHelp()" title="Close">✕</button>
-    </div>
-    <div class="st-modal-body single">
-      <div class="st-help-intro">A personal instruction is a few plain sentences about how you want ALMA to answer. You do not need any technical knowledge. Write it the way you would brief a new colleague.</div>
-      <div class="st-help-section">
-        <div class="st-card-title">Our recommendations</div>
-        <ul class="st-tips">
-          <li><b>Be specific.</b> "Max 5 sentences" works better than "be brief".</li>
-          <li><b>Say what to do</b>, not only what to avoid. "Write in plain paragraphs" beats "no lists".</li>
-          <li><b>One preference per line.</b> Easier to follow and easier to change later.</li>
-          <li><b>Add context about you.</b> Your role and who you write for helps ALMA pitch the answer right.</li>
-          <li><b>Keep it short.</b> Five to ten lines is plenty. Long lists get followed less well.</li>
-          <li><b>Try it, then adjust.</b> Chat for a while, and change a line when an answer misses.</li>
-        </ul>
-        <div class="st-compare">
-          <div class="bad"><small>Vague</small>Be nice and not too long.</div>
-          <div class="good"><small>Specific</small>Use a warm tone. Keep answers to 5 sentences unless I ask for more.</div>
-        </div>
-      </div>
-      <div class="st-help-section">
-        <div class="st-card-title">Start from an example</div>
-        <div class="st-examples" id="stExamples"></div>
       </div>
     </div>
   </div>
