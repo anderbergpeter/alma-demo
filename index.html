@@ -6000,6 +6000,20 @@ function stOnInput() {
   c.className = 'st-count' + (len > 1200 ? ' warn' : '');
   document.getElementById('stSaved').classList.remove('show');
 }
+var ST_ASK = 'Help me write a personal instruction for ALMA. Ask me a few short questions, one at a time, about my role, who I write for, the tone I prefer, how long answers should be and anything I do not want to see. Then write the finished instruction as one short text of five to ten sentences that I can paste into Settings.';
+function stAskJames() {
+  var u = location.href.split('#')[0].split('?')[0] + '?askJames=personal-instructions';
+  window.open(u, '_blank', 'noopener');
+}
+function stPrefillFromUrl() {
+  try {
+    if (new URLSearchParams(location.search).get('askJames') !== 'personal-instructions') return false;
+    switchAgent('personal');
+    var inp = document.getElementById('homeInput');
+    if (inp) { inp.value = ST_ASK; inp.focus(); try { inp.setSelectionRange(0, 0); inp.scrollLeft = 0; } catch (e) {} }
+    return true;
+  } catch (e) { return false; }
+}
 function stRenderScope() {
   var saved = (stLoad().instr || '').trim();
   var n = Object.keys(agents).length;
@@ -6087,6 +6101,7 @@ document.addEventListener('keydown', function (e) {
 function stApplyOnLoad() {
   var s = stLoad();
   stApplyTheme(s.theme);
+  if (stPrefillFromUrl()) return;
   if (s.defAgent && agents[s.defAgent]) switchAgent(s.defAgent);
 }
 
@@ -9912,6 +9927,7 @@ function updateGalleryCount() {
             <div class="st-action-row">
               <div class="st-action-left">
                 <button class="st-btn primary" id="stSaveBtn" onclick="stSave()">Save</button>
+                <button class="st-btn" id="stAskJamesBtn" onclick="stAskJames()" title="Opens James in a new tab. Your settings stay here.">Ask James to help me write it <span aria-hidden="true">↗</span></button>
                 <span class="st-saved" id="stSaved">Saved. Used from your next message.</span>
               </div>
               <div class="st-count" id="stCount">0 / 1500</div>
